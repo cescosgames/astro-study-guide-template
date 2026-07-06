@@ -1,0 +1,23 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layout/Layout.astro';
+import MCQDeck, { STUB_MCQ_QUESTIONS } from '../../components/study-kit/MCQDeck';
+
+const realQuestions = await getCollection('mcq');
+---
+
+<Layout title="MCQ Deck — study-kit">
+	<h1 class="text-2xl font-bold">MCQ Deck</h1>
+
+	<section class="flex flex-col gap-3">
+		<h2 class="text-lg font-semibold">Stub</h2>
+		<MCQDeck client:load questions={STUB_MCQ_QUESTIONS} />
+	</section>
+
+	<section class="flex flex-col gap-3">
+		<h2 class="text-lg font-semibold">
+			Real content — {realQuestions.length} questions from notes/laptop-hardware.md
+		</h2>
+		<MCQDeck client:visible questions={realQuestions.map((q) => q.data)} />
+	</section>
+</Layout>

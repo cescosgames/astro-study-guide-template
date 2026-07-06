@@ -1,0 +1,122 @@
+[
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Laptop Hardware (TEST DATA)",
+    "question": "Which RAM module type do laptops use instead of standard desktop DIMM?",
+    "choices": ["SODIMM", "DIMM", "SIMM", "RDIMM"],
+    "correctIndex": 0,
+    "explanation": "Laptops use SODIMM (Small Outline DIMM), a smaller form factor than desktop DIMM."
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Laptop Hardware (TEST DATA)",
+    "question": "How many pins does a DDR4 SODIMM module have?",
+    "choices": ["204", "240", "260", "288"],
+    "correctIndex": 2,
+    "explanation": "DDR4 SODIMM uses 260 pins; DDR3 SODIMM uses 204 pins."
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Laptop Hardware (TEST DATA)",
+    "question": "What is the standard laptop drive form factor for HDDs and SSDs, as opposed to the 3.5\" desktop standard?",
+    "choices": ["1.8\"", "2.5\"", "3.5\"", "5.25\""],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Laptop Hardware (TEST DATA)",
+    "question": "Which slot is used for high-speed NVMe SSDs in modern laptops?",
+    "choices": ["mSATA", "M.2", "PCI", "ExpressCard"],
+    "correctIndex": 1,
+    "explanation": "M.2 NVMe SSDs are significantly faster than SATA-based storage."
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Laptop Hardware (TEST DATA)",
+    "question": "Why should a Li-ion battery never be punctured or exposed to extreme heat?",
+    "choices": [
+      "It will stop charging permanently",
+      "It poses a fire/explosion risk",
+      "It only voids the software warranty",
+      "It will slowly leak a harmless gas"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Laptop Hardware (TEST DATA)",
+    "question": "What is the correct procedure for calibrating a laptop battery?",
+    "choices": [
+      "Fully charge, fully discharge, then fully charge again",
+      "Charge to 50% and leave it plugged in",
+      "Remove and reinsert the battery",
+      "Update the BIOS"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Laptop Hardware (TEST DATA)",
+    "question": "Which type of LCD backlighting requires a separate inverter board?",
+    "choices": ["LED backlighting", "CCFL backlighting", "OLED", "Digitizer backlighting"],
+    "correctIndex": 1,
+    "explanation": "CCFL (cold cathode fluorescent lamp) backlighting needs an inverter board to step up voltage; LED backlighting does not."
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Laptop Hardware (TEST DATA)",
+    "question": "What distinguishes an OLED display from an LCD display?",
+    "choices": [
+      "OLED requires a CCFL backlight",
+      "OLED pixels self-emit light, so no backlight is needed",
+      "OLED cannot be used in laptops",
+      "OLED uses a digitizer instead of a panel"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Laptop Hardware (TEST DATA)",
+    "question": "What is a digitizer on a laptop display?",
+    "choices": [
+      "The backlight inverter",
+      "The touchscreen layer, separate from the LCD panel",
+      "The graphics processing chip",
+      "The battery charge controller"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Laptop Hardware (TEST DATA)",
+    "question": "How do laptop keyboards typically connect to the system board?",
+    "choices": ["Internally over USB", "Ribbon cable", "SATA cable", "Wireless Bluetooth link"],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Laptop Hardware (TEST DATA)",
+    "question": "What is the key functional difference between a docking station and a port replicator?",
+    "choices": [
+      "They are functionally identical",
+      "A docking station adds extra functionality (e.g. extra GPU/ports); a port replicator just extends existing ports",
+      "A port replicator adds a GPU while a docking station only replicates ports",
+      "Docking stations are wireless and port replicators are wired"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Laptop Hardware (TEST DATA)",
+    "question": "ExpressCard, an older laptop expansion slot standard, has largely been replaced by which technology?",
+    "choices": ["PCMCIA", "USB-C/Thunderbolt", "mSATA", "SODIMM"],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Laptop Hardware (TEST DATA)",
+    "question": "What form factor do modern laptop wifi/Bluetooth combo cards commonly use?",
+    "choices": ["PCI", "Mini PCIe or M.2", "SODIMM", "SATA"],
+    "correctIndex": 1
+  }
+]

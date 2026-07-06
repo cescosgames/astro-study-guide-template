@@ -1,0 +1,25 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layout/Layout.astro';
+import Flashcard, { STUB_FLASHCARD } from '../../components/study-kit/Flashcard';
+
+const realCards = await getCollection('flashcards');
+---
+
+<Layout title="Flashcard — study-kit">
+	<h1 class="text-2xl font-bold">Flashcard</h1>
+
+	<section class="flex flex-col gap-3">
+		<h2 class="text-lg font-semibold">Stub</h2>
+		<Flashcard client:load {...STUB_FLASHCARD} />
+	</section>
+
+	<section class="flex flex-col gap-3">
+		<h2 class="text-lg font-semibold">Real content — {realCards.length} cards from notes/laptop-hardware.md</h2>
+		<div class="flex flex-col gap-4">
+			{realCards.map((card) => (
+				<Flashcard client:visible front={card.data.front} back={card.data.back} />
+			))}
+		</div>
+	</section>
+</Layout>

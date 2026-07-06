@@ -1,0 +1,9 @@
+---
+import Layout from '../../layout/Layout.astro';
+import ProgressTracker from '../../components/study-kit/ProgressTracker';
+---
+
+<Layout title="Progress Tracker — study-kit">
+	<h1 class="text-2xl font-bold">Progress Tracker</h1>
+	<ProgressTracker client:load cert="a-plus" section="stub-section" itemIds={['item-1', 'item-2', 'item-3']} />
+</Layout>

@@ -1,0 +1,10 @@
+---
+import Layout from '../../layout/Layout.astro';
+import RapidFireQuiz from '../../components/study-kit/RapidFireQuiz';
+import { STUB_MCQ_QUESTIONS } from '../../components/study-kit/MCQDeck';
+---
+
+<Layout title="Rapid Fire — study-kit">
+	<h1 class="text-2xl font-bold">Rapid Fire Quiz</h1>
+	<RapidFireQuiz client:load questions={STUB_MCQ_QUESTIONS} />
+</Layout>
