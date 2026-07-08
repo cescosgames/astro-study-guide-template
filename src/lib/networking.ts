@@ -118,12 +118,49 @@ export function generateSubnetProblem(difficulty: 'easy' | 'medium' | 'hard'): S
   return { ip, cidr, difficulty };
 }
 
+function randomHexGroup(): string {
+  return randomInt(0, 0xffff).toString(16).padStart(4, '0');
+}
+
+function placeZeroRun(groups: string[], start: number, length: number): void {
+  for (let i = start; i < start + length; i++) groups[i] = '0000';
+}
+
 export function generateIPv6Problem(difficulty: 'easy' | 'medium' | 'hard'): IPv6Problem {
-  const zeroGroupCounts: Record<string, number> = { easy: 4, medium: 2, hard: 1 };
-  const zeroGroups = zeroGroupCounts[difficulty];
-  const groups = Array.from({ length: 8 }, (_, i) =>
-    i < zeroGroups ? '0000' : randomInt(0, 0xffff).toString(16).padStart(4, '0')
-  );
+  const groups = Array.from({ length: 8 }, () => randomHexGroup());
+
+  // Difficulty controls how much of the address collapses under `::`.
+  // Easy nearly always has an obvious multi-group run; hard sometimes has
+  // a run too short to compress (RFC 5952: `::` only applies to 2+ groups)
+  // or none at all, forcing the "no compression needed" case.
+  const runLengthRanges: Record<string, [number, number]> = {
+    easy: [3, 5],
+    medium: [2, 4],
+    hard: [0, 3],
+  };
+  const [minLen, maxLen] = runLengthRanges[difficulty];
+  const primaryLen = randomInt(minLen, maxLen);
+
+  if (primaryLen >= 1) {
+    const primaryStart = randomInt(0, 8 - primaryLen);
+    placeZeroRun(groups, primaryStart, primaryLen);
+
+    // Occasionally seed a second, shorter zero run elsewhere so the
+    // "compress only the longest run" rule actually gets exercised.
+    if (difficulty !== 'easy' && primaryLen >= 2 && Math.random() < 0.4) {
+      const secondaryLen = randomInt(1, primaryLen - 1);
+      const gaps: number[] = [];
+      for (let s = 0; s <= 8 - secondaryLen; s++) {
+        const overlapsPrimary = s < primaryStart + primaryLen && s + secondaryLen > primaryStart;
+        if (!overlapsPrimary) gaps.push(s);
+      }
+      if (gaps.length > 0) {
+        const secondaryStart = gaps[randomInt(0, gaps.length - 1)];
+        placeZeroRun(groups, secondaryStart, secondaryLen);
+      }
+    }
+  }
+
   const full = groups.join(':');
   return { full, compressed: compressIPv6(full), difficulty };
 }

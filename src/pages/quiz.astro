@@ -1,0 +1,34 @@
+---
+import Layout from '../layout/Layout.astro';
+
+const modes = [
+  {
+    href: '/dev/mcq',
+    label: 'MCQ Deck',
+    description: 'Work through questions one at a time, at your own pace, with explanations.',
+  },
+  {
+    href: '/dev/rapid-fire',
+    label: 'Rapid Fire',
+    description: 'Timed, shuffled questions across every domain — quick daily review.',
+  },
+];
+---
+
+<Layout title="Quiz — CompTIA A+ Study Guide">
+	<h1 class="font-display text-2xl font-extrabold">Quiz</h1>
+	<p class="text-slate-600 dark:text-slate-400">Choose how you want to test yourself.</p>
+	<div class="grid gap-4 sm:grid-cols-2">
+		{
+			modes.map((mode) => (
+				<a
+					href={mode.href}
+					class="flex flex-col gap-1 rounded-2xl border-2 border-border bg-surface-raised p-5 shadow-sm transition-transform hover:-translate-y-0.5 hover:border-accent active:translate-y-0"
+				>
+					<span class="font-display font-bold">{mode.label}</span>
+					<span class="text-sm text-slate-500 dark:text-slate-400">{mode.description}</span>
+				</a>
+			))
+		}
+	</div>
+</Layout>

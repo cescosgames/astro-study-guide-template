@@ -1,4 +1,5 @@
-import { useState } from 'preact/hooks';
+import { useMemo, useState } from 'preact/hooks';
+import { shuffle } from '../../lib/shuffle';
 
 export interface MCQQuestion {
   question: string;
@@ -12,12 +13,14 @@ export interface MCQDeckProps {
 }
 
 export default function MCQDeck({ questions }: MCQDeckProps) {
+  const [shuffleSeed, setShuffleSeed] = useState(0);
+  const shuffled = useMemo(() => shuffle(questions), [questions, shuffleSeed]);
   const [index, setIndex] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [score, setScore] = useState(0);
 
-  const current = questions[index];
-  const isLast = index === questions.length - 1;
+  const current = shuffled[index];
+  const isLast = index === shuffled.length - 1;
 
   function selectChoice(choiceIndex: number) {
     if (selected !== null) return;
@@ -30,53 +33,79 @@ export default function MCQDeck({ questions }: MCQDeckProps) {
     setIndex((i) => i + 1);
   }
 
-  if (index >= questions.length) {
+  function restart() {
+    setSelected(null);
+    setScore(0);
+    setIndex(0);
+    setShuffleSeed((s) => s + 1);
+  }
+
+  if (index >= shuffled.length) {
     return (
-      <div class="rounded-xl border border-slate-300 p-6 text-center dark:border-slate-700">
-        <p class="text-lg font-semibold">
-          Score: {score} / {questions.length}
+      <div class="flex flex-col items-center gap-4 rounded-2xl border-2 border-border bg-surface-raised p-6 text-center shadow-sm">
+        <p class="font-display text-lg font-bold">
+          Score: {score} / {shuffled.length}
         </p>
+        <button
+          type="button"
+          onClick={restart}
+          class="btn-duo btn-duo-primary min-h-11 rounded-2xl px-6"
+        >
+          Restart
+        </button>
       </div>
     );
   }
 
   return (
-    <div class="flex flex-col gap-4 rounded-xl border border-slate-300 p-6 dark:border-slate-700">
-      <p class="text-sm text-slate-500">
-        Question {index + 1} of {questions.length}
-      </p>
+    <div class="flex flex-col gap-4 rounded-2xl border-2 border-border bg-surface-raised p-5 shadow-sm sm:p-6">
+      <div class="flex items-center justify-between text-sm text-slate-500 dark:text-slate-400">
+        <span>
+          Question {index + 1} of {shuffled.length}
+        </span>
+        <button type="button" onClick={restart} class="font-bold text-accent">
+          Restart
+        </button>
+      </div>
       <p class="text-lg font-medium">{current.question}</p>
       <div class="flex flex-col gap-2">
         {current.choices.map((choice, i) => {
           const isSelected = selected === i;
           const isCorrect = i === current.correctIndex;
           const showState = selected !== null;
+          const revealCorrect = showState && isCorrect;
+          const revealWrong = showState && isSelected && !isCorrect;
           return (
             <button
               key={choice}
               type="button"
               onClick={() => selectChoice(i)}
-              class={`rounded-lg border px-4 py-2 text-left ${
-                showState && isCorrect
-                  ? 'border-green-500 bg-green-50 dark:bg-green-900/30'
-                  : showState && isSelected
-                    ? 'border-red-500 bg-red-50 dark:bg-red-900/30'
-                    : 'border-slate-300 dark:border-slate-700'
+              class={`flex min-h-11 items-center justify-between gap-2 rounded-2xl border-2 px-4 py-2 text-left transition-colors ${
+                revealCorrect
+                  ? 'animate-pop border-success bg-success/10 text-success'
+                  : revealWrong
+                    ? 'border-danger bg-danger/10 text-danger'
+                    : 'border-border'
               }`}
             >
-              {choice}
+              <span>{choice}</span>
+              {revealCorrect && <span aria-hidden="true">✓</span>}
+              {revealWrong && <span aria-hidden="true">✕</span>}
             </button>
           );
         })}
       </div>
       {selected !== null && current.explanation && (
-        <p class="text-sm text-slate-600 dark:text-slate-400">{current.explanation}</p>
+        <div class="animate-pop flex gap-2 rounded-2xl border-2 border-accent/30 bg-accent/10 p-4 text-sm text-slate-700 dark:text-slate-200">
+          <span aria-hidden="true">💡</span>
+          <p>{current.explanation}</p>
+        </div>
       )}
       {selected !== null && (
         <button
           type="button"
           onClick={next}
-          class="self-end rounded-lg bg-slate-900 px-4 py-2 text-white dark:bg-white dark:text-slate-900"
+          class="btn-duo btn-duo-primary min-h-11 self-end rounded-2xl px-6"
         >
           {isLast ? 'Finish' : 'Next'}
         </button>
@@ -84,12 +113,3 @@ export default function MCQDeck({ questions }: MCQDeckProps) {
     </div>
   );
 }
-
-export const STUB_MCQ_QUESTIONS: MCQQuestion[] = [
-  {
-    question: 'Stub question — which connector is used for SATA power?',
-    choices: ['Molex', 'SATA power connector', 'Berg', '4-pin floppy'],
-    correctIndex: 1,
-    explanation: 'Stub explanation — SATA drives use a 15-pin SATA power connector.',
-  },
-];

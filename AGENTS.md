@@ -104,3 +104,30 @@ src/
 - No new dependencies beyond Astro/Preact/Tailwind/Zod without flagging first.
 - Content extraction is checkpoint-based, not one giant pass — process one domain, summarize, wait for a go-ahead before the next, so misreadings of notes can be caught early.
 - Never fabricate A+ facts to fill gaps — thin notes coverage gets flagged, not padded.
+- Visual design decisions pull from `style.md` (the design-system source of truth), not ad hoc per-component choices. See "Visual redesign" below for the current direction.
+
+## Status
+
+**Phase 1 (engine skeleton) and Phase 3 (pages) are functionally done**, still running on the `test-laptop-hardware.json` placeholder content set — real Phase 2 content extraction from `notes/*.md` has not happened yet.
+
+**Visual redesign — complete.** The engine moved from a flat indigo/slate "enterprise" look to a Duolingo-inspired theme: bright green (`#58cc02`) primary accent, warm neutral surfaces, `Baloo 2`/`Nunito` display+body fonts, and a signature `.btn-duo` chunky pressable-button system (solid bottom "shade" edge that compresses on `:active`). Full token table, button variants, and conventions are documented in `style.md` — read it before any future styling work rather than re-deriving values. Key non-obvious pieces:
+- `TopicPicker.tsx` (shared `study-kit/` component): horizontal scrollable chip row replacing native `<select>` for topic pickers — native selects can't be restyled to match the chunky system (browser-rendered dropdown chrome), so don't reintroduce one.
+- `Flashcard.tsx`: single "Reveal" toggle shows the answer inline below the question on the same card (no flip animation) — chosen over a flip-card metaphor for a more "see everything at once" study flow.
+- `MCQDeck.tsx`: correct/incorrect answer explanation renders as a callout box (💡), but only when the content's optional `explanation` field is populated — the placeholder JSON has it filled for about half the entries.
+- `SubnetCalculator.tsx` / `IPv6Shrinker.tsx`: rebuilt with streak/accuracy tracking, Submit vs. Reveal Answer (reveal breaks streak, counts as an attempt but not a correct one), per-field correct/incorrect highlighting, and a "Quick reference" cheatsheet card — modeled on the equivalent practice tool in the Google IT guide (`google-it-cert-study-guide.pages.dev/subnet-practice.html`).
+- `lib/networking.ts` — `generateIPv6Problem()` was fixed twice this session: it originally always placed the zero-group run at a fixed leading position, then was rewritten to seed a random-length, random-position zero run (with an occasional second shorter run to exercise the "compress only the longest run" rule) so generated addresses resemble realistic ones (loopback/link-local/manually-assigned host suffixes) rather than a mechanically fixed pattern.
+
+**Known gap — homepage progress tracker is disabled.** `ProgressTracker` is commented out in `src/pages/index.astro` because it was only ever wired to stub data (`itemIds={['item-1','item-2','item-3']}`), not real per-domain completion — it was never connected to actual flashcard/MCQ progress. Needs real wiring once content exists, or replacement per the Phase 4 plan below.
+
+## Phase 4 — Resources Hub + CLI Practice (next session)
+
+Modeled on two pages from the Google IT guide — fetch/re-check both at the start of the session since they may change:
+- `google-it-cert-study-guide.pages.dev/resources.html` — a resources hub grouping downloadable/printable reference material by category (e.g. "A+ Exam", "Networking", "OS & Networking"). Each resource is a card: title, 1–2 sentence description, Preview + Download/Print actions.
+- `google-it-cert-study-guide.pages.dev/resources/cli-practice.html` — an interactive terminal-emulation drill: shows a prompt describing a task, user types the exact shell command into a simulated `$` prompt, Enter submits, validation is exact-match on command/flags (case-insensitive, whitespace-insensitive), tracks progress (e.g. "1/5") and score (e.g. "0/5"), with a "Try Again — new shuffle" reset.
+
+Rough plan (to refine at the start of next session, not to execute blind):
+1. Decide whether the homepage progress tracker gets replaced by a "Resources" entry point (per the user's suggestion) or fixed separately — don't leave it in limbo.
+2. Design the resources hub as cert-agnostic where possible (category grouping is generic; only the specific resource list is A+-specific) — same `study-kit/` cert-agnostic constraint applies.
+3. CLI practice needs a new content schema (likely `cliCommand` — prompt/task description, expected command(s), OS/shell context) and a new `study-kit` component for the terminal-emulation UI, styled per `style.md` (chunky buttons, accent-green terminal chrome, not a literal black/green hacker terminal, to stay consistent with the rest of the app).
+4. Command validation logic (exact match, case-insensitive, whitespace-insensitive, possibly multiple acceptable flag orders) should live in `lib/` as a pure function so it's unit-testable independent of the component, matching the `networking.ts` pattern.
+5. Content for CLI practice must come from real Linux/Windows CLI facts grounded in the A+ notes (Core 2 OS domain) — same "don't fabricate" rule as flashcards/MCQs.

@@ -1,10 +1,21 @@
 ---
+import { getCollection } from 'astro:content';
 import Layout from '../../layout/Layout.astro';
 import RapidFireQuiz from '../../components/study-kit/RapidFireQuiz';
-import { STUB_MCQ_QUESTIONS } from '../../components/study-kit/MCQDeck';
+
+const entries = await getCollection('mcq');
+const questions = entries.map((entry) => ({
+  question: entry.data.question,
+  choices: entry.data.choices,
+  correctIndex: entry.data.correctIndex,
+  explanation: entry.data.explanation,
+}));
 ---
 
-<Layout title="Rapid Fire — study-kit">
+<Layout title="Rapid Fire — CompTIA A+ Study Guide">
 	<h1 class="text-2xl font-bold">Rapid Fire Quiz</h1>
-	<RapidFireQuiz client:load questions={STUB_MCQ_QUESTIONS} />
+	<p class="text-slate-600 dark:text-slate-400">
+		{questions.length} questions shuffled across every topic.
+	</p>
+	<RapidFireQuiz client:load questions={questions} />
 </Layout>

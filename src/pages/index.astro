@@ -1,31 +1,94 @@
 ---
-import Layout from '../layout/Layout.astro';
+import Layout from "../layout/Layout.astro";
+import ProgressTracker from "../components/study-kit/ProgressTracker";
 
-const demos = [
-  { href: '/dev/flashcards', label: 'Flashcard', description: 'Flip card with known/learning tracking' },
-  { href: '/dev/mcq', label: 'MCQ Deck', description: 'Multiple-choice question flow with scoring' },
-  { href: '/dev/rapid-fire', label: 'Rapid Fire', description: 'Timed, shuffled quiz across all questions' },
-  { href: '/dev/progress', label: 'Progress Tracker', description: 'Per-section checkbox progress, localStorage-backed' },
-  { href: '/dev/subnet-calculator', label: 'Subnet Calculator', description: 'Procedurally generated CIDR/subnet drills' },
-  { href: '/dev/ipv6-shrinker', label: 'IPv6 Shrinker', description: 'Procedurally generated IPv6 compression drills' },
+const modes = [
+	{
+		href: "/dev/flashcards",
+		label: "Flashcards",
+		description: "Flip through cards, mark what you know.",
+		icon: "M4 6.5A1.5 1.5 0 0 1 5.5 5h9A1.5 1.5 0 0 1 16 6.5v11A1.5 1.5 0 0 1 14.5 19h-9A1.5 1.5 0 0 1 4 17.5v-11ZM8 3h9.5A1.5 1.5 0 0 1 19 4.5v11",
+		chip: "accent",
+	},
+	{
+		href: "/quiz",
+		label: "Quiz",
+		description: "MCQ deck or a timed rapid-fire round.",
+		icon: "M9 10a3 3 0 1 1 3 3v1.5M12 17.5h.01M5 4h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z",
+		chip: "gold",
+	},
+	{
+		href: "/practice",
+		label: "Practice",
+		description: "Subnetting and IPv6 drills.",
+		icon: "M14.5 3.5 20.5 9.5 9.5 20.5l-6-1 1-6L14.5 3.5Z M13 5l6 6",
+		chip: "accent",
+	},
+	{
+		href: "/dev/progress",
+		label: "Progress",
+		description: "See what you’ve covered so far.",
+		icon: "M12 3a9 9 0 1 0 9 9h-9V3Z M12 3a9 9 0 0 1 9 9",
+		chip: "gold",
+	},
 ];
 ---
 
-<Layout title="CompTIA A+ Study Guide — Phase 1 stubs">
-	<h1 class="text-2xl font-bold">study-kit component stubs</h1>
-	<p class="text-slate-600 dark:text-slate-400">
-		Phase 1 skeleton — each component below is wired with placeholder data. Real content comes in
-		Phase 2.
-	</p>
+<Layout title="CompTIA A+ Study Guide">
+	<div class="flex flex-col gap-1">
+		<h1 class="font-display text-2xl font-extrabold">
+			CompTIA A+ Study Guide
+		</h1>
+		<p class="text-slate-600 dark:text-slate-400">
+			Pick up where you left off.
+		</p>
+	</div>
+
+	<!-- progress tracker, not active curently -->
+	<!-- <div
+		class="rounded-2xl border-2 border-border bg-surface-raised p-5 shadow-sm"
+	>
+		<ProgressTracker
+			client:load
+			cert="a-plus"
+			section="stub-section"
+			itemIds={["item-1", "item-2", "item-3"]}
+		/>
+	</div> -->
+
 	<div class="grid gap-4 sm:grid-cols-2">
-		{demos.map((demo) => (
-			<a
-				href={demo.href}
-				class="flex flex-col gap-1 rounded-xl border border-slate-300 bg-white p-5 transition-colors hover:border-slate-400 dark:border-slate-700 dark:bg-slate-900 dark:hover:border-slate-600"
-			>
-				<span class="font-semibold">{demo.label}</span>
-				<span class="text-sm text-slate-500 dark:text-slate-400">{demo.description}</span>
-			</a>
-		))}
+		{
+			modes.map((mode) => (
+				<a
+					href={mode.href}
+					class="flex flex-col gap-3 rounded-2xl border-2 border-border bg-surface-raised p-5 shadow-sm transition-transform hover:-translate-y-0.5 hover:border-accent active:translate-y-0"
+				>
+					<span
+						class={`flex h-11 w-11 items-center justify-center rounded-full ${
+							mode.chip === "gold"
+								? "bg-gold/15 text-gold-shade dark:text-gold"
+								: "bg-accent/15 text-accent"
+						}`}
+					>
+						<svg
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.75"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							class="h-6 w-6"
+							aria-hidden="true"
+						>
+							<path d={mode.icon} />
+						</svg>
+					</span>
+					<span class="font-display font-bold">{mode.label}</span>
+					<span class="text-sm text-slate-500 dark:text-slate-400">
+						{mode.description}
+					</span>
+				</a>
+			))
+		}
 	</div>
 </Layout>

@@ -1,36 +1,53 @@
 import { useState } from 'preact/hooks';
 
 export interface FlashcardProps {
+  domain: string;
+  topic: string;
   front: string;
   back: string;
   onKnown?: (known: boolean) => void;
 }
 
-export default function Flashcard({ front, back, onKnown }: FlashcardProps) {
-  const [flipped, setFlipped] = useState(false);
+export default function Flashcard({ domain, topic, front, back, onKnown }: FlashcardProps) {
+  const [revealed, setRevealed] = useState(false);
 
   return (
     <div class="flex flex-col gap-3">
-      <button
-        type="button"
-        onClick={() => setFlipped((f) => !f)}
-        class="min-h-40 w-full rounded-xl border border-slate-300 bg-white p-6 text-left text-lg shadow-sm dark:border-slate-700 dark:bg-slate-900"
-      >
-        {flipped ? back : front}
-      </button>
-      {flipped && onKnown && (
+      <div class="flex min-h-40 w-full flex-col gap-4 rounded-2xl border-2 border-border bg-surface-raised p-5 text-lg shadow-sm sm:p-6">
+        <div class="flex flex-wrap items-center gap-2 text-xs font-bold">
+          <span class="rounded-full bg-accent/15 px-2.5 py-1 text-accent">{domain}</span>
+          <span class="text-slate-500 dark:text-slate-400">{topic}</span>
+        </div>
+
+        <p>{front}</p>
+
+        {revealed && (
+          <p class="animate-pop border-t-2 border-border pt-4 text-accent">{back}</p>
+        )}
+
+        {!revealed && (
+          <button
+            type="button"
+            onClick={() => setRevealed(true)}
+            class="btn-duo btn-duo-primary mt-auto min-h-11 self-center rounded-2xl px-6 text-sm"
+          >
+            Reveal
+          </button>
+        )}
+      </div>
+      {revealed && onKnown && (
         <div class="flex gap-2">
           <button
             type="button"
             onClick={() => onKnown(false)}
-            class="flex-1 rounded-lg bg-red-100 px-4 py-2 text-red-700 dark:bg-red-900/40 dark:text-red-300"
+            class="btn-duo btn-duo-danger min-h-11 flex-1 rounded-2xl px-4"
           >
             Still learning
           </button>
           <button
             type="button"
             onClick={() => onKnown(true)}
-            class="flex-1 rounded-lg bg-green-100 px-4 py-2 text-green-700 dark:bg-green-900/40 dark:text-green-300"
+            class="btn-duo btn-duo-primary min-h-11 flex-1 rounded-2xl px-4"
           >
             Got it
           </button>
@@ -39,8 +56,3 @@ export default function Flashcard({ front, back, onKnown }: FlashcardProps) {
     </div>
   );
 }
-
-export const STUB_FLASHCARD: FlashcardProps = {
-  front: 'Stub front — what does RAM stand for?',
-  back: 'Stub back — Random Access Memory',
-};

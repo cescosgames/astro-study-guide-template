@@ -1,22 +1,15 @@
 import { useEffect, useMemo, useState } from 'preact/hooks';
 import type { MCQQuestion } from './MCQDeck';
+import { shuffle } from '../../lib/shuffle';
 
 export interface RapidFireQuizProps {
   questions: MCQQuestion[];
   secondsPerQuestion?: number;
 }
 
-function shuffle<T>(items: T[]): T[] {
-  const copy = [...items];
-  for (let i = copy.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [copy[i], copy[j]] = [copy[j], copy[i]];
-  }
-  return copy;
-}
-
 export default function RapidFireQuiz({ questions, secondsPerQuestion = 15 }: RapidFireQuizProps) {
-  const shuffled = useMemo(() => shuffle(questions), [questions]);
+  const [restartSeed, setRestartSeed] = useState(0);
+  const shuffled = useMemo(() => shuffle(questions), [questions, restartSeed]);
   const [index, setIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(secondsPerQuestion);
@@ -44,23 +37,43 @@ export default function RapidFireQuiz({ questions, secondsPerQuestion = 15 }: Ra
     setIndex((i) => i + 1);
   }
 
+  function restart() {
+    setRestartSeed((s) => s + 1);
+    setScore(0);
+    setIndex(0);
+  }
+
   if (done) {
     return (
-      <div class="rounded-xl border border-slate-300 p-6 text-center dark:border-slate-700">
-        <p class="text-lg font-semibold">
+      <div class="flex flex-col items-center gap-4 rounded-2xl border-2 border-border bg-surface-raised p-6 text-center shadow-sm">
+        <p class="font-display text-lg font-bold">
           Score: {score} / {shuffled.length}
         </p>
+        <button
+          type="button"
+          onClick={restart}
+          class="btn-duo btn-duo-primary min-h-11 rounded-2xl px-6"
+        >
+          Restart
+        </button>
       </div>
     );
   }
 
   return (
-    <div class="flex flex-col gap-4 rounded-xl border border-slate-300 p-6 dark:border-slate-700">
-      <div class="flex items-center justify-between text-sm text-slate-500">
+    <div class="flex flex-col gap-4 rounded-2xl border-2 border-border bg-surface-raised p-5 shadow-sm sm:p-6">
+      <div class="flex items-center justify-between text-sm text-slate-500 dark:text-slate-400">
         <span>
           Question {index + 1} of {shuffled.length}
         </span>
-        <span>{timeLeft}s</span>
+        <div class="flex items-center gap-3">
+          <span class="font-display rounded-full bg-gold/15 px-3 py-1 font-bold text-gold-shade dark:text-gold">
+            {timeLeft}s
+          </span>
+          <button type="button" onClick={restart} class="font-bold text-accent">
+            Restart
+          </button>
+        </div>
       </div>
       <p class="text-lg font-medium">{current.question}</p>
       <div class="flex flex-col gap-2">
@@ -69,7 +82,7 @@ export default function RapidFireQuiz({ questions, secondsPerQuestion = 15 }: Ra
             key={choice}
             type="button"
             onClick={() => answer(i)}
-            class="rounded-lg border border-slate-300 px-4 py-2 text-left dark:border-slate-700"
+            class="min-h-11 rounded-2xl border-2 border-border px-4 text-left transition-colors active:bg-surface-overlay"
           >
             {choice}
           </button>
