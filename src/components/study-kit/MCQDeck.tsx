@@ -1,5 +1,6 @@
-import { useMemo, useState } from 'preact/hooks';
+import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { shuffle } from '../../lib/shuffle';
+import { burstConfetti } from '../../lib/confetti';
 
 export interface MCQQuestion {
   question: string;
@@ -22,6 +23,14 @@ export default function MCQDeck({ questions }: MCQDeckProps) {
   const current = shuffled[index];
   const isLast = index === shuffled.length - 1;
 
+  const finished = index >= shuffled.length;
+  const perfect = finished && shuffled.length > 0 && score === shuffled.length;
+  const finishCardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (perfect) burstConfetti(finishCardRef.current);
+  }, [perfect]);
+
   function selectChoice(choiceIndex: number) {
     if (selected !== null) return;
     setSelected(choiceIndex);
@@ -40,11 +49,15 @@ export default function MCQDeck({ questions }: MCQDeckProps) {
     setShuffleSeed((s) => s + 1);
   }
 
-  if (index >= shuffled.length) {
+  if (finished) {
     return (
-      <div class="flex flex-col items-center gap-4 rounded-2xl border-2 border-border bg-surface-raised p-6 text-center shadow-sm">
+      <div
+        ref={finishCardRef}
+        class="flex flex-col items-center gap-4 rounded-2xl border-2 border-border bg-surface-raised p-6 text-center shadow-sm"
+      >
         <p class="font-display text-lg font-bold">
           Score: {score} / {shuffled.length}
+          {perfect && ' 🎉'}
         </p>
         <button
           type="button"

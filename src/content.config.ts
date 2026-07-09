@@ -18,6 +18,15 @@ const mcqQuestionSchema = z.object({
   explanation: z.string().optional(),
 });
 
+const cliCommandSchema = z.object({
+  domain: z.string(),
+  topic: z.string(),
+  os: z.enum(['windows', 'linux']),
+  prompt: z.string(),
+  accepted: z.array(z.string()).min(1),
+  hint: z.string(),
+});
+
 const subnetCalcConfigSchema = z.object({
   type: z.literal('subnet-calc'),
   domain: z.string(),
@@ -61,6 +70,7 @@ function jsonArrayLoader(name: string, modules: Record<string, unknown>): Loader
 
 const flashcardModules = import.meta.glob('./content/a-plus/flashcards/*.json', { eager: true });
 const mcqModules = import.meta.glob('./content/a-plus/mcq/*.json', { eager: true });
+const cliModules = import.meta.glob('./content/a-plus/cli/*.json', { eager: true });
 
 const flashcards = defineCollection({
   loader: jsonArrayLoader('flashcards', flashcardModules),
@@ -72,9 +82,14 @@ const mcq = defineCollection({
   schema: mcqQuestionSchema,
 });
 
+const cli = defineCollection({
+  loader: jsonArrayLoader('cli', cliModules),
+  schema: cliCommandSchema,
+});
+
 const minigames = defineCollection({
   loader: glob({ pattern: '**/*.json', base: './src/content/a-plus/minigames' }),
   schema: minigameConfigSchema,
 });
 
-export const collections = { flashcards, mcq, minigames };
+export const collections = { flashcards, mcq, cli, minigames };

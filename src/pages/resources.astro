@@ -1,0 +1,66 @@
+---
+import Layout from '../layout/Layout.astro';
+import PageHeader from '../layout/PageHeader.astro';
+
+const categories = [
+  {
+    tag: 'A+ Exam',
+    title: 'Common Ports & Protocols',
+    description:
+      'Quick-reference table of exam-relevant port numbers, TCP/UDP classifications, service names, and memory hooks. Covers FTP, SSH, SMTP, DNS, DHCP, HTTP, RDP, SMB, and more.',
+    href: '/resources/ports-chart',
+  },
+  {
+    tag: 'Networking',
+    title: 'Subnet Cheat Sheet',
+    description:
+      'CIDR notation, netmask lookup, the slash-divide-8 mental shortcut, broadcast and host range rules, the 5-question flow, a worked example, and four practice problems including a split-octet /25.',
+    href: '/resources/subnet-cheatsheet',
+  },
+  {
+    tag: 'OS & Networking',
+    title: 'CLI Commands Cheat Sheet',
+    description:
+      'Windows CMD, PowerShell, and Linux Bash commands for network diagnostics, process management, file system ops, system info, disk tools, and user management. Includes .msc shortcuts, Linux log paths, and signal quick-reference.',
+    href: '/resources/cli-commands',
+  },
+];
+---
+
+<Layout title="Resources — CompTIA A+ Study Guide">
+	<PageHeader
+		badge="Reference Sheets"
+		title="Study Resources"
+		subtitle="Printable reference sheets for exam prep. Open one to preview, then use your browser's Print / Save as PDF to download."
+	/>
+
+	<div class="grid gap-4 sm:grid-cols-2">
+		{
+			categories.map((resource) => (
+				<div class="flex h-full flex-col gap-3 rounded-2xl border-2 border-border bg-surface-raised p-5 shadow-sm">
+					<span class="w-fit rounded-lg bg-accent/15 px-2 py-0.5 text-xs font-bold tracking-wide text-accent uppercase">
+						{resource.tag}
+					</span>
+					<h2 class="font-display font-bold">{resource.title}</h2>
+					<p class="flex-1 text-sm text-slate-500 dark:text-slate-400">{resource.description}</p>
+					<div class="mt-1 flex gap-2">
+						<a
+							href={resource.href}
+							target="_blank"
+							class="btn-duo btn-duo-outline flex min-h-11 flex-1 items-center justify-center rounded-2xl px-4 text-center text-sm"
+						>
+							Preview
+						</a>
+						<a
+							href={resource.href}
+							target="_blank"
+							class="btn-duo btn-duo-primary flex min-h-11 flex-1 items-center justify-center rounded-2xl px-4 text-center text-sm"
+						>
+							Print / Save
+						</a>
+					</div>
+				</div>
+			))
+		}
+	</div>
+</Layout>

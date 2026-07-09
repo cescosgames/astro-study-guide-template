@@ -1,19 +1,17 @@
-import { useMemo } from 'preact/hooks';
-import MCQDeck, { type MCQQuestion } from './MCQDeck';
+import CLIPractice, { type CLICommandQuestion } from './CLIPractice';
 import TopicPicker from './TopicPicker';
 import { useContentFilter, ALL_TOPICS } from '../../lib/useContentFilter';
-import { shuffle } from '../../lib/shuffle';
 
-export interface MCQStudyQuestion extends MCQQuestion {
+export interface CLIStudyCommand extends CLICommandQuestion {
   domain: string;
   topic: string;
 }
 
-export interface MCQStudyProps {
-  questions: MCQStudyQuestion[];
+export interface CLIStudyProps {
+  commands: CLIStudyCommand[];
 }
 
-export default function MCQStudy({ questions }: MCQStudyProps) {
+export default function CLIStudy({ commands }: CLIStudyProps) {
   const {
     domains,
     selectedDomain,
@@ -25,16 +23,14 @@ export default function MCQStudy({ questions }: MCQStudyProps) {
     filteredItems,
     shuffleSeed,
     reshuffle,
-  } = useContentFilter(questions);
-
-  const topicQuestions = useMemo(() => shuffle(filteredItems), [filteredItems, shuffleSeed]);
+  } = useContentFilter(commands);
 
   if (domains.length === 0) {
-    return <p class="text-slate-500 dark:text-slate-400">No MCQ questions yet.</p>;
+    return <p class="text-slate-500 dark:text-slate-400">No CLI questions yet.</p>;
   }
 
   return (
-    <div class="flex flex-col gap-3">
+    <div class="flex flex-col gap-4">
       {domains.length > 1 && (
         <TopicPicker
           topics={domains.map((d) => ({ topic: d.domain, count: d.count }))}
@@ -49,8 +45,7 @@ export default function MCQStudy({ questions }: MCQStudyProps) {
         onShuffle={reshuffle}
         allOption={{ value: ALL_TOPICS, label: 'All Topics', count: domainItems.length }}
       />
-
-      <MCQDeck key={`${selectedDomain}-${selectedTopic}-${shuffleSeed}`} questions={topicQuestions} />
+      <CLIPractice key={`${selectedDomain}-${selectedTopic}-${shuffleSeed}`} commands={filteredItems} />
     </div>
   );
 }

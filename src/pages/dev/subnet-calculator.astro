@@ -1,9 +1,14 @@
 ---
+import { getCollection } from 'astro:content';
 import Layout from '../../layout/Layout.astro';
-import SubnetCalculator from '../../components/study-kit/minigames/SubnetCalculator';
+import PageHeader from '../../layout/PageHeader.astro';
+import SubnetCalculatorStudy from '../../components/study-kit/minigames/SubnetCalculatorStudy';
+
+const entries = await getCollection('minigames', (entry) => entry.data.type === 'subnet-calc');
+const configs = entries.map((entry) => ({ difficulty: entry.data.difficulty, domain: entry.data.domain }));
 ---
 
-<Layout title="Subnet Calculator — study-kit">
-	<h1 class="text-2xl font-bold">Subnet Calculator</h1>
-	<SubnetCalculator client:load difficulty="easy" />
+<Layout title="Subnet Calculator — CompTIA A+ Study Guide">
+	<PageHeader title="Subnet Calculator" subtitle="Procedurally generated CIDR/subnet math drills." />
+	<SubnetCalculatorStudy client:load configs={configs} />
 </Layout>

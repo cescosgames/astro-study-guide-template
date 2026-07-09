@@ -8,6 +8,32 @@ astro dev --background
 
 Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
 
+## Keeping this file current
+
+This file (and `ARCHITECTURE.md`) are living docs, not a one-time build log —
+update them as part of the work, not as an afterthought:
+
+- **After any bulk content drop** (a batch of flashcards/MCQs/CLI drills from
+  a real `notes/*.md` extraction pass, not a one-off test file): update the
+  content counts in `README.md`'s badges, note which domain(s) just got
+  covered in this file's Status section, and bump `package.json`'s
+  `"version"` field so the version badge in the top-right corner of the app
+  actually reflects that a real content update shipped.
+- **After any notable engine/plumbing change** (new component, new content
+  schema, a bug fix worth remembering, a design decision that isn't obvious
+  from reading the code) — add a bullet under the current phase in Status,
+  or open a new phase section if the prior one was already marked COMPLETE.
+  Follow the existing tone: what changed, *why* (the non-obvious reasoning,
+  not just a restatement of the diff), and what it unblocks or still leaves
+  open.
+- **ARCHITECTURE.md vs this file**: ARCHITECTURE.md is the reference doc
+  (how the pipeline works right now, the repo map, the JSON shapes) — keep
+  it in sync with reality. This file is the decision log (what happened,
+  when, why) — keep it append-only per phase rather than rewriting history.
+- Don't wait to be asked. If a change is big enough that a future session
+  would be confused without context on it, write the context down before
+  moving to the next thing.
+
 ## Documentation
 
 Full documentation: https://docs.astro.build
@@ -42,33 +68,12 @@ Real content will NOT be hand-authored directly as JSON. Source material is a se
 - Astro Content Collections with Zod schemas for all study content
 - No backend — localStorage for progress, wrapped in a hook for future swap-out
 
-## Repo structure (target)
-```
-src/
-  content/
-    a-plus/
-      flashcards/*.json
-      mcq/*.json
-      minigames/*.json
-    config.ts            <- Zod schemas, shared across all certs
-  components/
-    study-kit/            <- CERT-AGNOSTIC, reusable across future guides
-      Flashcard.tsx
-      MCQDeck.tsx
-      RapidFireQuiz.tsx
-      ProgressTracker.tsx
-      minigames/
-        SubnetCalculator.tsx
-        IPv6Shrinker.tsx
-    layout/               <- nav, course cards, etc — mostly cert-agnostic
-  lib/
-    networking.ts         <- pure functions: subnet math, IPv6 compression/expansion, CIDR logic
-    progress.ts           <- useProgress() hook, localStorage abstraction
-  pages/
-    index.astro
-    courses/[...slug].astro
-    quiz.astro
-```
+## Repo structure
+
+See **ARCHITECTURE.md** for the live, up-to-date repo map, the full content
+pipeline diagram, and the exact JSON shape for every content type — don't
+duplicate that here, it'll just drift out of sync. This file is the build
+plan / decision log; ARCHITECTURE.md is the reference doc.
 
 ## Phase 1 — Schema + Engine Skeleton (stub-first, no real content yet)
 1. Set up Astro project with Preact + Tailwind integrations.
@@ -104,30 +109,51 @@ src/
 - No new dependencies beyond Astro/Preact/Tailwind/Zod without flagging first.
 - Content extraction is checkpoint-based, not one giant pass — process one domain, summarize, wait for a go-ahead before the next, so misreadings of notes can be caught early.
 - Never fabricate A+ facts to fill gaps — thin notes coverage gets flagged, not padded.
-- Visual design decisions pull from `style.md` (the design-system source of truth), not ad hoc per-component choices. See "Visual redesign" below for the current direction.
+- Visual design decisions pull from `STYLE.md` (the design-system source of truth), not ad hoc per-component choices. See "Visual redesign" below for the current direction.
 
 ## Status
 
 **Phase 1 (engine skeleton) and Phase 3 (pages) are functionally done**, still running on the `test-laptop-hardware.json` placeholder content set — real Phase 2 content extraction from `notes/*.md` has not happened yet.
 
-**Visual redesign — complete.** The engine moved from a flat indigo/slate "enterprise" look to a Duolingo-inspired theme: bright green (`#58cc02`) primary accent, warm neutral surfaces, `Baloo 2`/`Nunito` display+body fonts, and a signature `.btn-duo` chunky pressable-button system (solid bottom "shade" edge that compresses on `:active`). Full token table, button variants, and conventions are documented in `style.md` — read it before any future styling work rather than re-deriving values. Key non-obvious pieces:
+**Visual redesign — complete.** The engine moved from a flat indigo/slate "enterprise" look to a Duolingo-inspired theme: bright green (`#58cc02`) primary accent, warm neutral surfaces, `Baloo 2`/`Nunito` display+body fonts, and a signature `.btn-duo` chunky pressable-button system (solid bottom "shade" edge that compresses on `:active`). Full token table, button variants, and conventions are documented in `STYLE.md` — read it before any future styling work rather than re-deriving values. Key non-obvious pieces:
 - `TopicPicker.tsx` (shared `study-kit/` component): horizontal scrollable chip row replacing native `<select>` for topic pickers — native selects can't be restyled to match the chunky system (browser-rendered dropdown chrome), so don't reintroduce one.
 - `Flashcard.tsx`: single "Reveal" toggle shows the answer inline below the question on the same card (no flip animation) — chosen over a flip-card metaphor for a more "see everything at once" study flow.
 - `MCQDeck.tsx`: correct/incorrect answer explanation renders as a callout box (💡), but only when the content's optional `explanation` field is populated — the placeholder JSON has it filled for about half the entries.
 - `SubnetCalculator.tsx` / `IPv6Shrinker.tsx`: rebuilt with streak/accuracy tracking, Submit vs. Reveal Answer (reveal breaks streak, counts as an attempt but not a correct one), per-field correct/incorrect highlighting, and a "Quick reference" cheatsheet card — modeled on the equivalent practice tool in the Google IT guide (`google-it-cert-study-guide.pages.dev/subnet-practice.html`).
 - `lib/networking.ts` — `generateIPv6Problem()` was fixed twice this session: it originally always placed the zero-group run at a fixed leading position, then was rewritten to seed a random-length, random-position zero run (with an occasional second shorter run to exercise the "compress only the longest run" rule) so generated addresses resemble realistic ones (loopback/link-local/manually-assigned host suffixes) rather than a mechanically fixed pattern.
 
-**Known gap — homepage progress tracker is disabled.** `ProgressTracker` is commented out in `src/pages/index.astro` because it was only ever wired to stub data (`itemIds={['item-1','item-2','item-3']}`), not real per-domain completion — it was never connected to actual flashcard/MCQ progress. Needs real wiring once content exists, or replacement per the Phase 4 plan below.
+## Phase 4 — Resources Hub + CLI Practice — COMPLETE
 
-## Phase 4 — Resources Hub + CLI Practice (next session)
+- **CLI Practice**: new `cli` content collection/schema (`domain`, `topic`, `os`, `prompt`, `accepted[]`, `hint`), validated by pure functions in `lib/cliValidate.ts` (`normalizeCommand`, `isCommandAccepted` — case/whitespace-insensitive, multiple accepted answers). `CLIPractice.tsx` is the terminal drill itself; `CLIStudy.tsx` wraps it with `TopicPicker` (same pattern as `FlashcardStudy`/`MCQStudy`). Styled per `STYLE.md` — Duolingo-toned terminal chrome (accent/gold/success dots instead of literal red/yellow/green), not a black-on-green hacker terminal. Lives at `/dev/cli-practice`, linked from `/practice`. Content is currently one placeholder topic (`test-cli-commands.json`, 5 commands) — same "test data, not real extraction" caveat as flashcards/mcq.
+- **Mobile fix**: the terminal originally relied on the input's own `onKeyDown` for both submit and advance, but disabling the input after judging (for the dimmed look) means disabled elements stop receiving keyboard events at all — broke "press Enter to advance" on desktop after judging, and broke progression entirely on mobile (no physical Enter key, virtual keyboard's Enter/Go isn't reliably caught, and there was no tap target). Fixed by adding an explicit **Check** / **Continue**-**Finish** button row (matching `MCQDeck`'s pattern) as the primary interaction, with a `document`-level keydown listener as a desktop convenience layered on top.
+- **Resources Hub** (`/resources`): a cert-agnostic category-grid page (same array-of-cards pattern as `index.astro`/`practice.astro`, no new shared component needed) linking to three **hand-authored, non-content-collection** printable reference sheets, copied verbatim (restyled to this app's tokens) from the companion Google IT guide: Common Ports & Protocols, Subnet Cheat Sheet, CLI Commands Cheat Sheet. Each sheet uses a `.print-sheet` wrapper class (`global.css`) that forces black-on-white on `@media print` regardless of light/dark theme, and the `BottomTabBar` is `print:hidden`. **These are NOT drag-and-drop JSON content** — see ARCHITECTURE.md's "Known gaps" for why, if that's ever worth changing.
+- **Minigames actually wired to content.** Previously `SubnetCalculator`/`IPv6Shrinker` took a hardcoded `difficulty="easy"` prop — the `minigames` collection existed but nothing read it. Added `DifficultyPicker.tsx` (shared chip-row, same idea as `TopicPicker` but for easy/medium/hard) plus `SubnetCalculatorStudy.tsx` / `IPv6ShrinkerStudy.tsx` wrappers that read available difficulties from `src/content/a-plus/minigames/*.json` and let you switch between them. 6 config files now exist (3 difficulties × 2 minigame types).
+- **`PageHeader.astro`** (new shared `layout/` component): every page's title+subtitle now renders inside a `bg-surface-raised` card instead of sitting bare on the page's dotted background — the dots were bleeding through and clashing with text on dense pages (the reference sheets especially). Applied everywhere: home, quiz, practice, resources, all `dev/*` pages, and the three reference sheets. Also fixed the same bug in `FlashcardStudy.tsx`'s "Card X of Y" progress row, which had the identical bare-text-on-dots problem.
+- **Homepage**: `ProgressTracker` stays commented out (still no real per-domain data to show); a "Resources" card was added to the mode grid instead, and to the bottom tab bar, replacing the dead "Progress" tab link.
+- **Docs**: added `ARCHITECTURE.md` (content pipeline diagram, full repo map, copy-paste JSON shape per content type, the "new files in an empty collection need a dev-server restart" gotcha, known gaps). Renamed `style.md` → `STYLE.md` for consistency with the other all-caps docs (safe rename — nothing loads it programmatically). Rewrote `README.md` in the user's own casual voice with shields.io badges (content counts, themed with the app's own accent/gold/danger colors) and an explicit "test data only" status flag.
 
-Modeled on two pages from the Google IT guide — fetch/re-check both at the start of the session since they may change:
-- `google-it-cert-study-guide.pages.dev/resources.html` — a resources hub grouping downloadable/printable reference material by category (e.g. "A+ Exam", "Networking", "OS & Networking"). Each resource is a card: title, 1–2 sentence description, Preview + Download/Print actions.
-- `google-it-cert-study-guide.pages.dev/resources/cli-practice.html` — an interactive terminal-emulation drill: shows a prompt describing a task, user types the exact shell command into a simulated `$` prompt, Enter submits, validation is exact-match on command/flags (case-insensitive, whitespace-insensitive), tracks progress (e.g. "1/5") and score (e.g. "0/5"), with a "Try Again — new shuffle" reset.
+**Known gap — homepage progress tracker is still disabled.** Same root cause as before: no real per-domain completion data exists yet since real content hasn't been extracted. This is now purely a content-volume problem, not a plumbing one — the domain/topic filtering + per-card progress tracking underneath it is done (see Phase 5).
 
-Rough plan (to refine at the start of next session, not to execute blind):
-1. Decide whether the homepage progress tracker gets replaced by a "Resources" entry point (per the user's suggestion) or fixed separately — don't leave it in limbo.
-2. Design the resources hub as cert-agnostic where possible (category grouping is generic; only the specific resource list is A+-specific) — same `study-kit/` cert-agnostic constraint applies.
-3. CLI practice needs a new content schema (likely `cliCommand` — prompt/task description, expected command(s), OS/shell context) and a new `study-kit` component for the terminal-emulation UI, styled per `style.md` (chunky buttons, accent-green terminal chrome, not a literal black/green hacker terminal, to stay consistent with the rest of the app).
-4. Command validation logic (exact match, case-insensitive, whitespace-insensitive, possibly multiple acceptable flag orders) should live in `lib/` as a pure function so it's unit-testable independent of the component, matching the `networking.ts` pattern.
-5. Content for CLI practice must come from real Linux/Windows CLI facts grounded in the A+ notes (Core 2 OS domain) — same "don't fabricate" rule as flashcards/MCQs.
+## Phase 5 — Domain-level grouping — COMPLETE
+
+- **Domain → topic filtering**, built as one shared hook, `lib/useContentFilter.ts`, rather than three separate implementations. Given a flat list of `{domain, topic, ...}` items it derives available domains, derives topics scoped to whichever domain is selected, and exposes a `filteredItems` result. Selecting a domain resets to "All Topics" for that domain (not an arbitrary first topic).
+- **Three filter levels, consistently, everywhere**: a specific topic, "All Topics" (pools every topic within the currently selected domain), or switch domains via a picker row. Wired into `FlashcardStudy`, `MCQStudy`, and `CLIStudy` identically. `RapidFireQuiz` deliberately keeps pooling every MCQ regardless of domain/topic — that's its whole point, untouched.
+- **`TopicPicker.tsx` got a backward-compatible upgrade** instead of a parallel `DomainPicker` component: `onShuffle` is now optional (so the domain-tier row doesn't render a redundant second Shuffle button), and a new optional `allOption` prop pins an "All Topics"-style chip before the per-topic chips. The same component now serves both the domain row and the topic row.
+- **The domain row only renders when there's more than one domain** in the content set. With today's single-domain placeholder content it stays completely invisible — zero added UI clutter until Phase 2 content actually spans multiple domains. This was a deliberate constraint, not an accident: the whole point was to build this without disrupting anything until it's actually needed.
+- **No "pool everything across all domains" mode for Flashcards/CLI Practice** — you always pick one domain, then optionally narrow to a topic. MCQ has that "everything, unfiltered" mode already, but via the separate Rapid Fire page, not MCQ Study itself. Flagged to the user as a possible future addition, deliberately not built speculatively — decide once real multi-domain content makes it obvious whether it's wanted.
+- **Bug found + fixed in the same pass**: `FlashcardStudy`'s "known" count was keyed to `localStorage` by whatever was currently selected (topic string vs. domain string), so switching between "All Topics" and a specific topic looked like known-status was resetting — they were actually just two different storage buckets for the same cards. Fixed by always keying storage by `domain` (never by topic) and computing the displayed "known" count as the intersection of stored completed-ids with whatever cards are currently in view, rather than the raw bucket size. Worth double-checking `MCQStudy`/`CLIStudy` don't need the equivalent fix if per-topic completion tracking ever gets added there (they don't currently track completion at all, so the bug was Flashcard-specific).
+
+## Session wrap-up polish
+
+- **Global `cursor: pointer` fix.** Browsers don't apply a pointer cursor to `<button>` by default (only `<a>` gets that for free) — added one rule (`button:not(:disabled) { cursor: pointer; }`) to `global.css` instead of patching it per-component. This is why MCQ choices (and every other button in the app) weren't showing a pointer on hover.
+- **Confetti**, `lib/confetti.ts`: dependency-free, Web Animations API, no canvas, no npm package — small colored rectangles in the app's own accent/gold/danger palette, respects `prefers-reduced-motion`. Deliberately reserved for genuine "you did well" moments (a perfect score) rather than every correct answer, which would get old fast — wired into `MCQDeck` and `CLIPractice`'s finish screens, firing once via a `useEffect` keyed on a `perfect` boolean flipping to `true`.
+- **Verified the actual production build**, not just `astro dev`. Ran `astro build` + served `dist/` locally and curled every route (with and without trailing slash), `manifest.json`, `sw.js`, and both icon files. All 14 pages resolve correctly, icons are real correctly-sized PNGs, and the service worker's fetch strategy (network-first for navigations, cache-first for assets, falls back to cached `/` if a page was never visited offline) is sound. This was a real gap worth closing — the whole session up to this point had only been tested against the dev server, which has different routing behavior than a static host.
+- **Known gap surfaced by that build check**: there's no `src/pages/404.astro`, so a broken/typo'd URL shows Cloudflare's generic 404 page instead of one in this app's own styling. Not a routing bug, just unstyled — cheap to add whenever.
+- **Still needs on-device verification**: the user reported prior PWA routing trouble (unclear if from this project or the earlier Google IT guide one) and hasn't tested "Add to Home Screen" / offline behavior on an actual phone against this build yet. Nothing found in this session's build check points to a real problem, but curl can't verify iOS's actual standalone-launch behavior — that's the one thing that still needs a real device.
+
+## Phase 6 — Open items (next session)
+
+1. **`content.config.ts` hardcodes the `a-plus` folder path** in every collection's glob pattern. The schemas themselves are cert-agnostic, but reusing this engine for Network+/Security+ means editing `content.config.ts` directly (new collections or repointed paths), not just adding a new content folder. Not urgent for the current guide, but worth a decision before this becomes "the reusable engine" in practice rather than just in name.
+2. **Phase 2 itself** — real content extraction from `notes/*.md` still hasn't happened. Everything built so far (Phases 1, 3, 4, 5) has been engine/plumbing work proven out against one placeholder topic. **This is the actual next milestone** — the pipeline end of this project is done; what's left is content.
+3. **On-device PWA test** (see above) — low priority, not blocking content work, but don't forget it.
+4. **Optional: a styled `404.astro`** — cosmetic, whenever it's convenient.

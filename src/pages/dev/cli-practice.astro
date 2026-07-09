@@ -1,0 +1,21 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layout/Layout.astro';
+import PageHeader from '../../layout/PageHeader.astro';
+import CLIStudy from '../../components/study-kit/CLIStudy';
+
+const entries = await getCollection('cli');
+const commands = entries.map((entry) => ({
+  domain: entry.data.domain,
+  topic: entry.data.topic,
+  os: entry.data.os,
+  prompt: entry.data.prompt,
+  accepted: entry.data.accepted,
+  hint: entry.data.hint,
+}));
+---
+
+<Layout title="CLI Practice — CompTIA A+ Study Guide">
+	<PageHeader title="CLI Practice" subtitle="Type the exact command, press Enter." />
+	<CLIStudy client:load commands={commands} />
+</Layout>

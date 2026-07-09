@@ -1,9 +1,14 @@
 ---
+import { getCollection } from 'astro:content';
 import Layout from '../../layout/Layout.astro';
-import IPv6Shrinker from '../../components/study-kit/minigames/IPv6Shrinker';
+import PageHeader from '../../layout/PageHeader.astro';
+import IPv6ShrinkerStudy from '../../components/study-kit/minigames/IPv6ShrinkerStudy';
+
+const entries = await getCollection('minigames', (entry) => entry.data.type === 'ipv6-shrink');
+const configs = entries.map((entry) => ({ difficulty: entry.data.difficulty, domain: entry.data.domain }));
 ---
 
-<Layout title="IPv6 Shrinker — study-kit">
-	<h1 class="text-2xl font-bold">IPv6 Shrinker</h1>
-	<IPv6Shrinker client:load difficulty="easy" />
+<Layout title="IPv6 Shrinker — CompTIA A+ Study Guide">
+	<PageHeader title="IPv6 Shrinker" subtitle="Practice compressing and expanding IPv6 addresses." />
+	<IPv6ShrinkerStudy client:load configs={configs} />
 </Layout>

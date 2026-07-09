@@ -73,6 +73,12 @@ h3,
   }
 }
 
+/* Browsers don't apply a pointer cursor to <button> by default (only <a>
+   gets that for free) — fix it globally instead of per-component. */
+button:not(:disabled) {
+  cursor: pointer;
+}
+
 /* Duolingo-style "chunky" pressable buttons: a solid shade-colored bottom
    edge that collapses on press, standing in for a real 3D bevel. */
 .btn-duo {
@@ -140,4 +146,24 @@ h3,
 
 .animate-pop {
   animation: pop 0.25s ease-out;
+}
+
+/* Printable reference sheets (Resources): flatten to black-on-white and
+   drop chrome that makes no sense on paper, regardless of light/dark theme. */
+@media print {
+  .print-hide {
+    display: none !important;
+  }
+  body {
+    background: #fff !important;
+  }
+  .print-sheet,
+  .print-sheet * {
+    color: #000 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+  .print-sheet [class*='border'] {
+    border-color: #ccc !important;
+  }
 }

@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../../layout/Layout.astro';
+import PageHeader from '../../layout/PageHeader.astro';
 import MCQStudy from '../../components/study-kit/MCQStudy';
 
 const entries = await getCollection('mcq');
@@ -15,6 +16,6 @@ const questions = entries.map((entry) => ({
 ---
 
 <Layout title="MCQ — CompTIA A+ Study Guide">
-	<h1 class="text-2xl font-bold">MCQ</h1>
+	<PageHeader title="MCQ" subtitle="Work through questions one at a time, at your own pace." />
 	<MCQStudy client:load questions={questions} />
 </Layout>

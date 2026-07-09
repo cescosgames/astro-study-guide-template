@@ -1,0 +1,21 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  badge?: string;
+}
+
+const { title, subtitle, badge } = Astro.props;
+---
+
+<div class="flex flex-col gap-1 rounded-2xl border-2 border-border bg-surface-raised p-5 shadow-sm">
+	{
+		badge && (
+			<span class="w-fit rounded-lg bg-gold/15 px-2 py-0.5 text-xs font-bold tracking-wide text-gold-shade uppercase dark:text-gold">
+				{badge}
+			</span>
+		)
+	}
+	<h1 class="font-display text-2xl font-extrabold">{title}</h1>
+	{subtitle && <p class="text-slate-600 dark:text-slate-400">{subtitle}</p>}
+</div>

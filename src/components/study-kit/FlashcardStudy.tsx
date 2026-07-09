@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'preact/hooks';
 import Flashcard from './Flashcard';
 import TopicPicker from './TopicPicker';
+import { useContentFilter, ALL_TOPICS } from '../../lib/useContentFilter';
 import { useProgress } from '../../lib/progress';
 import { shuffle } from '../../lib/shuffle';
 
@@ -25,35 +26,43 @@ function slugify(value: string): string {
 }
 
 export default function FlashcardStudy({ cert, cards }: FlashcardStudyProps) {
-  const topics = useMemo(() => {
-    const seen = new Map<string, { domain: string; topic: string; count: number }>();
-    for (const card of cards) {
-      const existing = seen.get(card.topic);
-      if (existing) existing.count += 1;
-      else seen.set(card.topic, { domain: card.domain, topic: card.topic, count: 1 });
-    }
-    return [...seen.values()];
-  }, [cards]);
+  const {
+    domains,
+    selectedDomain,
+    setSelectedDomain,
+    domainItems,
+    topics,
+    selectedTopic,
+    setSelectedTopic,
+    filteredItems,
+    shuffleSeed,
+    reshuffle,
+  } = useContentFilter(cards);
 
-  const [selectedTopic, setSelectedTopic] = useState(topics[0]?.topic ?? '');
-  const [shuffleSeed, setShuffleSeed] = useState(0);
   const [index, setIndex] = useState(0);
 
-  const topicCards = useMemo(
-    () => shuffle(cards.filter((card) => card.topic === selectedTopic)),
-    [cards, selectedTopic, shuffleSeed]
-  );
+  const topicCards = useMemo(() => shuffle(filteredItems), [filteredItems, shuffleSeed]);
   const current = topicCards[index];
 
-  const { setItemComplete, completedCount } = useProgress(cert, slugify(selectedTopic));
+  // Always keyed by domain (never by topic) so "All Topics" and any single
+  // topic within that domain share one bucket — otherwise switching between
+  // them looks like known-status resets, since they'd be writing to two
+  // different localStorage keys for the same underlying cards.
+  const { completedIds, setItemComplete } = useProgress(cert, slugify(selectedDomain));
+  const knownInView = topicCards.filter((card) => completedIds.has(card.id)).length;
+
+  function selectDomain(domain: string) {
+    setSelectedDomain(domain);
+    setIndex(0);
+  }
 
   function selectTopic(topic: string) {
     setSelectedTopic(topic);
     setIndex(0);
   }
 
-  function reshuffle() {
-    setShuffleSeed((s) => s + 1);
+  function reshuffleAndReset() {
+    reshuffle();
     setIndex(0);
   }
 
@@ -70,26 +79,41 @@ export default function FlashcardStudy({ cert, cards }: FlashcardStudyProps) {
     if (index < topicCards.length - 1) setIndex((i) => i + 1);
   }
 
-  if (topics.length === 0) {
+  if (domains.length === 0) {
     return <p class="text-slate-500 dark:text-slate-400">No flashcards yet.</p>;
   }
 
-  const percent = topicCards.length === 0 ? 0 : Math.round((completedCount / topicCards.length) * 100);
+  const percent = topicCards.length === 0 ? 0 : Math.round((knownInView / topicCards.length) * 100);
 
   return (
-    <div class="flex flex-col gap-4">
-      <TopicPicker topics={topics} selectedTopic={selectedTopic} onSelect={selectTopic} onShuffle={reshuffle} />
+    <div class="flex flex-col gap-3">
+      {domains.length > 1 && (
+        <TopicPicker
+          topics={domains.map((d) => ({ topic: d.domain, count: d.count }))}
+          selectedTopic={selectedDomain}
+          onSelect={selectDomain}
+        />
+      )}
+      <TopicPicker
+        topics={topics}
+        selectedTopic={selectedTopic}
+        onSelect={selectTopic}
+        onShuffle={reshuffleAndReset}
+        allOption={{ value: ALL_TOPICS, label: 'All Topics', count: domainItems.length }}
+      />
 
       {current ? (
         <>
-          <div class="flex items-center justify-between text-sm text-slate-500 dark:text-slate-400">
-            <span>
-              Card {index + 1} of {topicCards.length}
-            </span>
-            <span>{completedCount} known</span>
-          </div>
-          <div class="h-3 w-full rounded-full bg-surface-overlay">
-            <div class="h-3 rounded-full bg-accent transition-all" style={{ width: `${percent}%` }} />
+          <div class="flex flex-col gap-2 rounded-2xl border-2 border-border bg-surface-raised p-3 shadow-sm">
+            <div class="flex items-center justify-between text-sm text-slate-500 dark:text-slate-400">
+              <span>
+                Card {index + 1} of {topicCards.length}
+              </span>
+              <span>{knownInView} known</span>
+            </div>
+            <div class="h-3 w-full rounded-full bg-surface-overlay">
+              <div class="h-3 rounded-full bg-accent transition-all" style={{ width: `${percent}%` }} />
+            </div>
           </div>
 
           <Flashcard

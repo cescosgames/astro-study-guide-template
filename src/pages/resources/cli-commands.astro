@@ -1,0 +1,282 @@
+---
+import Layout from '../../layout/Layout.astro';
+import PageHeader from '../../layout/PageHeader.astro';
+
+type Os = 'win' | 'lin' | 'both';
+
+const osClass: Record<Os, string> = {
+  win: 'bg-accent/15 text-accent',
+  lin: 'bg-gold/15 text-gold-shade dark:text-gold',
+  both: 'bg-slate-500/15 text-slate-600 dark:text-slate-300',
+};
+const osLabel: Record<Os, string> = { win: 'WIN', lin: 'LIN', both: 'BOTH' };
+
+interface Row {
+  cmd: string;
+  os: Os;
+  extra?: string;
+  desc: string;
+}
+
+const sections: { heading: string; rows: Row[] }[] = [
+  {
+    heading: 'Network Diagnostics',
+    rows: [
+      { cmd: 'ipconfig', os: 'win', desc: 'Show IP address, subnet mask, and default gateway for all adapters' },
+      { cmd: 'ipconfig /all', os: 'win', desc: 'Full details — MAC address, DHCP server, DNS servers, lease times' },
+      { cmd: 'ipconfig /release', os: 'win', extra: 'ipconfig /renew', desc: 'Drop and re-request a DHCP lease — fixes "wrong IP" problems' },
+      { cmd: 'ipconfig /flushdns', os: 'win', desc: 'Clear the DNS resolver cache — forces fresh lookups on next request' },
+      { cmd: 'ip addr', os: 'lin', extra: 'older: ifconfig', desc: 'Show IP addresses and network interface details' },
+      { cmd: 'ping <host>', os: 'both', desc: 'Test basic reachability — sends ICMP echo requests. -t (Win) or -c N (Lin) to control count' },
+      { cmd: 'tracert <host>', os: 'win', extra: 'traceroute <host> (Lin)', desc: 'Show each router hop to the destination — pinpoint where packets stop' },
+      { cmd: 'pathping <host>', os: 'win', desc: 'Combines ping + tracert — shows packet loss at each hop over time' },
+      { cmd: 'nslookup <domain>', os: 'both', desc: 'Query DNS — check what IP a hostname resolves to, or which server answered' },
+      { cmd: 'netstat -an', os: 'both', desc: 'List all active connections and listening ports with addresses. -b (Win) adds the process name' },
+      { cmd: 'ssh user@host', os: 'both', desc: 'Open an encrypted remote shell session. Port 22. Win also has PuTTY (putty.exe -ssh user@ip)' },
+      { cmd: 'scp file user@host:/path', os: 'lin', desc: 'Securely copy a file over SSH. Windows equivalent: pscp.exe (PuTTY SCP)' },
+    ],
+  },
+  {
+    heading: 'Process Management',
+    rows: [
+      { cmd: 'tasklist', os: 'win', desc: 'List all running processes with PID, memory usage, and session name' },
+      { cmd: 'taskkill /PID <id>', os: 'win', desc: 'Terminate a process by PID. Add /F to force-kill without cleanup' },
+      { cmd: 'Get-Process', os: 'win', extra: 'PowerShell', desc: 'List processes in PowerShell. Pipe to Stop-Process -Id <id> to kill' },
+      { cmd: 'ps', os: 'lin', desc: 'Snapshot of current processes. -ef shows all processes with full details including hidden ones' },
+      { cmd: 'ps -ef | grep <name>', os: 'lin', desc: 'Find a specific process by name in the full process list' },
+      { cmd: 'top', os: 'lin', desc: 'Live view of top CPU/memory consuming processes — %CPU and %MEM are key columns' },
+      { cmd: 'kill <PID>', os: 'lin', desc: 'Send SIGTERM — lets the process clean up before exiting' },
+      { cmd: 'kill -KILL <PID>', os: 'lin', desc: 'Send SIGKILL — instant forced termination, no cleanup. Last resort' },
+      { cmd: 'kill -TSTP <PID>', os: 'lin', desc: 'Suspend (pause) a process. Resume it with kill -CONT <PID>' },
+      { cmd: 'lsof', os: 'lin', desc: 'List open files and which processes hold them — useful when a file "can\'t be deleted"' },
+      { cmd: 'uptime', os: 'lin', desc: 'Show how long the system has been running + average CPU load over 1/5/15 min' },
+    ],
+  },
+  {
+    heading: 'File System Navigation & Operations',
+    rows: [
+      { cmd: 'dir', os: 'win', extra: 'ls -la (Lin)', desc: 'List directory contents. -la shows hidden files and permissions' },
+      { cmd: 'cd <path>', os: 'both', desc: 'Change directory. cd .. goes up one level. cd / (Lin) or cd \\ (Win) goes to root' },
+      { cmd: 'mkdir <name>', os: 'both', desc: 'Create a new directory' },
+      { cmd: 'del <file>', os: 'win', extra: 'rm <file> (Lin)', desc: 'Delete a file. Linux: -r deletes a directory recursively, -f skips confirmation' },
+      { cmd: 'copy / xcopy', os: 'win', extra: 'cp (Lin)', desc: 'Copy files. xcopy handles directories. robocopy is the modern Win equivalent with resume support' },
+      { cmd: 'move', os: 'win', extra: 'mv (Lin)', desc: 'Move or rename a file or directory' },
+      { cmd: 'type <file>', os: 'win', extra: 'cat <file> (Lin)', desc: "Print a file's contents to the terminal" },
+      { cmd: 'grep <pattern> <file>', os: 'lin', desc: 'Search for a text pattern in files. -r searches recursively in directories' },
+      { cmd: 'find <path> -name "*.txt"', os: 'lin', desc: 'Find files by name, type, or other attributes' },
+      { cmd: 'tail -f <file>', os: 'lin', desc: 'Stream the end of a file in real time — essential for watching live log output' },
+      { cmd: 'chmod <mode> <file>', os: 'lin', desc: 'Set file permissions. chmod 755 = owner rwx, group/other rx. chmod +x makes executable' },
+      { cmd: 'chown user:group <file>', os: 'lin', desc: 'Change file owner and group. Usually run with sudo' },
+      { cmd: 'attrib', os: 'win', desc: 'View or set file attributes (Read-only, Hidden, System, Archive). attrib +h file hides a file' },
+    ],
+  },
+  {
+    heading: 'System Information & Configuration',
+    rows: [
+      { cmd: 'systeminfo', os: 'win', desc: 'Detailed system info — OS version, RAM, hotfixes, network config, domain' },
+      { cmd: 'uname -a', os: 'lin', desc: 'Kernel version, hostname, architecture, OS name all in one line' },
+      { cmd: 'hostname', os: 'both', desc: "Print the computer's hostname" },
+      { cmd: 'whoami', os: 'both', desc: 'Print the current logged-in username (and domain on Windows)' },
+      { cmd: 'msconfig', os: 'win', desc: 'System Configuration — manage startup programs, boot options, and services (GUI)' },
+      { cmd: 'regedit', os: 'win', desc: 'Registry Editor GUI — view and edit Windows registry keys. Use with caution' },
+      { cmd: 'eventvwr.msc', os: 'win', desc: 'Event Viewer — browse Windows logs (Application, System, Security)' },
+      { cmd: 'devmgmt.msc', os: 'win', desc: 'Device Manager — view hardware, update/rollback drivers, disable devices' },
+      { cmd: 'services.msc', os: 'win', desc: 'Services panel — start, stop, and set startup type for Windows services' },
+      { cmd: 'gpupdate /force', os: 'win', desc: 'Force an immediate Group Policy refresh — apply new GPO settings without reboot' },
+      { cmd: 'shutdown /r /t 0', os: 'win', desc: 'Restart immediately. /s shuts down, /t N sets delay in seconds' },
+      { cmd: 'systemctl status <svc>', os: 'lin', desc: 'Check whether a service is running. Replace status with start, stop, or enable' },
+      { cmd: 'journalctl -u <svc>', os: 'lin', desc: 'View systemd logs for a specific service. -f follows in real time' },
+    ],
+  },
+  {
+    heading: 'Disk & Storage',
+    rows: [
+      { cmd: 'chkdsk C: /f', os: 'win', desc: 'Check and fix filesystem errors on a drive. /r also locates bad sectors (requires reboot on system drive)' },
+      { cmd: 'sfc /scannow', os: 'win', desc: 'System File Checker — scan for and restore corrupted Windows system files. Run as admin' },
+      { cmd: 'diskpart', os: 'win', desc: 'Interactive disk partitioning tool. Type list disk, select disk N, list partition inside it' },
+      { cmd: 'df -h', os: 'lin', desc: 'Show disk space usage for all mounted filesystems in human-readable sizes' },
+      { cmd: 'du -sh <path>', os: 'lin', desc: "Show total size of a directory. Useful for finding what's eating disk space" },
+      { cmd: 'free -h', os: 'lin', desc: 'Show total/used/free RAM and swap in human-readable form' },
+      { cmd: 'dd if=<src> of=<dst>', os: 'lin', desc: 'Low-level disk clone / image tool. Copies block-for-block — can clone drives or create ISOs' },
+    ],
+  },
+  {
+    heading: 'User & Permission Management',
+    rows: [
+      { cmd: 'net user', os: 'win', desc: 'List all local user accounts. net user <name> shows details for one user' },
+      { cmd: 'net user <name> <pass> /add', os: 'win', desc: 'Create a new local user account' },
+      { cmd: 'net localgroup administrators <name> /add', os: 'win', desc: 'Add a user to the local Administrators group' },
+      { cmd: 'sudo <command>', os: 'lin', desc: 'Run a command as root (superuser). Required for system-level operations' },
+      { cmd: 'su <user>', os: 'lin', desc: 'Switch to another user account in the current terminal session' },
+      { cmd: 'useradd <name>', os: 'lin', desc: 'Create a new user account. Use -m to create a home directory' },
+      { cmd: 'passwd <user>', os: 'lin', desc: "Set or change a user's password" },
+      { cmd: 'userdel <name>', os: 'lin', desc: 'Delete a user account. Add -r to also remove the home directory' },
+    ],
+  },
+  {
+    heading: 'Package & Software Management',
+    rows: [
+      { cmd: 'apt update', os: 'lin', extra: 'apt upgrade', desc: 'Refresh package list, then install all pending updates (Debian/Ubuntu)' },
+      { cmd: 'apt install <pkg>', os: 'lin', desc: 'Install a package. apt remove <pkg> removes it. Prefix with sudo' },
+      { cmd: 'yum install <pkg>', os: 'lin', desc: 'Install a package on RHEL/CentOS. Modern systems use dnf instead' },
+      { cmd: 'winget install <id>', os: 'win', desc: 'Windows Package Manager — install apps from the command line (Windows 10+)' },
+    ],
+  },
+  {
+    heading: 'Remote Access',
+    rows: [
+      { cmd: 'mstsc', os: 'win', desc: 'Launch Remote Desktop Connection (RDP client, port 3389). mstsc /v:host connects directly' },
+      { cmd: 'mstsc /admin', os: 'win', desc: 'Connect to the console session of a remote server (bypasses session limits)' },
+      { cmd: 'ssh -L 8080:target:80 user@jump', os: 'both', desc: 'SSH local port forwarding — tunnel traffic through a jump host' },
+    ],
+  },
+];
+
+const mscShortcuts = [
+  ['devmgmt.msc', 'Device Manager'],
+  ['diskmgmt.msc', 'Disk Management'],
+  ['eventvwr.msc', 'Event Viewer'],
+  ['services.msc', 'Services'],
+  ['compmgmt.msc', 'Computer Management'],
+  ['lusrmgr.msc', 'Local Users & Groups'],
+  ['gpedit.msc', 'Group Policy Editor'],
+  ['taskmgr', 'Task Manager'],
+  ['regedit', 'Registry Editor'],
+  ['msconfig', 'System Configuration'],
+  ['msinfo32', 'System Information'],
+];
+
+const linuxLogs = [
+  ['/var/log/syslog', 'general system log (everything)'],
+  ['/var/log/auth.log', 'logins, sudo, SSH auth'],
+  ['/var/log/kern.log', 'kernel messages'],
+  ['/var/log/dmesg', 'boot and hardware messages'],
+  ['/var/log/apt/', 'package install history'],
+  ['journalctl -xe', 'systemd logs, most recent errors'],
+];
+
+const signals = [
+  ['SIGTERM', 'graceful quit (kill default)'],
+  ['SIGKILL', 'instant terminate, no cleanup'],
+  ['SIGINT', 'Ctrl+C interrupt'],
+  ['SIGTSTP', 'Ctrl+Z suspend'],
+  ['SIGCONT', 'resume a suspended process'],
+];
+---
+
+<Layout title="CLI Commands Cheat Sheet — CompTIA A+ Study Guide">
+	<div class="print-sheet flex flex-col gap-4">
+		<PageHeader
+			badge="Reference Sheet"
+			title="CLI Commands Cheat Sheet"
+			subtitle="OS & Networking · Windows CMD / PowerShell & Linux Bash"
+		/>
+
+		<div class="print-hide flex flex-wrap items-center gap-3">
+			<button type="button" onclick="window.print()" class="btn-duo btn-duo-primary min-h-11 rounded-2xl px-5 text-sm">
+				Print / Save as PDF
+			</button>
+			<p class="text-sm text-slate-500 dark:text-slate-400">
+				In Chrome: choose "Save as PDF" as the destination. Portrait orientation recommended.
+			</p>
+		</div>
+
+		<div class="flex flex-wrap items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+			<span class="flex items-center gap-1.5">
+				<span class="rounded-lg bg-accent/15 px-2 py-0.5 text-xs font-bold text-accent">WIN</span> Windows CMD
+			</span>
+			<span class="flex items-center gap-1.5">
+				<span class="rounded-lg bg-gold/15 px-2 py-0.5 text-xs font-bold text-gold-shade dark:text-gold">LIN</span> Linux / macOS Bash
+			</span>
+			<span class="flex items-center gap-1.5">
+				<span class="rounded-lg bg-slate-500/15 px-2 py-0.5 text-xs font-bold text-slate-600 dark:text-slate-300">BOTH</span> Works on both
+				(or close equivalent)
+			</span>
+		</div>
+
+		{
+			sections.map((section) => (
+				<div>
+					<p class="mt-2 border-b-2 border-border pb-1 text-xs font-bold tracking-wide text-accent uppercase">
+						{section.heading}
+					</p>
+					<div class="mt-2 overflow-x-auto rounded-2xl border-2 border-border bg-surface-raised shadow-sm">
+						<table class="w-full border-collapse text-left text-sm">
+							<thead>
+								<tr class="bg-surface-overlay text-xs text-slate-500 uppercase dark:text-slate-400">
+									<th class="w-2/5 px-3 py-2 font-display">Command</th>
+									<th class="px-3 py-2 font-display">What it does</th>
+								</tr>
+							</thead>
+							<tbody>
+								{section.rows.map((row) => (
+									<tr class="border-t border-border align-top">
+										<td class="px-3 py-2">
+											<span class="font-mono font-bold text-accent">{row.cmd}</span>{' '}
+											<span class={`rounded-lg px-1.5 py-0.5 text-[0.65rem] font-bold ${osClass[row.os]}`}>
+												{osLabel[row.os]}
+											</span>
+											{row.extra && (
+												<>
+													<br />
+													<span class="font-mono text-xs text-slate-500 dark:text-slate-400">{row.extra}</span>
+												</>
+											)}
+										</td>
+										<td class="px-3 py-2 text-sm text-slate-700 dark:text-slate-200">{row.desc}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			))
+		}
+
+		<!-- QUICK TIPS -->
+		<p class="mt-2 border-b-2 border-border pb-1 text-xs font-bold tracking-wide text-accent uppercase">
+			Quick Tips &amp; Exam Shortcuts
+		</p>
+		<div class="grid gap-3 sm:grid-cols-2">
+			<div class="rounded-2xl border-2 border-border bg-surface-raised p-4 shadow-sm">
+				<p class="mb-2 text-xs font-bold tracking-wide text-slate-500 uppercase dark:text-slate-400">
+					Windows .msc Shortcuts
+				</p>
+				<ul class="flex flex-col gap-1 text-sm text-slate-700 dark:text-slate-200">
+					{mscShortcuts.map(([cmd, desc]) => (
+						<li>
+							<span class="font-mono font-bold text-accent">{cmd}</span> — {desc}
+						</li>
+					))}
+				</ul>
+			</div>
+			<div class="rounded-2xl border-2 border-border bg-surface-raised p-4 shadow-sm">
+				<p class="mb-2 text-xs font-bold tracking-wide text-slate-500 uppercase dark:text-slate-400">Linux Log Locations</p>
+				<ul class="flex flex-col gap-1 text-sm text-slate-700 dark:text-slate-200">
+					{linuxLogs.map(([path, desc]) => (
+						<li>
+							<span class="font-mono font-bold text-accent">{path}</span> — {desc}
+						</li>
+					))}
+				</ul>
+				<p class="mt-3 mb-2 text-xs font-bold tracking-wide text-slate-500 uppercase dark:text-slate-400">
+					Signal Quick-Ref
+				</p>
+				<ul class="flex flex-col gap-1 text-sm text-slate-700 dark:text-slate-200">
+					{signals.map(([sig, desc]) => (
+						<li>
+							<span class="font-mono font-bold text-accent">{sig}</span> — {desc}
+						</li>
+					))}
+				</ul>
+			</div>
+		</div>
+
+		<div class="rounded-2xl border-2 border-accent/30 bg-accent/10 p-4 text-sm text-slate-700 dark:text-slate-200">
+			<p class="font-bold text-accent">Pipe ( | ) &amp; Redirect ( &gt; ) work on both platforms.</p>
+			<p class="mt-1 font-mono text-sm">ps -ef | grep nginx — filter output through grep</p>
+			<p class="font-mono text-sm">ipconfig /all &gt; info.txt — save output to a file</p>
+			<p class="font-mono text-sm">tasklist | findstr notepad — Windows equivalent of grep</p>
+		</div>
+	</div>
+</Layout>

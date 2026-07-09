@@ -1,0 +1,370 @@
+---
+import Layout from '../../layout/Layout.astro';
+import PageHeader from '../../layout/PageHeader.astro';
+
+const corePattern = [
+  { cidr: '/8', mask: '255.0.0.0', part: 'X', free: '. _ . _ . _', hostBits: '24 bits', hosts: '~16,000,000' },
+  { cidr: '/16', mask: '255.255.0.0', part: 'X.X', free: '. _ . _', hostBits: '16 bits', hosts: '~65,000' },
+  { cidr: '/24', mask: '255.255.255.0', part: 'X.X.X', free: '. _', hostBits: '8 bits', hosts: '254' },
+  { cidr: '/25', mask: '255.255.255.128', part: 'X.X.X', free: '. _ (half)', hostBits: '7 bits', hosts: '126', split: true },
+];
+
+const splitRef = [
+  { cidr: '/25', stolen: 1, mask: '255.255.255.128', block: '128', hosts: '126', starts: '.0 and .128' },
+  { cidr: '/26', stolen: 2, mask: '255.255.255.192', block: '64', hosts: '62', starts: '.0, .64, .128, .192' },
+  { cidr: '/27', stolen: 3, mask: '255.255.255.224', block: '32', hosts: '30', starts: '.0, .32, .64, .96 …' },
+  { cidr: '/28', stolen: 4, mask: '255.255.255.240', block: '16', hosts: '14', starts: '.0, .16, .32, .48 …' },
+  { cidr: '/29', stolen: 5, mask: '255.255.255.248', block: '8', hosts: '6', starts: '.0, .8, .16, .24 …' },
+  { cidr: '/30', stolen: 6, mask: '255.255.255.252', block: '4', hosts: '2', starts: '.0, .4, .8, .12 … (point-to-point links)' },
+];
+
+const worked = [
+  { q: 'Netmask', a: '255.255.255.0' },
+  { q: 'Host bits', a: '32 − 24 = 8' },
+  { q: 'Usable hosts', a: '2⁸ − 2 = 254' },
+  { q: 'Network address', a: '192.168.10.0' },
+  { q: 'Broadcast', a: '192.168.10.255' },
+  { q: 'Host range', a: '192.168.10.1 → 192.168.10.254' },
+];
+
+const practice = [
+  {
+    addr: '10.50.0.0/8',
+    rows: [
+      ['Netmask', '255.0.0.0'],
+      ['Usable hosts', '~16,000,000'],
+      ['Network addr', '10.0.0.0'],
+      ['Broadcast', '10.255.255.255'],
+      ['Host range', '10.0.0.1 → 10.255.255.254'],
+    ],
+  },
+  {
+    addr: '172.20.0.0/16',
+    rows: [
+      ['Netmask', '255.255.0.0'],
+      ['Usable hosts', '~65,000'],
+      ['Network addr', '172.20.0.0'],
+      ['Broadcast', '172.20.255.255'],
+      ['Host range', '172.20.0.1 → 172.20.255.254'],
+    ],
+  },
+  {
+    addr: '192.168.100.0/24',
+    rows: [
+      ['Netmask', '255.255.255.0'],
+      ['Usable hosts', '254'],
+      ['Network addr', '192.168.100.0'],
+      ['Broadcast', '192.168.100.255'],
+      ['Host range', '192.168.100.1 → 192.168.100.254'],
+    ],
+  },
+  {
+    addr: '192.168.1.0/25',
+    split: true,
+    rows: [
+      ['Netmask', '255.255.255.128'],
+      ['Usable hosts', '126'],
+      ['Network addr', '192.168.1.0'],
+      ['Broadcast', '192.168.1.127'],
+      ['Host range', '192.168.1.1 → 192.168.1.126'],
+    ],
+  },
+];
+
+const mentalSteps = [
+  {
+    label: 'Remainder',
+    rule: 'slash ÷ 8 → quotient = full locked octets, remainder = bits stolen',
+    example: '/25: 25÷8 = 3 R1 → 1 bit stolen',
+  },
+  {
+    label: 'Stolen value',
+    rule: 'read the bit value from the table above (start at 128, count right)',
+    example: '1 bit → 128 | 2 bits → 128+64=192 | 3 bits → 224',
+  },
+  {
+    label: 'Netmask',
+    rule: 'last octet = sum of stolen bit values; full octets before it = 255',
+    example: '/25 → 255.255.255.128',
+  },
+  {
+    label: 'Block size',
+    rule: '256 − last-octet netmask (or: value of the last stolen bit)',
+    example: '256 − 128 = 128 → subnets start at .0 and .128',
+  },
+  {
+    label: 'Network addr',
+    rule: 'round the 4th octet of your address down to the nearest multiple of block size',
+    example: '192.168.1.50/25 → 50 rounds to 0 → network = 192.168.1.0',
+  },
+  {
+    label: 'Broadcast',
+    rule: 'network 4th-octet + block − 1',
+    example: '0 + 128 − 1 = 127 → broadcast = 192.168.1.127',
+  },
+  {
+    label: 'Host range',
+    rule: 'network+1 to broadcast−1',
+    example: '192.168.1.1 → 192.168.1.126',
+  },
+];
+
+const bitValues = [128, 64, 32, 16, 8, 4, 2, 1];
+---
+
+<Layout title="Subnet Cheat Sheet — CompTIA A+ Study Guide">
+	<div class="print-sheet flex flex-col gap-4">
+		<PageHeader badge="Reference Sheet" title="Subnet Cheat Sheet" subtitle="Networking · CIDR, netmasks, host ranges" />
+
+		<div class="print-hide flex flex-wrap items-center gap-3">
+			<button type="button" onclick="window.print()" class="btn-duo btn-duo-primary min-h-11 rounded-2xl px-5 text-sm">
+				Print / Save as PDF
+			</button>
+			<p class="text-sm text-slate-500 dark:text-slate-400">
+				In Chrome: choose "Save as PDF" as the destination. Portrait orientation recommended.
+			</p>
+		</div>
+
+		<!-- CORE PATTERN -->
+		<p class="mt-2 border-b-2 border-border pb-1 text-xs font-bold tracking-wide text-accent uppercase">The Core Pattern</p>
+		<div class="overflow-x-auto rounded-2xl border-2 border-border bg-surface-raised shadow-sm">
+			<table class="w-full border-collapse text-left text-sm">
+				<thead>
+					<tr class="bg-surface-overlay text-xs text-slate-500 uppercase dark:text-slate-400">
+						<th class="px-3 py-2 font-display">CIDR</th>
+						<th class="px-3 py-2 font-display">Netmask</th>
+						<th class="px-3 py-2 font-display">Network Part</th>
+						<th class="px-3 py-2 font-display">Host Bits</th>
+						<th class="px-3 py-2 font-display">Usable Hosts</th>
+					</tr>
+				</thead>
+				<tbody>
+					{
+						corePattern.map((row) => (
+							<tr class="border-t border-border">
+								<td class="px-3 py-2 font-mono font-bold text-accent">{row.cidr}</td>
+								<td class="px-3 py-2 font-mono font-bold text-accent">{row.mask}</td>
+								<td class="px-3 py-2">
+									<span class="font-mono font-bold text-accent">{row.part}</span>{' '}
+									<span class="text-xs text-slate-500 italic dark:text-slate-400">{row.free}</span>
+								</td>
+								<td class="px-3 py-2 text-slate-700 dark:text-slate-200">{row.hostBits}</td>
+								<td class="px-3 py-2 text-slate-700 dark:text-slate-200">
+									{row.hosts}
+									{row.split && (
+										<span class="ml-1 rounded bg-gold px-1.5 py-0.5 text-[0.65rem] font-bold tracking-wide text-slate-900 uppercase">
+											split octet
+										</span>
+									)}
+								</td>
+							</tr>
+						))
+					}
+				</tbody>
+			</table>
+		</div>
+
+		<!-- MENTAL SHORTCUT -->
+		<p class="mt-2 border-b-2 border-border pb-1 text-xs font-bold tracking-wide text-accent uppercase">Mental Shortcut</p>
+		<div class="rounded-2xl border-2 border-accent/30 bg-accent/10 p-4 text-sm text-slate-700 dark:text-slate-200">
+			<p class="font-bold text-accent">The slash ÷ 8 = how many octets are locked.</p>
+			<p class="mt-1 font-mono">/8 → 1 locked octet → 255.0.0.0</p>
+			<p class="font-mono">/16 → 2 locked octets → 255.255.0.0</p>
+			<p class="font-mono">/24 → 3 locked octets → 255.255.255.0</p>
+		</div>
+
+		<!-- BROADCAST & HOST RANGE -->
+		<p class="mt-2 border-b-2 border-border pb-1 text-xs font-bold tracking-wide text-accent uppercase">
+			Broadcast &amp; Host Range — Always the Same Trick
+		</p>
+		<div class="overflow-x-auto rounded-2xl border-2 border-border bg-surface-raised shadow-sm">
+			<table class="w-full border-collapse text-left text-sm">
+				<thead>
+					<tr class="bg-surface-overlay text-xs text-slate-500 uppercase dark:text-slate-400">
+						<th class="px-3 py-2 font-display">Address Type</th>
+						<th class="px-3 py-2 font-display">Rule</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="border-t border-border">
+						<td class="px-3 py-2 text-slate-700 dark:text-slate-200">Network address</td>
+						<td class="px-3 py-2 text-slate-700 dark:text-slate-200">
+							Last free octet = <span class="font-mono font-bold text-accent">0</span>
+						</td>
+					</tr>
+					<tr class="border-t border-border">
+						<td class="px-3 py-2 text-slate-700 dark:text-slate-200">Broadcast</td>
+						<td class="px-3 py-2 text-slate-700 dark:text-slate-200">
+							Last free octet = <span class="font-mono font-bold text-accent">255</span>
+						</td>
+					</tr>
+					<tr class="border-t border-border">
+						<td class="px-3 py-2 text-slate-700 dark:text-slate-200">Host range</td>
+						<td class="px-3 py-2 text-slate-700 dark:text-slate-200">
+							Everything in between — <span class="font-mono font-bold text-accent">.1</span> to{' '}
+							<span class="font-mono font-bold text-accent">.254</span> across the free octets
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<!-- 5-QUESTION FLOW -->
+		<p class="mt-2 border-b-2 border-border pb-1 text-xs font-bold tracking-wide text-accent uppercase">
+			The 5-Question Flow — Same Every Time
+		</p>
+		<ol class="flex flex-col gap-1.5 rounded-2xl border-2 border-border bg-surface-raised p-4 text-sm text-slate-700 shadow-sm dark:text-slate-200">
+			<li><span class="font-mono font-bold text-accent">Netmask</span> → how many octets are locked? (slash ÷ 8)</li>
+			<li><span class="font-mono font-bold text-accent">Host bits</span> → 32 minus the slash number</li>
+			<li><span class="font-mono font-bold text-accent">Hosts</span> → 2^(host bits) − 2</li>
+			<li><span class="font-mono font-bold text-accent">Network addr</span> → given address, last free octet = 0</li>
+			<li><span class="font-mono font-bold text-accent">Broadcast</span> → last free octet = 255</li>
+			<li><span class="font-mono font-bold text-accent">Range</span> → .1 to .254 across the free octets</li>
+		</ol>
+
+		<!-- SPLIT OCTETS -->
+		<p class="mt-2 border-b-2 border-border pb-1 text-xs font-bold tracking-wide text-accent uppercase">
+			Split Octets — What Your Mind Should Do
+		</p>
+		<div class="rounded-2xl border-2 border-accent/30 bg-accent/10 p-4 text-sm text-slate-700 dark:text-slate-200">
+			A <strong class="text-accent">split octet</strong> happens when the slash doesn't land on a multiple of 8. Some bits of
+			the last octet are "stolen" for the network part — the rest stay as host bits. The stolen bits determine the netmask,
+			block size, and broadcast.
+		</div>
+
+		<p class="text-sm text-slate-500 dark:text-slate-400">Octet bit values, left to right (always this order):</p>
+		<div class="overflow-x-auto rounded-2xl border-2 border-border bg-surface-raised shadow-sm">
+			<table class="w-full border-collapse text-center text-sm">
+				<thead>
+					<tr class="bg-surface-overlay text-xs text-slate-500 uppercase dark:text-slate-400">
+						{bitValues.map((_, i) => <th class="px-3 py-2 font-display">Bit {i + 1}</th>)}
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="border-t border-border">
+						{
+							bitValues.map((v, i) => (
+								<td
+									class={`px-3 py-2 font-mono font-bold ${
+										i < 4 ? 'bg-gold/15 text-gold-shade dark:text-gold' : 'text-slate-400 dark:text-slate-500'
+									}`}
+								>
+									{v}
+								</td>
+							))
+						}
+					</tr>
+					<tr class="border-t border-border text-xs">
+						<td colspan="4" class="px-3 py-1 text-gold-shade dark:text-gold">stolen (network) ↑</td>
+						<td colspan="4" class="px-3 py-1 text-slate-400 dark:text-slate-500">↑ free (host)</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<p class="text-xs text-slate-500 dark:text-slate-400">
+			Example above shows /28 — 4 bits stolen (28 − 24 = 4). Gold = locked, grey = free.
+		</p>
+
+		<p class="text-sm font-bold text-slate-700 dark:text-slate-200">The mental path — step by step for any split CIDR:</p>
+		<ol class="flex flex-col divide-y divide-border rounded-2xl border-2 border-border bg-surface-raised px-4 shadow-sm">
+			{
+				mentalSteps.map((step, i) => (
+					<li class="flex flex-wrap items-baseline gap-x-3 gap-y-1 py-2">
+						<span class="flex h-6 min-w-6 items-center justify-center rounded-full bg-accent/15 text-xs font-bold text-accent">
+							{i + 1}
+						</span>
+						<span class="min-w-[7.5rem] shrink-0 font-mono font-bold text-accent">{step.label}</span>
+						<span class="text-sm text-slate-700 dark:text-slate-200">{step.rule}</span>
+						<span class="text-xs text-slate-500 italic dark:text-slate-400">{step.example}</span>
+					</li>
+				))
+			}
+		</ol>
+
+		<p class="mt-4 border-b-2 border-border pb-1 text-xs font-bold tracking-wide text-accent uppercase">
+			Split CIDR Quick-Reference
+		</p>
+		<div class="overflow-x-auto rounded-2xl border-2 border-border bg-surface-raised shadow-sm">
+			<table class="w-full border-collapse text-left text-sm">
+				<thead>
+					<tr class="bg-surface-overlay text-xs text-slate-500 uppercase dark:text-slate-400">
+						<th class="px-3 py-2 font-display">CIDR</th>
+						<th class="px-3 py-2 font-display">Bits stolen</th>
+						<th class="px-3 py-2 font-display">Netmask</th>
+						<th class="px-3 py-2 font-display">Block size</th>
+						<th class="px-3 py-2 font-display">Usable hosts</th>
+						<th class="px-3 py-2 font-display">Subnet starts at…</th>
+					</tr>
+				</thead>
+				<tbody>
+					{
+						splitRef.map((row) => (
+							<tr class="border-t border-border">
+								<td class="px-3 py-2 font-mono font-bold text-accent">{row.cidr}</td>
+								<td class="px-3 py-2 text-slate-700 dark:text-slate-200">{row.stolen}</td>
+								<td class="px-3 py-2 font-mono font-bold text-accent">{row.mask}</td>
+								<td class="px-3 py-2 font-mono font-bold text-accent">{row.block}</td>
+								<td class="px-3 py-2 text-slate-700 dark:text-slate-200">{row.hosts}</td>
+								<td class="px-3 py-2 text-xs text-slate-500 italic dark:text-slate-400">{row.starts}</td>
+							</tr>
+						))
+					}
+				</tbody>
+			</table>
+		</div>
+
+		<!-- WORKED EXAMPLE -->
+		<p class="mt-2 border-b-2 border-border pb-1 text-xs font-bold tracking-wide text-accent uppercase">
+			Worked Example — 192.168.10.0/24
+		</p>
+		<div class="overflow-x-auto rounded-2xl border-2 border-border bg-surface-raised shadow-sm">
+			<table class="w-full border-collapse text-left text-sm">
+				<thead>
+					<tr class="bg-surface-overlay text-xs text-slate-500 uppercase dark:text-slate-400">
+						<th class="px-3 py-2 font-display">Question</th>
+						<th class="px-3 py-2 font-display">Answer</th>
+					</tr>
+				</thead>
+				<tbody>
+					{
+						worked.map((row) => (
+							<tr class="border-t border-border">
+								<td class="px-3 py-2 text-slate-700 dark:text-slate-200">{row.q}</td>
+								<td class="px-3 py-2 font-mono font-bold text-accent">{row.a}</td>
+							</tr>
+						))
+					}
+				</tbody>
+			</table>
+		</div>
+
+		<!-- PRACTICE PROBLEMS -->
+		<p class="mt-2 border-b-2 border-border pb-1 text-xs font-bold tracking-wide text-accent uppercase">Practice Problems</p>
+		<div class="grid gap-3 sm:grid-cols-2">
+			{
+				practice.map((card) => (
+					<div class="rounded-2xl border-2 border-border bg-surface-raised p-4 shadow-sm">
+						<p class="mb-2 font-mono text-base font-bold text-accent">
+							{card.addr}
+							{card.split && (
+								<span class="ml-1 rounded bg-gold px-1.5 py-0.5 align-middle text-[0.65rem] font-bold tracking-wide text-slate-900 uppercase">
+									split octet
+								</span>
+							)}
+						</p>
+						<table class="w-full border-collapse text-xs">
+							<tbody>
+								{card.rows.map(([label, value]) => (
+									<tr class="border-t border-border first:border-t-0">
+										<td class="w-[42%] py-1 pr-2 text-slate-500 uppercase dark:text-slate-400">{label}</td>
+										<td class="py-1 font-mono text-slate-700 dark:text-slate-200">{value}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
+				))
+			}
+		</div>
+	</div>
+</Layout>

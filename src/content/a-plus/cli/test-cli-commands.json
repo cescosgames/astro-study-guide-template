@@ -1,0 +1,42 @@
+[
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "CLI Commands (TEST DATA)",
+    "os": "linux",
+    "prompt": "List all running processes with full details, including hidden ones (Linux)",
+    "accepted": ["ps -ef", "ps -fe"],
+    "hint": "ps -ef"
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "CLI Commands (TEST DATA)",
+    "os": "linux",
+    "prompt": "Terminate process 1234 gracefully on Linux (send the default signal)",
+    "accepted": ["kill 1234", "kill -15 1234", "kill -term 1234", "kill -sigterm 1234"],
+    "hint": "kill 1234"
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "CLI Commands (TEST DATA)",
+    "os": "windows",
+    "prompt": "Open the Windows Event Viewer from the Run box or command line",
+    "accepted": ["eventvwr.msc", "eventvwr"],
+    "hint": "eventvwr.msc"
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "CLI Commands (TEST DATA)",
+    "os": "linux",
+    "prompt": "Show disk space for all mounted filesystems in human-readable format (Linux)",
+    "accepted": ["df -h"],
+    "hint": "df -h"
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "CLI Commands (TEST DATA)",
+    "os": "windows",
+    "prompt": "Force an immediate Group Policy update on Windows",
+    "accepted": ["gpupdate /force"],
+    "hint": "gpupdate /force"
+  }
+]

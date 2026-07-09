@@ -1,43 +1,25 @@
-# Astro Starter Kit: Minimal
+# Study Guide Template (With CompTIA A+ Content)
 
-```sh
-npm create astro@latest -- --template minimal
+Hey, this is a content-driven study guide template built on Astro where you drop in JSON (flashcards, MCQs, CLI drills, minigame configs) and the study guide autoloads the content, no touching component code every time I want to add a new topic. Vibe coded with Claude. Content's based off my own personal study notes for the A+.
+
+![flashcards](https://img.shields.io/badge/flashcards-16-58cc02) ![mcqs](https://img.shields.io/badge/mcqs-13-58cc02) ![cli drills](https://img.shields.io/badge/cli%20drills-5-58cc02) ![minigames](https://img.shields.io/badge/minigames-2-ffc800) ![domains covered](https://img.shields.io/badge/domains%20covered-1%20of%209-ff4b4b) ![status](https://img.shields.io/badge/content-test%20data%20only-ff4b4b)
+
+Heads up on that last badge: right now everything's running on one placeholder topic ("Laptop Hardware") just to prove the pipeline works end to end. Real A+ content extraction from `notes/*.md` hasn't happened yet — that's the next big push.
+
+## Stack
+
+Astro (static output → Cloudflare Pages), Tailwind v4, Preact for the interactive bits (flashcards, quizzes, the CLI terminal, minigames), Zod for content schemas. No backend — progress lives in `localStorage`.
+
+## Docs
+
+- [ARCHITECTURE.md](./ARCHITECTURE.md) — how content loading actually works, the exact JSON shape for each content type, and how to drop in new stuff without touching components
+- [STYLE.md](./STYLE.md) — the design system (colors, buttons, spacing, the whole Duolingo-ish vibe)
+
+## Quick start
+
+```
+npm install
+astro dev --background
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Then poke around `/dev/flashcards`, `/dev/mcq`, `/dev/cli-practice`, `/practice` (subnet + IPv6 drills), and `/resources` (printable cheat sheets). If you want to add your own content, ARCHITECTURE.md has the copy-paste JSON shapes.

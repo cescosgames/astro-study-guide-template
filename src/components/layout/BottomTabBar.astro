@@ -1,38 +1,41 @@
 ---
 const tabs = [
   {
-    href: '/',
-    label: 'Home',
-    match: (path: string) => path === '/',
-    icon: 'M3 11.5 12 4l9 7.5M5 10v9.5h5V15h4v4.5h5V10',
+    href: "/",
+    label: "Home",
+    match: (path: string) => path === "/",
+    icon: "M3 11.5 12 4l9 7.5M5 10v9.5h5V15h4v4.5h5V10",
   },
   {
-    href: '/dev/flashcards',
-    label: 'Flashcards',
-    match: (path: string) => path.startsWith('/dev/flashcards'),
-    icon: 'M4 6.5A1.5 1.5 0 0 1 5.5 5h9A1.5 1.5 0 0 1 16 6.5v11A1.5 1.5 0 0 1 14.5 19h-9A1.5 1.5 0 0 1 4 17.5v-11ZM8 3h9.5A1.5 1.5 0 0 1 19 4.5v11',
+    href: "/dev/flashcards",
+    label: "Flashcards",
+    match: (path: string) => path.startsWith("/dev/flashcards"),
+    icon: "M4 6.5A1.5 1.5 0 0 1 5.5 5h9A1.5 1.5 0 0 1 16 6.5v11A1.5 1.5 0 0 1 14.5 19h-9A1.5 1.5 0 0 1 4 17.5v-11ZM8 3h9.5A1.5 1.5 0 0 1 19 4.5v11",
   },
   {
-    href: '/quiz',
-    label: 'Quiz',
+    href: "/quiz",
+    label: "Quiz",
     match: (path: string) =>
-      path.startsWith('/quiz') || path.startsWith('/dev/mcq') || path.startsWith('/dev/rapid-fire'),
-    icon: 'M9 10a3 3 0 1 1 3 3v1.5M12 17.5h.01M5 4h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z',
+      path.startsWith("/quiz") ||
+      path.startsWith("/dev/mcq") ||
+      path.startsWith("/dev/rapid-fire"),
+    icon: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18ZM9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.7v.5M12 17h.01",
   },
   {
-    href: '/practice',
-    label: 'Practice',
+    href: "/practice",
+    label: "Practice",
     match: (path: string) =>
-      path.startsWith('/practice') ||
-      path.startsWith('/dev/subnet-calculator') ||
-      path.startsWith('/dev/ipv6-shrinker'),
-    icon: 'M14.5 3.5 20.5 9.5 9.5 20.5l-6-1 1-6L14.5 3.5Z M13 5l6 6',
+      path.startsWith("/practice") ||
+      path.startsWith("/dev/subnet-calculator") ||
+      path.startsWith("/dev/ipv6-shrinker") ||
+      path.startsWith("/dev/cli-practice"),
+    icon: "M14.5 3.5 20.5 9.5 9.5 20.5l-6-1 1-6L14.5 3.5Z M13 5l6 6",
   },
   {
-    href: '/dev/progress',
-    label: 'Progress',
-    match: (path: string) => path.startsWith('/dev/progress'),
-    icon: 'M12 3a9 9 0 1 0 9 9h-9V3Z M12 3a9 9 0 0 1 9 9',
+    href: "/resources",
+    label: "Resources",
+    match: (path: string) => path.startsWith("/resources"),
+    icon: "M6 4h9l3 3v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z M14 4v4h4",
   },
 ];
 
@@ -40,7 +43,7 @@ const currentPath = new URL(Astro.request.url).pathname;
 ---
 
 <nav
-  class="safe-bottom fixed inset-x-0 bottom-0 z-20 border-t border-border bg-surface-raised"
+  class="safe-bottom fixed inset-x-0 bottom-0 z-20 border-t border-border bg-surface-raised print:hidden"
   aria-label="Primary"
 >
   <div class="mx-auto flex max-w-2xl">
@@ -50,12 +53,14 @@ const currentPath = new URL(Astro.request.url).pathname;
         return (
           <a
             href={tab.href}
-            aria-current={active ? 'page' : undefined}
+            aria-current={active ? "page" : undefined}
             class="flex min-h-14 flex-1 flex-col items-center justify-center gap-0.5 px-1 py-1.5 text-xs font-display font-bold transition-colors"
           >
             <span
               class={`flex h-8 w-12 items-center justify-center rounded-full transition-colors ${
-                active ? 'bg-accent/15 text-accent' : 'text-slate-500 dark:text-slate-400'
+                active
+                  ? "text-accent" //"bg-accent/15 text-accent"
+                  : "text-slate-500 dark:text-slate-400"
               }`}
             >
               <svg
@@ -71,7 +76,13 @@ const currentPath = new URL(Astro.request.url).pathname;
                 <path d={tab.icon} />
               </svg>
             </span>
-            <span class={active ? 'text-accent' : 'text-slate-500 dark:text-slate-400'}>{tab.label}</span>
+            <span
+              class={
+                active ? "text-accent" : "text-slate-500 dark:text-slate-400"
+              }
+            >
+              {tab.label}
+            </span>
           </a>
         );
       })
