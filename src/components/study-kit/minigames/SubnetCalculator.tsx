@@ -99,9 +99,9 @@ export default function SubnetCalculator({ difficulty }: SubnetCalculatorProps) 
       <div class="flex flex-col gap-4 rounded-2xl border-2 border-border bg-surface-raised p-5 shadow-sm sm:p-6">
         <div class="flex flex-col items-center gap-2 rounded-2xl bg-accent/10 py-4">
           <span class="text-xs font-bold text-slate-500 dark:text-slate-400">IP / Prefix</span>
-          <p class="break-all text-center font-mono text-2xl font-bold tracking-widest text-accent sm:text-3xl">
-            {problem.ip}<span class="text-slate-400 dark:text-slate-500"> / </span>
-            {problem.cidr}
+          <p class="flex flex-wrap items-baseline justify-center gap-x-2 gap-y-1 px-2 text-center font-mono text-2xl font-bold tracking-widest text-accent sm:text-3xl">
+            <span class="whitespace-nowrap">{problem.ip}</span>
+            <span class="whitespace-nowrap text-slate-400 dark:text-slate-500">/ {problem.cidr}</span>
           </p>
         </div>
 

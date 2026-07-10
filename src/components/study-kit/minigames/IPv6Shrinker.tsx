@@ -58,8 +58,13 @@ export default function IPv6Shrinker({ difficulty }: IPv6ShrinkerProps) {
       <div class="flex flex-col gap-4 rounded-2xl border-2 border-border bg-surface-raised p-5 shadow-sm sm:p-6">
         <div class="flex flex-col items-center gap-2 rounded-2xl bg-accent/10 px-3 py-4">
           <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Full address</span>
-          <p class="break-all text-center font-mono text-base font-bold tracking-widest text-accent sm:text-xl">
-            {problem.full}
+          <p class="flex flex-wrap items-baseline justify-center gap-x-1 gap-y-1 px-2 text-center font-mono text-base font-bold tracking-widest text-accent sm:text-xl">
+            {problem.full.split(':').map((group, i) => (
+              <span key={i} class="whitespace-nowrap">
+                {group}
+                {i < 7 ? ':' : ''}
+              </span>
+            ))}
           </p>
         </div>
 

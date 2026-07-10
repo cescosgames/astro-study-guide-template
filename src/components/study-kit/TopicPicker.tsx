@@ -21,7 +21,7 @@ export interface TopicPickerProps {
 export default function TopicPicker({ topics, selectedTopic, onSelect, onShuffle, allOption }: TopicPickerProps) {
   return (
     <div class="flex items-center gap-2">
-      <div class="no-scrollbar flex flex-1 gap-2 overflow-x-auto">
+      <div class="no-scrollbar flex flex-1 gap-2 overflow-x-auto [mask-image:linear-gradient(to_right,transparent,black_16px,black_calc(100%-16px),transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,black_16px,black_calc(100%-16px),transparent)]">
         {allOption && (
           <button
             type="button"

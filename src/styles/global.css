@@ -53,11 +53,21 @@
   }
 }
 
+/* iOS Safari paints the rubber-band overscroll area from <html>'s own
+   background, not <body>'s — it doesn't reliably propagate a fixed
+   background-image up from body during that bounce. Duplicate the dotted
+   texture on html too so overscroll matches instead of showing a flat
+   surface color. */
+html,
 body {
-  font-family: var(--font-sans);
+  background-color: var(--color-surface);
   background-image: radial-gradient(circle, var(--color-border) 1.5px, transparent 1.5px);
   background-size: 24px 24px;
   background-attachment: fixed;
+}
+
+body {
+  font-family: var(--font-sans);
 }
 
 h1,
@@ -70,6 +80,10 @@ h3,
 @supports (padding: max(0px)) {
   .safe-bottom {
     padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+  }
+
+  .safe-top {
+    padding-top: max(1.25rem, env(safe-area-inset-top));
   }
 }
 
