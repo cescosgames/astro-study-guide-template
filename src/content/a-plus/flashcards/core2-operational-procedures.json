@@ -1,0 +1,62 @@
+[
+  {
+    "domain": "Core 2: Operational Procedures",
+    "topic": "Operational Procedures",
+    "front": "Full vs incremental vs differential backup — compare restore complexity.",
+    "back": "Full = restore just the one backup (fastest restore, slowest to run). Incremental = restore needs the full plus every incremental in sequence (fastest to run, slowest restore). Differential = restore needs just the full plus the latest differential (middle ground)."
+  },
+  {
+    "domain": "Core 2: Operational Procedures",
+    "topic": "Operational Procedures",
+    "front": "What is the 3-2-1 backup rule?",
+    "back": "3 copies of data, on 2 different media types, with 1 copy stored off-site."
+  },
+  {
+    "domain": "Core 2: Operational Procedures",
+    "topic": "Operational Procedures",
+    "front": "Why is testing a restore periodically important, not just running backups?",
+    "back": "A backup you've never restored from isn't actually verified to work."
+  },
+  {
+    "domain": "Core 2: Operational Procedures",
+    "topic": "Operational Procedures",
+    "front": "What's the typical change management process for a production system change?",
+    "back": "Submit a change request → get approval → prepare a rollback plan → implement during an approved maintenance window → document the outcome."
+  },
+  {
+    "domain": "Core 2: Operational Procedures",
+    "topic": "Operational Procedures",
+    "front": "Why is a rollback plan critical before implementing any change?",
+    "back": "It guarantees a way back to the previous known-good state if the change causes unexpected problems."
+  },
+  {
+    "domain": "Core 2: Operational Procedures",
+    "topic": "Operational Procedures",
+    "front": "What is ESD and how do you protect against it when handling internal PC components?",
+    "back": "Electrostatic discharge. Protect with an anti-static wrist strap, anti-static mats/bags, or by touching a grounded metal surface before handling parts."
+  },
+  {
+    "domain": "Core 2: Operational Procedures",
+    "topic": "Operational Procedures",
+    "front": "What fire extinguisher class is appropriate for an electrical fire, and what should you never use?",
+    "back": "Class C (or ABC multi-purpose) extinguisher. Never use water on an electrical fire."
+  },
+  {
+    "domain": "Core 2: Operational Procedures",
+    "topic": "Operational Procedures",
+    "front": "What is an MSDS/SDS and when do you need one?",
+    "back": "A Safety Data Sheet documenting hazards and handling info for chemicals/materials (like toner) — should be kept accessible where those materials are stored/handled."
+  },
+  {
+    "domain": "Core 2: Operational Procedures",
+    "topic": "Operational Procedures",
+    "front": "Why can't you just throw batteries, toner cartridges, or CRT monitors in regular trash?",
+    "back": "They contain hazardous materials and typically require e-waste recycling under local regulations."
+  },
+  {
+    "domain": "Core 2: Operational Procedures",
+    "topic": "Operational Procedures",
+    "front": "What does a knowledge base article/SOP provide that ad-hoc troubleshooting doesn't?",
+    "back": "A documented, repeatable process so common issues get solved consistently regardless of who's doing the work, without re-solving the same problem from scratch each time."
+  }
+]

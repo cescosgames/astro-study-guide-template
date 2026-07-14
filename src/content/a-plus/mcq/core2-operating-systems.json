@@ -1,0 +1,83 @@
+[
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "question": "Which Windows edition is required to join a domain and use BitLocker?",
+    "choices": ["Home", "Pro", "Starter", "S Mode"],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "question": "Which file system has a 4GB maximum individual file size limit?",
+    "choices": ["NTFS", "exFAT", "FAT32", "APFS"],
+    "correctIndex": 2
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "question": "Which partition scheme is required for UEFI boot on Windows 11 and supports drives over 2TB?",
+    "choices": ["MBR", "GPT", "FAT32", "exFAT"],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "question": "A yellow exclamation mark next to a device in Device Manager indicates what?",
+    "choices": ["The device is disabled intentionally", "A driver problem", "The device is up to date", "A hardware conflict with USB only"],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "question": "sfc /scannow fails to repair a corrupted system file. What should you try next?",
+    "choices": ["chkdsk /f", "DISM to repair the underlying Windows image", "diskpart clean", "ipconfig /flushdns"],
+    "correctIndex": 1,
+    "explanation": "sfc pulls replacement files from the Windows image itself — if that image is unhealthy, DISM repairs it first."
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "question": "What does Windows System Restore revert?",
+    "choices": [
+      "Personal files only",
+      "System files, settings, and registry — not personal files",
+      "Everything on the drive including personal files",
+      "Only installed applications"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "question": "Which Windows CLI copy tool is best suited for large, scripted batch copy jobs?",
+    "choices": ["copy", "xcopy", "robocopy", "move"],
+    "correctIndex": 2
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "question": "What distinguishes PowerShell from the legacy cmd.exe shell?",
+    "choices": [
+      "PowerShell only runs on Linux",
+      "PowerShell uses an object-based pipeline instead of plain text",
+      "cmd.exe supports cmdlets, PowerShell does not",
+      "There is no real difference"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "question": "Which Linux command elevates a command to run with superuser privileges?",
+    "choices": ["chmod", "sudo", "grep", "ps"],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "question": "Which of these is a hard requirement for installing Windows 11 that Windows 10 did not enforce?",
+    "choices": ["A minimum of 4GB RAM", "TPM 2.0 and Secure Boot", "An NVMe drive", "A 64-bit CPU"],
+    "correctIndex": 1
+  }
+]

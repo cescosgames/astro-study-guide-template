@@ -1,0 +1,86 @@
+[
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Mobile Devices",
+    "front": "What laptop RAM form factor is used instead of desktop DIMM, and how many pins does DDR5 use?",
+    "back": "SODIMM (Small Outline DIMM). DDR4 SODIMM = 260 pins, DDR5 SODIMM = 262 pins."
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Mobile Devices",
+    "front": "Why can't you always upgrade RAM on an ultrabook/thin laptop?",
+    "back": "Some thin designs solder RAM directly to the motherboard, making it non-upgradeable."
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Mobile Devices",
+    "front": "What storage form factor replaced 2.5\" SATA drives as the performance standard in laptops?",
+    "back": "M.2 NVMe SSDs, connected via PCIe lanes instead of the SATA bus — much faster than SATA SSDs."
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Mobile Devices",
+    "front": "What is laptop battery calibration and what does it actually fix?",
+    "back": "Fully charge, fully discharge, then fully charge again. It resets the battery meter's reported percentage accuracy — it does not restore lost capacity."
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Mobile Devices",
+    "front": "Li-ion vs Li-poly laptop batteries — what's the practical difference?",
+    "back": "Li-ion is the standard chemistry. Li-poly is used in some ultra-thin laptops because it can be shaped/molded flexibly."
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Mobile Devices",
+    "front": "What's the difference between a docking station and a port replicator?",
+    "back": "A docking station usually adds real functionality (extra GPU output, more ports than the laptop has). A port replicator just extends the laptop's existing ports."
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Mobile Devices",
+    "front": "Where do laptop wifi/Bluetooth antenna wires typically route, and why?",
+    "back": "From the wireless card (mini PCIe or M.2, usually in the base) through the hinge to antenna leads embedded in the screen bezel."
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Mobile Devices",
+    "front": "What is eSIM and how does it differ from a physical SIM card?",
+    "back": "An embedded, programmable digital SIM built into the device — no physical card swap needed to change carriers/plans."
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Mobile Devices",
+    "front": "What does airplane mode disable, and what can typically be re-enabled individually afterward?",
+    "back": "Disables all radios at once (cellular, wifi, Bluetooth). Wifi and Bluetooth can usually be re-enabled individually while airplane mode stays on."
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Mobile Devices",
+    "front": "What is MDM (Mobile Device Management) used for?",
+    "back": "A corporate tool to enforce policy on mobile devices — remote wipe, push apps, enforce passcodes/encryption on managed devices."
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Mobile Devices",
+    "front": "BYOD vs COPE vs COBO — what's the difference?",
+    "back": "BYOD = bring your own device (personal device, managed via MDM profile). COPE = corporate owned, personally enabled. COBO = corporate owned, business only."
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Mobile Devices",
+    "front": "What does containerization do on a mobile device?",
+    "back": "Separates work apps/data from personal data on the same physical device."
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Mobile Devices",
+    "front": "A phone shows severe battery drain — name three common causes.",
+    "back": "Degraded battery health, excessive background app refresh/activity, or screen brightness too high (a failing battery is also a common cause)."
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Mobile Devices",
+    "front": "What's the general difference between 4G LTE and 5G cellular?",
+    "back": "5G offers much higher speed and lower latency, using higher-frequency bands (including short-range mmWave) plus sub-6GHz bands for wider coverage."
+  }
+]

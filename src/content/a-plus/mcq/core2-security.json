@@ -1,0 +1,102 @@
+[
+  {
+    "domain": "Core 2: Security",
+    "topic": "Security",
+    "question": "A user logs in with a password and a code from an authenticator app. Is this multi-factor authentication?",
+    "choices": [
+      "Yes — password (something you know) plus app code (something you have)",
+      "No — both are 'something you know'",
+      "No — MFA requires biometrics specifically",
+      "Yes, but only if the app code is SMS-based"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "domain": "Core 2: Security",
+    "topic": "Security",
+    "question": "Why are passkeys considered more phishing-resistant than passwords?",
+    "choices": [
+      "They expire every 24 hours",
+      "There's no shared secret to steal — they use public/private key cryptography tied to a device",
+      "They require a VPN to use",
+      "They are stored in plaintext locally only"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 2: Security",
+    "topic": "Security",
+    "question": "Which malware type self-replicates across a network without needing a host file or user action?",
+    "choices": ["Virus", "Worm", "Trojan", "Rootkit"],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 2: Security",
+    "topic": "Security",
+    "question": "Which malware type disguises itself as legitimate software to trick a user into installing it?",
+    "choices": ["Worm", "Trojan", "Rootkit", "Ransomware"],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 2: Security",
+    "topic": "Security",
+    "question": "What makes a rootkit especially hard to deal with?",
+    "choices": [
+      "It only affects mobile devices",
+      "It hides deep in the OS, often at kernel level, and can hide other malware too",
+      "It only spreads via email attachments",
+      "It cannot encrypt files"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 2: Security",
+    "topic": "Security",
+    "question": "An attacker calls an employee pretending to be from IT and asks for their password. What social engineering technique is this?",
+    "choices": ["Shoulder surfing", "Tailgating", "Vishing / pretexting", "Smishing"],
+    "correctIndex": 2
+  },
+  {
+    "domain": "Core 2: Security",
+    "topic": "Security",
+    "question": "What does a mantrap physically prevent?",
+    "choices": ["Wifi eavesdropping", "Tailgating into a secure area", "Phishing emails", "USB data theft"],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 2: Security",
+    "topic": "Security",
+    "question": "Why is wifi MAC filtering considered weak security on its own?",
+    "choices": [
+      "It slows down the network significantly",
+      "MAC addresses can be spoofed",
+      "It only works with WEP",
+      "It requires a RADIUS server"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 2: Security",
+    "topic": "Security",
+    "question": "Why should IoT devices be placed on a separate network segment/VLAN?",
+    "choices": [
+      "They use too much bandwidth otherwise",
+      "They're common weak points (default credentials, infrequent updates) — isolation limits impact if compromised",
+      "IoT devices can't use DHCP",
+      "It's required by the IoT device warranty"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 2: Security",
+    "topic": "Security",
+    "question": "Why doesn't a standard overwrite reliably wipe data from an SSD the way it does on an HDD?",
+    "choices": [
+      "SSDs cannot be overwritten at all",
+      "SSD wear leveling means a standard overwrite pass may not reach all physical data locations",
+      "SSDs automatically encrypt on write",
+      "SSDs use magnetic storage like HDDs"
+    ],
+    "correctIndex": 1
+  }
+]

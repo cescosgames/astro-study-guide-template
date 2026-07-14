@@ -1,0 +1,98 @@
+[
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "os": "windows",
+    "prompt": "Scan and repair corrupted protected system files (Windows)",
+    "accepted": ["sfc /scannow"],
+    "hint": "sfc /scannow"
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "os": "windows",
+    "prompt": "Check a drive for file system errors and fix them on next reboot (Windows, drive C)",
+    "accepted": ["chkdsk /f", "chkdsk c: /f"],
+    "hint": "chkdsk /f"
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "os": "windows",
+    "prompt": "Open the low-level disk partitioning tool (Windows)",
+    "accepted": ["diskpart"],
+    "hint": "diskpart"
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "os": "windows",
+    "prompt": "Robustly copy a folder and all its subfolders/files from C:\\Source to C:\\Backup (Windows)",
+    "accepted": ["robocopy C:\\Source C:\\Backup /E", "robocopy c:\\source c:\\backup /e"],
+    "hint": "robocopy C:\\Source C:\\Backup /E"
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "os": "windows",
+    "prompt": "List all files and folders in the current directory (Windows)",
+    "accepted": ["dir"],
+    "hint": "dir"
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "os": "windows",
+    "prompt": "Repair the underlying Windows image when sfc alone can't fix it (Windows)",
+    "accepted": ["DISM /Online /Cleanup-Image /RestoreHealth", "dism /online /cleanup-image /restorehealth"],
+    "hint": "DISM /Online /Cleanup-Image /RestoreHealth"
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "os": "linux",
+    "prompt": "List all files and folders in the current directory, including hidden files, with details (Linux)",
+    "accepted": ["ls -la", "ls -al"],
+    "hint": "ls -la"
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "os": "linux",
+    "prompt": "Print the current working directory (Linux)",
+    "accepted": ["pwd"],
+    "hint": "pwd"
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "os": "linux",
+    "prompt": "Run a command with elevated (superuser) privileges (Linux, example: apt update)",
+    "accepted": ["sudo apt update"],
+    "hint": "sudo apt update"
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "os": "linux",
+    "prompt": "Make a file named script.sh executable (Linux)",
+    "accepted": ["chmod +x script.sh", "chmod 755 script.sh"],
+    "hint": "chmod +x script.sh"
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "os": "linux",
+    "prompt": "List all running processes with full details (Linux)",
+    "accepted": ["ps -ef", "ps -fe", "ps aux"],
+    "hint": "ps -ef"
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "os": "linux",
+    "prompt": "Search a file named log.txt for lines containing the word 'error' (Linux)",
+    "accepted": ["grep error log.txt", "grep \"error\" log.txt"],
+    "hint": "grep error log.txt"
+  }
+]

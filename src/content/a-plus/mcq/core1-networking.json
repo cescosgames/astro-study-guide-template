@@ -1,0 +1,97 @@
+[
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "question": "Which twisted-pair cable category supports 10Gbps for the full 100-meter run?",
+    "choices": ["Cat5e", "Cat6", "Cat6a", "Cat3"],
+    "correctIndex": 2,
+    "explanation": "Cat6 only supports 10Gbps at shorter distances; Cat6a supports it at the full 100m."
+  },
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "question": "A switch forwards traffic based on which address type?",
+    "choices": ["IP address", "MAC address", "Port number", "Subnet mask"],
+    "correctIndex": 1,
+    "explanation": "Switches operate at Layer 2 and forward by MAC address."
+  },
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "question": "A router forwards traffic based on which address type?",
+    "choices": ["MAC address", "IP address", "SSID", "VLAN tag only"],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "question": "Which of these is a valid private IPv4 range?",
+    "choices": ["8.8.8.0/24", "192.168.0.0/16", "1.1.1.0/24", "169.254.0.0/24"],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "question": "A Windows client shows an IP address of 169.254.5.10. What does this indicate?",
+    "choices": [
+      "Normal static IP configuration",
+      "The DHCP server assigned a reserved address",
+      "The client couldn't reach a DHCP server and self-assigned via APIPA",
+      "The client is using IPv6"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "question": "Which port is used by HTTPS?",
+    "choices": ["80", "443", "22", "3389"],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "question": "Which protocol is connectionless and does not guarantee delivery?",
+    "choices": ["TCP", "UDP", "SSH", "RDP"],
+    "correctIndex": 1,
+    "explanation": "UDP is connectionless — used where speed matters more than guaranteed delivery, like DNS lookups and streaming."
+  },
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "question": "Which wifi security standard is considered broken and should never be used?",
+    "choices": ["WPA3", "WPA2", "WEP", "WPA"],
+    "correctIndex": 2
+  },
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "question": "Which wifi frequency band offers the longest range but the most interference?",
+    "choices": ["2.4GHz", "5GHz", "6GHz", "60GHz"],
+    "correctIndex": 0
+  },
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "question": "What does NAT do on a home router?",
+    "choices": [
+      "Encrypts all outbound traffic",
+      "Translates private IP addresses to a public IP for internet access",
+      "Assigns MAC addresses to new devices",
+      "Filters traffic by port number"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "question": "What is the purpose of a VLAN?",
+    "choices": [
+      "Increases wifi signal range",
+      "Logically segments a switch into separate broadcast domains",
+      "Encrypts traffic between routers",
+      "Assigns static IPs automatically"
+    ],
+    "correctIndex": 1
+  }
+]

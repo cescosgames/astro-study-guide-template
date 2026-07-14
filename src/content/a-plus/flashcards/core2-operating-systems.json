@@ -1,0 +1,80 @@
+[
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "front": "What are the key differences between Windows Home and Windows Pro editions?",
+    "back": "Pro adds domain join, BitLocker, Remote Desktop host, and Group Policy editor — none of which Home supports."
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "front": "Compare NTFS, FAT32, and exFAT file systems.",
+    "back": "NTFS = standard Windows, supports permissions/encryption/large files. FAT32 = older, 4GB file size limit, used for compatibility. exFAT = no 4GB limit, good cross-platform USB format without NTFS's permission overhead."
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "front": "MBR vs GPT partitioning — what's the key practical difference?",
+    "back": "GPT is the current standard: supports drives over 2TB and more partitions, and is required for UEFI boot on Windows 11. MBR is the legacy scheme."
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "front": "What does a yellow exclamation mark (!) in Device Manager mean?",
+    "back": "A driver problem with that device."
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "front": "What's the difference between sfc /scannow and DISM?",
+    "back": "sfc /scannow repairs corrupted protected system files by comparing against a known-good cache. DISM repairs the underlying Windows image itself — used when sfc can't fix things because the image it relies on is unhealthy."
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "front": "What does System Restore actually revert, and what does it leave alone?",
+    "back": "Reverts system files/settings/registry to an earlier restore point. It does not touch personal files."
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "front": "What is robocopy, and how does it compare to xcopy?",
+    "back": "A modern, robust Windows copy tool — better suited for large/scripted batch copy jobs than the older xcopy."
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "front": "PowerShell vs cmd.exe — what's the main architectural difference?",
+    "back": "PowerShell uses an object-based pipeline and follows verb-noun cmdlet naming (e.g. Get-Process); cmd.exe is a plain-text legacy shell."
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "front": "What is the modern replacement for the classic Windows Control Panel?",
+    "back": "The Settings app — though some legacy applets haven't fully migrated out of Control Panel yet."
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "front": "In-place upgrade vs clean install — what's the difference?",
+    "back": "In-place upgrade keeps apps/files/settings while upgrading the OS version. Clean install wipes the drive and installs fresh, with no old data carried over."
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "front": "What are the two major Linux package manager families, and which distros use each?",
+    "back": "apt (Debian/Ubuntu family) and yum/dnf (Red Hat/Fedora family)."
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "front": "What does the Linux sudo command do?",
+    "back": "Runs a command with elevated (superuser) privileges."
+  },
+  {
+    "domain": "Core 2: Operating Systems",
+    "topic": "Operating Systems",
+    "front": "Why is Windows 11 hardware compatibility stricter than Windows 10's?",
+    "back": "Windows 11 requires TPM 2.0, Secure Boot, and a minimum supported CPU generation."
+  }
+]

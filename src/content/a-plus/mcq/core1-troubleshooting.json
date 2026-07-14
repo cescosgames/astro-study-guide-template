@@ -1,0 +1,89 @@
+[
+  {
+    "domain": "Core 1: Hardware and Network Troubleshooting",
+    "topic": "Hardware and Network Troubleshooting",
+    "question": "What is the correct second step in the CompTIA troubleshooting methodology?",
+    "choices": [
+      "Document findings",
+      "Establish a theory of probable cause",
+      "Implement the solution",
+      "Verify full system functionality"
+    ],
+    "correctIndex": 1,
+    "explanation": "Order: identify problem → theory of probable cause → test the theory → plan/implement → verify → document."
+  },
+  {
+    "domain": "Core 1: Hardware and Network Troubleshooting",
+    "topic": "Hardware and Network Troubleshooting",
+    "question": "Your theory of probable cause is tested and NOT confirmed. What should you do next?",
+    "choices": [
+      "Implement the fix anyway",
+      "Re-establish a new theory or escalate",
+      "Immediately document and close the ticket",
+      "Skip to verifying functionality"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 1: Hardware and Network Troubleshooting",
+    "topic": "Hardware and Network Troubleshooting",
+    "question": "A system powers on and immediately shuts off. What is the most likely cause?",
+    "choices": [
+      "Outdated OS",
+      "Failing PSU, overheating protection, or a short",
+      "Wrong monitor cable",
+      "DNS misconfiguration"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 1: Hardware and Network Troubleshooting",
+    "topic": "Hardware and Network Troubleshooting",
+    "question": "A hard drive starts making a grinding/clicking noise. What should you do first?",
+    "choices": [
+      "Ignore it, it's just normal drive noise",
+      "Immediately back up the data",
+      "Reformat the drive",
+      "Run a benchmark to confirm speed"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 1: Hardware and Network Troubleshooting",
+    "topic": "Hardware and Network Troubleshooting",
+    "question": "A Windows PC shows IP address 169.254.10.5 and has no internet access. What's the root cause?",
+    "choices": [
+      "A DNS server issue",
+      "The DHCP server is unreachable, so the client self-assigned via APIPA",
+      "A duplex mismatch",
+      "The gateway is misconfigured but IP is fine"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 1: Hardware and Network Troubleshooting",
+    "topic": "Hardware and Network Troubleshooting",
+    "question": "A user can ping 8.8.8.8 successfully but cannot browse to any website by name. What's the likely issue?",
+    "choices": ["Failed NIC", "DNS resolution failure", "Bad Ethernet cable", "Firewall blocking all traffic"],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 1: Hardware and Network Troubleshooting",
+    "topic": "Hardware and Network Troubleshooting",
+    "question": "Which command shows the hop-by-hop path to a destination to help locate where a connection breaks?",
+    "choices": ["ping", "ipconfig", "tracert", "nslookup"],
+    "correctIndex": 2
+  },
+  {
+    "domain": "Core 1: Hardware and Network Troubleshooting",
+    "topic": "Hardware and Network Troubleshooting",
+    "question": "Print jobs are stuck in the queue and nothing prints, even though the printer is online. What's a classic first fix?",
+    "choices": [
+      "Reinstall the OS",
+      "Restart the print spooler service",
+      "Replace the print head",
+      "Reset the router"
+    ],
+    "correctIndex": 1
+  }
+]

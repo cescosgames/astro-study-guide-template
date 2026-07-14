@@ -1,0 +1,82 @@
+[
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "os": "windows",
+    "prompt": "Test basic reachability to 8.8.8.8 (Windows)",
+    "accepted": ["ping 8.8.8.8"],
+    "hint": "ping 8.8.8.8"
+  },
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "os": "windows",
+    "prompt": "Show the current IP configuration for all adapters (Windows)",
+    "accepted": ["ipconfig", "ipconfig /all"],
+    "hint": "ipconfig"
+  },
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "os": "windows",
+    "prompt": "Release and renew the current DHCP-assigned IP address (Windows, two commands)",
+    "accepted": ["ipconfig /release && ipconfig /renew", "ipconfig /release, ipconfig /renew"],
+    "hint": "ipconfig /release then ipconfig /renew"
+  },
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "os": "windows",
+    "prompt": "Flush the local DNS resolver cache (Windows)",
+    "accepted": ["ipconfig /flushdns"],
+    "hint": "ipconfig /flushdns"
+  },
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "os": "windows",
+    "prompt": "Show the hop-by-hop path to google.com (Windows)",
+    "accepted": ["tracert google.com"],
+    "hint": "tracert google.com"
+  },
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "os": "windows",
+    "prompt": "Query DNS records for example.com directly (Windows)",
+    "accepted": ["nslookup example.com"],
+    "hint": "nslookup example.com"
+  },
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "os": "windows",
+    "prompt": "Show all active TCP connections and listening ports (Windows)",
+    "accepted": ["netstat -a"],
+    "hint": "netstat -a"
+  },
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "os": "linux",
+    "prompt": "Show the current IP configuration for all adapters (Linux, modern command)",
+    "accepted": ["ip a", "ip addr", "ip address", "ifconfig"],
+    "hint": "ip a"
+  },
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "os": "linux",
+    "prompt": "Test basic reachability to 8.8.8.8, sending only 4 pings (Linux)",
+    "accepted": ["ping -c 4 8.8.8.8"],
+    "hint": "ping -c 4 8.8.8.8"
+  },
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "os": "linux",
+    "prompt": "Show the hop-by-hop path to google.com (Linux)",
+    "accepted": ["traceroute google.com"],
+    "hint": "traceroute google.com"
+  }
+]

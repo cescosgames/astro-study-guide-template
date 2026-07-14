@@ -1,0 +1,81 @@
+[
+  {
+    "domain": "Core 2: Software Troubleshooting",
+    "topic": "Software Troubleshooting",
+    "question": "What is generally the first thing to check after a BSOD?",
+    "choices": [
+      "RAM timings in BIOS",
+      "The stop code and recently installed drivers/updates",
+      "The power supply wattage",
+      "The monitor cable"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 2: Software Troubleshooting",
+    "topic": "Software Troubleshooting",
+    "question": "What does booting into Safe Mode help you determine?",
+    "choices": [
+      "Whether the CPU is overheating",
+      "Whether a third-party driver or startup app is causing instability",
+      "Whether the monitor supports HDR",
+      "Whether the BIOS needs updating"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 2: Software Troubleshooting",
+    "topic": "Software Troubleshooting",
+    "question": "What is the correct first step of the malware removal process?",
+    "choices": [
+      "Run a full antivirus scan immediately",
+      "Investigate/verify symptoms and quarantine the infected system",
+      "Disable System Restore",
+      "Educate the end user"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 2: Software Troubleshooting",
+    "topic": "Software Troubleshooting",
+    "question": "Why should System Restore be disabled during malware remediation?",
+    "choices": [
+      "It slows down the scan",
+      "So you don't accidentally restore infected files from a compromised restore point later",
+      "It's required to run antivirus software",
+      "It has no relevance to malware removal"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 2: Software Troubleshooting",
+    "topic": "Software Troubleshooting",
+    "question": "What is the last step in the CompTIA malware removal process?",
+    "choices": [
+      "Quarantine the system",
+      "Disable System Restore",
+      "Educate the end user on how the infection likely happened",
+      "Run a scan"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "domain": "Core 2: Software Troubleshooting",
+    "topic": "Software Troubleshooting",
+    "question": "Which 'Reset this PC' option preserves the user's personal files?",
+    "choices": ["Remove everything", "Keep my files", "Both remove all data", "Neither exists in current Windows"],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 2: Software Troubleshooting",
+    "topic": "Software Troubleshooting",
+    "question": "A phone shows unexpected data usage and account activity the user doesn't recognize. What's the best first step?",
+    "choices": [
+      "Factory reset immediately without checking anything",
+      "Check the installed app list and account activity logs for anything unrecognized",
+      "Ignore it, phones do this randomly",
+      "Turn on airplane mode permanently"
+    ],
+    "correctIndex": 1
+  }
+]

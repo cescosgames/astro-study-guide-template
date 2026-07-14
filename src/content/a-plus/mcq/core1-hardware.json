@@ -1,0 +1,97 @@
+[
+  {
+    "domain": "Core 1: Hardware",
+    "topic": "Hardware",
+    "question": "Which motherboard form factor is the smallest commonly used in consumer builds?",
+    "choices": ["ATX", "Micro-ATX", "Mini-ITX", "E-ATX"],
+    "correctIndex": 2
+  },
+  {
+    "domain": "Core 1: Hardware",
+    "topic": "Hardware",
+    "question": "What is the key difference between true multi-core and hyperthreading/SMT?",
+    "choices": [
+      "They're functionally identical",
+      "Multi-core is real physical parallelism; hyperthreading simulates extra threads per core",
+      "Hyperthreading only works on AMD chips",
+      "Multi-core requires liquid cooling"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 1: Hardware",
+    "topic": "Hardware",
+    "question": "Which CPU cache level is shared across all cores and is the largest but slowest of the three?",
+    "choices": ["L1", "L2", "L3", "L0"],
+    "correctIndex": 2
+  },
+  {
+    "domain": "Core 1: Hardware",
+    "topic": "Hardware",
+    "question": "Why can't DDR4 RAM be installed in a DDR5 slot?",
+    "choices": [
+      "It's only a BIOS setting away from working",
+      "DDR4 and DDR5 have different pin counts/notch positions and are physically incompatible",
+      "DDR5 slots require a firmware flash first",
+      "They are actually interchangeable"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 1: Hardware",
+    "topic": "Hardware",
+    "question": "What connection type gives NVMe SSDs their speed advantage over SATA SSDs?",
+    "choices": ["USB 3.0", "PCIe lanes via M.2", "Thunderbolt 2", "eSATA"],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 1: Hardware",
+    "topic": "Hardware",
+    "question": "Which RAID level provides redundancy with zero usable capacity gain (mirroring)?",
+    "choices": ["RAID 0", "RAID 1", "RAID 5", "RAID 10"],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 1: Hardware",
+    "topic": "Hardware",
+    "question": "Which RAID level requires a minimum of 3 drives and uses striping plus parity?",
+    "choices": ["RAID 0", "RAID 1", "RAID 5", "RAID 10"],
+    "correctIndex": 2
+  },
+  {
+    "domain": "Core 1: Hardware",
+    "topic": "Hardware",
+    "question": "What does an 80 PLUS Gold rating on a PSU indicate?",
+    "choices": [
+      "Maximum wattage output",
+      "Power efficiency — less power wasted as heat at a given load",
+      "Modular cabling support",
+      "Compatibility with DDR5 systems"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 1: Hardware",
+    "topic": "Hardware",
+    "question": "In a laser printer, what role does the fuser play?",
+    "choices": [
+      "Electrostatically charges the drum",
+      "Uses heat to permanently bond toner to the paper",
+      "Sprays liquid ink onto the page",
+      "Feeds paper through the rollers"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 1: Hardware",
+    "topic": "Hardware",
+    "question": "A system randomly shuts down only under heavy load (e.g. gaming). What's a likely cause?",
+    "choices": [
+      "Undersized/failing PSU unable to supply peak power draw",
+      "Too much RAM installed",
+      "Cat6 cable in use instead of Cat6a",
+      "WPA3 misconfiguration"
+    ],
+    "correctIndex": 0
+  }
+]

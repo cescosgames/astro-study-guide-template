@@ -1,0 +1,86 @@
+[
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "front": "What are the key differences between Cat5e, Cat6, and Cat6a twisted-pair cable?",
+    "back": "Cat5e supports up to 1Gbps. Cat6 supports 10Gbps at shorter distances. Cat6a supports 10Gbps at the full 100m run."
+  },
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "front": "Single-mode vs multi-mode fiber — what's the difference?",
+    "back": "Single-mode uses a laser and supports long-distance runs (yellow jacket by convention). Multi-mode uses cheaper LED-based transceivers over shorter distances (orange/aqua jacket by convention)."
+  },
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "front": "What OSI layer does a switch operate at, and how does it forward traffic?",
+    "back": "Layer 2 — forwards frames by MAC address, and creates a separate collision domain per port."
+  },
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "front": "What OSI layer does a router operate at, and how does it forward traffic?",
+    "back": "Layer 3 — forwards packets by IP address, connecting different networks/subnets together."
+  },
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "front": "What are the three private IPv4 address ranges?",
+    "back": "10.0.0.0/8, 172.16.0.0/12, and 192.168.0.0/16."
+  },
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "front": "What does an APIPA address (169.254.x.x) on a Windows client indicate?",
+    "back": "The client self-assigned this address because it could not reach a DHCP server."
+  },
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "front": "List the common port numbers for: SSH, DNS, HTTP, HTTPS, RDP.",
+    "back": "SSH = 22, DNS = 53, HTTP = 80, HTTPS = 443, RDP = 3389."
+  },
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "front": "TCP vs UDP — what's the core tradeoff?",
+    "back": "TCP is connection-oriented and reliable (handshake, guaranteed delivery) — used for web/email/file transfer. UDP is connectionless and faster but no guaranteed delivery — used for DNS lookups, streaming, VoIP."
+  },
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "front": "Rank WEP, WPA, WPA2, and WPA3 from weakest to strongest wifi security.",
+    "back": "WEP (broken, never use) → WPA → WPA2 (AES) → WPA3 (current standard, stronger handshake, better protection against offline dictionary attacks)."
+  },
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "front": "2.4GHz vs 5GHz vs 6GHz wifi bands — tradeoffs?",
+    "back": "2.4GHz = longer range, more interference, slower max speed. 5GHz = shorter range, less interference, faster. 6GHz (wifi 6E/7) = least congested, shortest range."
+  },
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "front": "What does NAT do?",
+    "back": "Translates private IP addresses to a public IP address so internal devices can access the internet (what a home router does)."
+  },
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "front": "What does a VLAN accomplish?",
+    "back": "Logically segments a physical switch into separate broadcast domains."
+  },
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "front": "What is port forwarding used for on a SOHO router?",
+    "back": "Opens a specific external port and routes it to a specific internal device, so it can be reached from outside the local network."
+  },
+  {
+    "domain": "Core 1: Networking",
+    "topic": "Networking",
+    "front": "Name three basic SOHO router hardening steps.",
+    "back": "Change the default admin password, disable WPS, use WPA3/WPA2, keep firmware updated, and disable remote admin access from the WAN side."
+  }
+]

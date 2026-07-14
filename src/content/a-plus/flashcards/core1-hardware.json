@@ -1,0 +1,80 @@
+[
+  {
+    "domain": "Core 1: Hardware",
+    "topic": "Hardware",
+    "front": "Rank ATX, micro-ATX, and mini-ITX motherboard form factors by size, largest to smallest.",
+    "back": "ATX (largest, standard desktop) → micro-ATX → mini-ITX (smallest common consumer form factor)."
+  },
+  {
+    "domain": "Core 1: Hardware",
+    "topic": "Hardware",
+    "front": "What's the difference between true multi-core CPUs and hyperthreading/SMT?",
+    "back": "Multi-core = real, physically separate cores running in parallel. Hyperthreading/SMT simulates extra threads per core — not equivalent to a real second core."
+  },
+  {
+    "domain": "Core 1: Hardware",
+    "topic": "Hardware",
+    "front": "Rank CPU cache levels L1, L2, L3 by size and speed.",
+    "back": "L1 = smallest and fastest, per-core. L2 = bigger, still per-core. L3 = biggest, slowest of the three, shared across all cores."
+  },
+  {
+    "domain": "Core 1: Hardware",
+    "topic": "Hardware",
+    "front": "Why can't you just swap DDR4 RAM into a DDR5 slot?",
+    "back": "DDR4 and DDR5 have different pin counts and notch positions — they're physically incompatible, not just electrically."
+  },
+  {
+    "domain": "Core 1: Hardware",
+    "topic": "Hardware",
+    "front": "What does dual-channel (or quad-channel) RAM configuration enable?",
+    "back": "Higher memory bandwidth, achieved by installing matched RAM sticks in the correct paired/quad motherboard slots."
+  },
+  {
+    "domain": "Core 1: Hardware",
+    "topic": "Hardware",
+    "front": "What is ECC RAM used for?",
+    "back": "Error-correcting RAM used in servers/workstations for data integrity — not typical in consumer systems."
+  },
+  {
+    "domain": "Core 1: Hardware",
+    "topic": "Hardware",
+    "front": "Compare HDD, SATA SSD, and NVMe SSD in terms of speed/interface.",
+    "back": "HDD = spinning platters, slowest. SATA SSD = no moving parts but bottlenecked by the ~600MB/s SATA bus. NVMe SSD = connects via PCIe lanes (M.2 slot), fastest, current standard for performance storage."
+  },
+  {
+    "domain": "Core 1: Hardware",
+    "topic": "Hardware",
+    "front": "Describe RAID 0, RAID 1, RAID 5, and RAID 10 in one line each.",
+    "back": "RAID 0 = striping, speed only, no redundancy. RAID 1 = mirroring, full redundancy, no capacity gain. RAID 5 = striping + parity (3+ drives), survives one drive failure. RAID 10 = mirrored pair of striped sets (4+ drives), good speed + redundancy."
+  },
+  {
+    "domain": "Core 1: Hardware",
+    "topic": "Hardware",
+    "front": "What does an 80 PLUS certification rating (Bronze/Gold/Platinum/etc) tell you about a PSU?",
+    "back": "Its power efficiency rating — higher tiers waste less power as heat at the same load."
+  },
+  {
+    "domain": "Core 1: Hardware",
+    "topic": "Hardware",
+    "front": "Modular vs non-modular PSU — what's the practical benefit of modular?",
+    "back": "Modular lets you only connect the cables you actually need, for cleaner cable management."
+  },
+  {
+    "domain": "Core 1: Hardware",
+    "topic": "Hardware",
+    "front": "What is USB4, and how does it relate to Thunderbolt?",
+    "back": "The current top-tier USB standard, delivered over USB-C, with very high bandwidth — the spec has largely converged with Thunderbolt."
+  },
+  {
+    "domain": "Core 1: Hardware",
+    "topic": "Hardware",
+    "front": "Laser printer basics: what two components are central to how it bonds toner to paper?",
+    "back": "An electrostatically charged drum (toner sticks to charged areas) and the fuser (uses heat to bond the toner permanently to the paper)."
+  },
+  {
+    "domain": "Core 1: Hardware",
+    "topic": "Hardware",
+    "front": "Why is an undersized PSU a common cause of system instability under load?",
+    "back": "It can't supply enough power for peak draw, causing random shutdowns or instability specifically when the system is under heavier load (e.g. gaming, rendering)."
+  }
+]

@@ -1,0 +1,80 @@
+[
+  {
+    "domain": "Core 2: Security",
+    "topic": "Security",
+    "front": "What are the three authentication factor categories?",
+    "back": "Something you know (password/PIN), something you have (security key, authenticator app, smart card), something you are (biometric)."
+  },
+  {
+    "domain": "Core 2: Security",
+    "topic": "Security",
+    "front": "Why are two passwords not considered multi-factor authentication?",
+    "back": "MFA requires factors from two different categories — two passwords are both 'something you know,' so it's still single-factor."
+  },
+  {
+    "domain": "Core 2: Security",
+    "topic": "Security",
+    "front": "What is a passkey and why is it considered phishing-resistant?",
+    "back": "A passwordless authentication method using public/private key cryptography tied to a device — there's no shared secret (like a password) that can be stolen or phished."
+  },
+  {
+    "domain": "Core 2: Security",
+    "topic": "Security",
+    "front": "Virus vs worm — what's the core difference in how they spread?",
+    "back": "A virus attaches to a host file and needs user action to spread. A worm self-replicates across a network without needing a host file or user action."
+  },
+  {
+    "domain": "Core 2: Security",
+    "topic": "Security",
+    "front": "What makes a trojan different from a virus or worm?",
+    "back": "A trojan disguises itself as legitimate software and tricks the user into installing it — it doesn't self-replicate."
+  },
+  {
+    "domain": "Core 2: Security",
+    "topic": "Security",
+    "front": "What is a rootkit and why is it especially dangerous?",
+    "back": "Malware that hides deep in the OS (often kernel-level), very hard to detect/remove, and can hide the presence of other malware too."
+  },
+  {
+    "domain": "Core 2: Security",
+    "topic": "Security",
+    "front": "Define vishing and smishing.",
+    "back": "Vishing = phishing via phone call. Smishing = phishing via SMS text message."
+  },
+  {
+    "domain": "Core 2: Security",
+    "topic": "Security",
+    "front": "What is pretexting?",
+    "back": "A social engineering technique that invents a fabricated scenario or identity to extract information (e.g. 'I'm from IT, I need your password to fix your account')."
+  },
+  {
+    "domain": "Core 2: Security",
+    "topic": "Security",
+    "front": "What is a mantrap, and what does it prevent?",
+    "back": "A two-door physical airlock — you must close one door before the other opens. Prevents tailgating into a secure area."
+  },
+  {
+    "domain": "Core 2: Security",
+    "topic": "Security",
+    "front": "Why is MAC filtering considered weak security on its own?",
+    "back": "MAC addresses can be spoofed, so it only adds a minor layer rather than being a real barrier."
+  },
+  {
+    "domain": "Core 2: Security",
+    "topic": "Security",
+    "front": "Why should IoT devices (smart plugs, cameras, thermostats) be isolated on their own network segment?",
+    "back": "They're common weak points — often left on default credentials with infrequent firmware updates — so isolating them limits the blast radius if compromised."
+  },
+  {
+    "domain": "Core 2: Security",
+    "topic": "Security",
+    "front": "Why can't a standard file delete or even standard overwrite reliably wipe an SSD the way it does an HDD?",
+    "back": "SSDs use wear leveling, so a standard overwrite pass designed for spinning HDDs doesn't reliably reach all the actual physical data locations — a dedicated 'secure erase' method suited to flash storage is needed."
+  },
+  {
+    "domain": "Core 2: Security",
+    "topic": "Security",
+    "front": "What does BitLocker vs FileVault provide, and on which OS?",
+    "back": "BitLocker = full disk encryption on Windows. FileVault = full disk encryption on macOS."
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "domain": "Core 1: Virtualization and Cloud Computing",
+    "topic": "Virtualization and Cloud",
+    "question": "Which hypervisor type runs directly on bare metal with no host OS?",
+    "choices": ["Type 1", "Type 2", "Type 3", "Nested only"],
+    "correctIndex": 0,
+    "explanation": "Type 1 (bare metal) hypervisors like VMware ESXi run without a host OS underneath — used in production data centers."
+  },
+  {
+    "domain": "Core 1: Virtualization and Cloud Computing",
+    "topic": "Virtualization and Cloud",
+    "question": "What is a VM snapshot?",
+    "choices": [
+      "A full independent backup of the VM",
+      "A point-in-time saved state you can roll back to, usually stored as diffs",
+      "A screenshot of the VM's console",
+      "A clone of the VM on separate hardware"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 1: Virtualization and Cloud Computing",
+    "topic": "Virtualization and Cloud",
+    "question": "Which cloud service model has you managing only your application, with the provider handling everything underneath?",
+    "choices": ["IaaS", "PaaS", "SaaS", "On-premises"],
+    "correctIndex": 2
+  },
+  {
+    "domain": "Core 1: Virtualization and Cloud Computing",
+    "topic": "Virtualization and Cloud",
+    "question": "Which cloud service model has you managing the OS and up, while the provider manages raw compute/storage/network?",
+    "choices": ["IaaS", "PaaS", "SaaS", "DaaS"],
+    "correctIndex": 0
+  },
+  {
+    "domain": "Core 1: Virtualization and Cloud Computing",
+    "topic": "Virtualization and Cloud",
+    "question": "A company runs some workloads on AWS and some on its own private data center, moving load between them. What deployment model is this?",
+    "choices": ["Public cloud", "Private cloud", "Hybrid cloud", "Community cloud"],
+    "correctIndex": 2
+  },
+  {
+    "domain": "Core 1: Virtualization and Cloud Computing",
+    "topic": "Virtualization and Cloud",
+    "question": "Under the cloud shared responsibility model, who is responsible for securing the customer's own data and access configuration?",
+    "choices": [
+      "Solely the cloud provider",
+      "Solely a third-party auditor",
+      "The customer",
+      "No one — it's automatic"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "domain": "Core 1: Virtualization and Cloud Computing",
+    "topic": "Virtualization and Cloud",
+    "question": "What is VDI primarily used for?",
+    "choices": [
+      "Encrypting VM disk images",
+      "Running a centrally hosted desktop OS that users connect to remotely",
+      "Load balancing between hypervisors",
+      "Automatically resizing VM storage"
+    ],
+    "correctIndex": 1
+  }
+]

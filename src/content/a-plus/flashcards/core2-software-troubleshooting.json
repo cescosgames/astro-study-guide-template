@@ -1,0 +1,56 @@
+[
+  {
+    "domain": "Core 2: Software Troubleshooting",
+    "topic": "Software Troubleshooting",
+    "front": "A Windows PC blue-screens (BSOD). What's the general troubleshooting approach?",
+    "back": "Note the stop code, boot to safe mode, and check recently installed drivers/updates as the likely trigger — BSODs are usually driver or hardware related."
+  },
+  {
+    "domain": "Core 2: Software Troubleshooting",
+    "topic": "Software Troubleshooting",
+    "front": "What does booting into Safe Mode help isolate?",
+    "back": "Whether a third-party driver or startup app is causing instability, since Safe Mode loads only minimal drivers/services."
+  },
+  {
+    "domain": "Core 2: Software Troubleshooting",
+    "topic": "Software Troubleshooting",
+    "front": "sfc /scannow vs DISM — when do you reach for DISM instead?",
+    "back": "When sfc can't fix a corrupted file, because sfc relies on a healthy Windows image to pull replacement files from — DISM repairs that underlying image."
+  },
+  {
+    "domain": "Core 2: Software Troubleshooting",
+    "topic": "Software Troubleshooting",
+    "front": "What's the difference between 'Reset this PC (keep my files)' and 'Reset this PC (remove everything)'?",
+    "back": "Both reinstall Windows; 'keep my files' preserves personal data, 'remove everything' wipes user data too."
+  },
+  {
+    "domain": "Core 2: Software Troubleshooting",
+    "topic": "Software Troubleshooting",
+    "front": "List the malware removal process steps in order.",
+    "back": "1) Investigate/verify symptoms, quarantine the infected system (disconnect from network). 2) Disable System Restore. 3) Remediate: update definitions, scan and remove. 4) Schedule scans and updates going forward. 5) Re-enable System Restore and create a new clean restore point. 6) Educate the end user."
+  },
+  {
+    "domain": "Core 2: Software Troubleshooting",
+    "topic": "Software Troubleshooting",
+    "front": "Why disable System Restore during malware remediation?",
+    "back": "So you don't accidentally restore infected files back later from a restore point created while the system was already compromised."
+  },
+  {
+    "domain": "Core 2: Software Troubleshooting",
+    "topic": "Software Troubleshooting",
+    "front": "Why is 'restart the device' a legitimate first troubleshooting step, not just a joke?",
+    "back": "It clears transient state and applies any pending updates — a surprising number of issues resolve simply from that."
+  },
+  {
+    "domain": "Core 2: Software Troubleshooting",
+    "topic": "Software Troubleshooting",
+    "front": "A mobile app crashes on launch after a recent OS update. What are common causes to check?",
+    "back": "Corrupted install (reinstall), missing dependency, or incompatibility with the new OS version."
+  },
+  {
+    "domain": "Core 2: Software Troubleshooting",
+    "topic": "Software Troubleshooting",
+    "front": "A phone shows unexpected data usage and unrecognized account activity. What should you check first?",
+    "back": "Installed app list for anything unrecognized, and account activity logs — possible sign of a malicious app or compromised credentials."
+  }
+]

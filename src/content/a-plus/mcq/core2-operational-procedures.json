@@ -1,0 +1,91 @@
+[
+  {
+    "domain": "Core 2: Operational Procedures",
+    "topic": "Operational Procedures",
+    "question": "Which backup type only requires the full backup plus the latest one additional backup to restore?",
+    "choices": ["Incremental", "Differential", "Full only", "Snapshot"],
+    "correctIndex": 1,
+    "explanation": "Differential backups capture everything changed since the last full backup, so restore only needs the full + latest differential."
+  },
+  {
+    "domain": "Core 2: Operational Procedures",
+    "topic": "Operational Procedures",
+    "question": "What does the 3-2-1 backup rule specify?",
+    "choices": [
+      "3 backups a day, 2 admins, 1 location",
+      "3 copies of data, on 2 different media types, with 1 copy off-site",
+      "3 different cloud providers",
+      "3 years of retention, 2 backup jobs, 1 test restore"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 2: Operational Procedures",
+    "topic": "Operational Procedures",
+    "question": "Why is it important to periodically test restoring from a backup?",
+    "choices": [
+      "It's a legal requirement everywhere",
+      "A backup that's never been restored from isn't actually verified to work",
+      "It reduces backup file size",
+      "It's only needed for cloud backups"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 2: Operational Procedures",
+    "topic": "Operational Procedures",
+    "question": "What must be prepared before implementing an approved change to a production system?",
+    "choices": ["A marketing announcement", "A rollback plan", "A new SSID", "A hardware refresh budget"],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 2: Operational Procedures",
+    "topic": "Operational Procedures",
+    "question": "What does an anti-static wrist strap protect against?",
+    "choices": ["Physical drops", "Electrostatic discharge (ESD) damaging components", "Overheating", "Power surges"],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 2: Operational Procedures",
+    "topic": "Operational Procedures",
+    "question": "What class of fire extinguisher is appropriate for an electrical fire?",
+    "choices": ["Class A", "Class B", "Class C", "Water-based only"],
+    "correctIndex": 2
+  },
+  {
+    "domain": "Core 2: Operational Procedures",
+    "topic": "Operational Procedures",
+    "question": "Why should you never use water on an electrical fire?",
+    "choices": [
+      "Water is flammable",
+      "Water conducts electricity and poses a shock/spreading risk",
+      "It voids the fire extinguisher warranty",
+      "There's no real risk, it's just tradition"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 2: Operational Procedures",
+    "topic": "Operational Procedures",
+    "question": "What is an MSDS/SDS?",
+    "choices": [
+      "A malware scanning report",
+      "A Safety Data Sheet documenting hazards/handling info for chemicals/materials",
+      "A software deployment schedule",
+      "A server disaster recovery plan"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 2: Operational Procedures",
+    "topic": "Operational Procedures",
+    "question": "Why can't old batteries and CRT monitors typically go in regular trash?",
+    "choices": [
+      "They're too heavy for standard collection",
+      "They contain hazardous materials requiring proper e-waste disposal",
+      "They're valuable and must be resold",
+      "There's no actual restriction"
+    ],
+    "correctIndex": 1
+  }
+]

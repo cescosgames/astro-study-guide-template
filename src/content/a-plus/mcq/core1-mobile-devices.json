@@ -1,0 +1,103 @@
+[
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Mobile Devices",
+    "question": "Which RAM form factor do laptops use in place of desktop DIMM?",
+    "choices": ["SIMM", "SODIMM", "RDIMM", "UDIMM"],
+    "correctIndex": 1,
+    "explanation": "SODIMM (Small Outline DIMM) is the compact laptop RAM form factor."
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Mobile Devices",
+    "question": "Why might a technician be unable to upgrade RAM on a thin ultrabook?",
+    "choices": [
+      "Ultrabooks never support more than 4GB",
+      "RAM is sometimes soldered directly to the motherboard",
+      "SODIMM slots require a firmware unlock",
+      "Ultrabooks use desktop DIMM which won't fit"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Mobile Devices",
+    "question": "What is the correct laptop battery calibration procedure?",
+    "choices": [
+      "Charge to 80% and unplug",
+      "Fully charge, fully discharge, then fully charge again",
+      "Remove the battery and reboot",
+      "Leave it plugged in for 24 hours straight"
+    ],
+    "correctIndex": 1,
+    "explanation": "This resets the battery meter's reported accuracy — it does not restore lost physical capacity."
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Mobile Devices",
+    "question": "What is the key functional difference between a docking station and a port replicator?",
+    "choices": [
+      "They're functionally identical",
+      "A docking station can add real functionality (extra GPU/ports); a port replicator just extends existing ports",
+      "Port replicators are wireless; docking stations are wired only",
+      "Docking stations only work with USB-A"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Mobile Devices",
+    "question": "What does an eSIM eliminate the need for?",
+    "choices": [
+      "A cellular radio",
+      "A physical SIM card swap to change carriers/plans",
+      "A data plan",
+      "Wifi calling support"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Mobile Devices",
+    "question": "What does enabling airplane mode do?",
+    "choices": [
+      "Disables only cellular data",
+      "Disables all radios at once (cellular, wifi, Bluetooth)",
+      "Disables only Bluetooth",
+      "Puts the device into low power mode without affecting radios"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Mobile Devices",
+    "question": "In mobile device management, what does 'containerization' refer to?",
+    "choices": [
+      "Running the OS inside a virtual machine",
+      "Separating work apps/data from personal data on the same device",
+      "Storing apps in a compressed archive",
+      "Isolating the battery management system"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Mobile Devices",
+    "question": "Which ownership model describes a company-owned device that also allows personal use?",
+    "choices": ["BYOD", "COBO", "COPE", "CYOD"],
+    "correctIndex": 2,
+    "explanation": "COPE = Corporate Owned, Personally Enabled."
+  },
+  {
+    "domain": "Core 1: Mobile Devices",
+    "topic": "Mobile Devices",
+    "question": "What primarily distinguishes 5G from 4G LTE cellular?",
+    "choices": [
+      "5G only works indoors",
+      "5G offers much higher speed and lower latency using higher-frequency bands",
+      "5G eliminates the need for a SIM",
+      "5G is exclusively used for wifi hotspots"
+    ],
+    "correctIndex": 1
+  }
+]

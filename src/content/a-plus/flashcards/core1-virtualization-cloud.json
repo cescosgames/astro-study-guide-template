@@ -1,0 +1,50 @@
+[
+  {
+    "domain": "Core 1: Virtualization and Cloud Computing",
+    "topic": "Virtualization and Cloud",
+    "front": "Type 1 vs Type 2 hypervisor — what's the difference?",
+    "back": "Type 1 (bare metal) runs directly on hardware with no host OS (e.g. VMware ESXi, Hyper-V server) — used in production/data centers. Type 2 (hosted) runs as an app on top of a host OS (e.g. VirtualBox, VMware Workstation) — used for dev/test/desktop."
+  },
+  {
+    "domain": "Core 1: Virtualization and Cloud Computing",
+    "topic": "Virtualization and Cloud",
+    "front": "What is a VM snapshot, and what is it NOT a substitute for?",
+    "back": "A point-in-time saved state of a VM you can roll back to (usually stored as diffs from a base disk). It is not a full substitute for a proper backup."
+  },
+  {
+    "domain": "Core 1: Virtualization and Cloud Computing",
+    "topic": "Virtualization and Cloud",
+    "front": "Name three reasons an organization would virtualize workloads.",
+    "back": "Sandboxing untrusted software, running legacy software that needs an old OS, and server consolidation (fewer physical boxes, less power/cooling cost)."
+  },
+  {
+    "domain": "Core 1: Virtualization and Cloud Computing",
+    "topic": "Virtualization and Cloud",
+    "front": "Define IaaS, PaaS, and SaaS with an example each.",
+    "back": "IaaS = rent raw compute/storage/network, you manage the OS up (e.g. AWS EC2). PaaS = rent a managed platform to deploy apps onto (e.g. Azure App Service). SaaS = fully managed application, you just use it (e.g. Gmail, Office 365)."
+  },
+  {
+    "domain": "Core 1: Virtualization and Cloud Computing",
+    "topic": "Virtualization and Cloud",
+    "front": "Public vs private vs hybrid cloud — define each.",
+    "back": "Public = shared infrastructure, provider-owned (AWS/Azure/GCP). Private = dedicated infrastructure for one org. Hybrid = a mix of public and private, with workloads moving between them."
+  },
+  {
+    "domain": "Core 1: Virtualization and Cloud Computing",
+    "topic": "Virtualization and Cloud",
+    "front": "What does cloud 'elasticity' mean?",
+    "back": "Resources scale up or down automatically (or on demand) based on current load."
+  },
+  {
+    "domain": "Core 1: Virtualization and Cloud Computing",
+    "topic": "Virtualization and Cloud",
+    "front": "Explain the cloud shared responsibility model.",
+    "back": "The cloud provider secures the underlying infrastructure; the customer is still responsible for securing their own data, configuration, and access within it."
+  },
+  {
+    "domain": "Core 1: Virtualization and Cloud Computing",
+    "topic": "Virtualization and Cloud",
+    "front": "What is VDI (Virtual Desktop Infrastructure)?",
+    "back": "A desktop OS that runs centrally in a data center/cloud; the user connects remotely via a thin client or software client — enables centralized management and security."
+  }
+]

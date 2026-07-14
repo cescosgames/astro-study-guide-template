@@ -2,9 +2,9 @@
 
 Hey, this is a content-driven study guide template built on Astro where you drop in JSON (flashcards, MCQs, CLI drills, minigame configs) and the study guide autoloads the content, no touching component code every time I want to add a new topic. Vibe coded with Claude. Content's based off my own personal study notes for the A+.
 
-![flashcards](https://img.shields.io/badge/flashcards-16-58cc02) ![mcqs](https://img.shields.io/badge/mcqs-13-58cc02) ![cli drills](https://img.shields.io/badge/cli%20drills-5-58cc02) ![minigames](https://img.shields.io/badge/minigames-3-ffc800) ![domains covered](https://img.shields.io/badge/domains%20covered-1%20of%209-ff4b4b) ![status](https://img.shields.io/badge/content-test%20data%20only-ff4b4b)
+![flashcards](https://img.shields.io/badge/flashcards-103-58cc02) ![mcqs](https://img.shields.io/badge/mcqs-81-58cc02) ![cli drills](https://img.shields.io/badge/cli%20drills-22-58cc02) ![minigames](https://img.shields.io/badge/minigames-6-ffc800) ![domains covered](https://img.shields.io/badge/domains%20covered-9%20of%209-58cc02) ![status](https://img.shields.io/badge/content-AI--seeded%20starter%20notes-ffc800)
 
-Heads up on that last badge: right now everything's running on one placeholder topic ("Laptop Hardware") just to prove the pipeline works end to end. Real A+ content extraction from `notes/*.md` hasn't happened yet, that's the next big push.
+Heads up on that last badge: this content covers all 9 Core 1/Core 2 domains, but it's seeded from AI-generated starter notes (`notes/claude recommended A+ notes/`) rather than deep personal study notes yet — enough to actually study from and put the PWA through its paces, but worth a real accuracy pass against the official 220-1201/1202 objectives over time.
 
 ## Stack
 

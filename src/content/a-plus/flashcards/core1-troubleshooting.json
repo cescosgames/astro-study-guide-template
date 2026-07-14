@@ -1,0 +1,56 @@
+[
+  {
+    "domain": "Core 1: Hardware and Network Troubleshooting",
+    "topic": "Hardware and Network Troubleshooting",
+    "front": "List the CompTIA troubleshooting methodology's six steps in order.",
+    "back": "1) Identify the problem. 2) Establish a theory of probable cause. 3) Test the theory to determine cause. 4) Establish a plan of action and implement the solution. 5) Verify full system functionality and implement preventive measures. 6) Document findings, actions, and outcomes."
+  },
+  {
+    "domain": "Core 1: Hardware and Network Troubleshooting",
+    "topic": "Hardware and Network Troubleshooting",
+    "front": "In the troubleshooting methodology, what should you do if your theory of probable cause is NOT confirmed by testing?",
+    "back": "Re-establish a new theory, or escalate if you're out of options."
+  },
+  {
+    "domain": "Core 1: Hardware and Network Troubleshooting",
+    "topic": "Hardware and Network Troubleshooting",
+    "front": "A PC powers on then immediately shuts off. What's the most likely cause?",
+    "back": "Often a failing PSU, overheating protection triggering, or a short — not usually a software issue."
+  },
+  {
+    "domain": "Core 1: Hardware and Network Troubleshooting",
+    "topic": "Hardware and Network Troubleshooting",
+    "front": "What does a distended (bulging/leaking) capacitor on a motherboard or PSU indicate?",
+    "back": "A visible sign of a dying/failed component — the capacitor is physically deformed."
+  },
+  {
+    "domain": "Core 1: Hardware and Network Troubleshooting",
+    "topic": "Hardware and Network Troubleshooting",
+    "front": "What does a grinding or clicking noise from a hard drive usually mean, and what should you do first?",
+    "back": "A classic sign of a failing HDD — back up the data immediately."
+  },
+  {
+    "domain": "Core 1: Hardware and Network Troubleshooting",
+    "topic": "Hardware and Network Troubleshooting",
+    "front": "A Windows client shows an APIPA address and has no internet access. What does that point to?",
+    "back": "The DHCP server is unreachable — the client self-assigned a 169.254.x.x address."
+  },
+  {
+    "domain": "Core 1: Hardware and Network Troubleshooting",
+    "topic": "Hardware and Network Troubleshooting",
+    "front": "A user can ping an IP address but can't reach a website by name. What's the likely cause?",
+    "back": "A DNS issue — name resolution is failing even though the network path itself works."
+  },
+  {
+    "domain": "Core 1: Hardware and Network Troubleshooting",
+    "topic": "Hardware and Network Troubleshooting",
+    "front": "What does the tracert/traceroute command help diagnose?",
+    "back": "Shows the hop-by-hop path to a destination, helping identify where along the path a connection is breaking."
+  },
+  {
+    "domain": "Core 1: Hardware and Network Troubleshooting",
+    "topic": "Hardware and Network Troubleshooting",
+    "front": "A print job is stuck and nothing prints, but the printer itself is online. What's a classic first fix?",
+    "back": "Restart the print spooler service."
+  }
+]
