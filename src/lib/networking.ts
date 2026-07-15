@@ -1,3 +1,5 @@
+import { portEntries } from './ports';
+
 export interface SubnetInfo {
   cidr: number;
   subnetMask: string;
@@ -163,4 +165,39 @@ export function generateIPv6Problem(difficulty: 'easy' | 'medium' | 'hard'): IPv
 
   const full = groups.join(':');
   return { full, compressed: compressIPv6(full), difficulty };
+}
+
+export interface PortMatchTile {
+  id: string;
+  label: string;
+}
+
+export interface PortMatchRound {
+  ports: PortMatchTile[];
+  services: PortMatchTile[];
+  /** Maps a port tile id to the matching service tile id. */
+  answerKey: Record<string, string>;
+  difficulty: 'easy' | 'medium' | 'hard';
+}
+
+function shuffle<T>(items: T[]): T[] {
+  const copy = [...items];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = randomInt(0, i);
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+export function generatePortMatchRound(difficulty: 'easy' | 'medium' | 'hard'): PortMatchRound {
+  const pairCounts: Record<string, number> = { easy: 3, medium: 5, hard: 8 };
+  const pairCount = Math.min(pairCounts[difficulty], portEntries.length);
+
+  const chosen = shuffle(portEntries).slice(0, pairCount);
+
+  const ports = shuffle(chosen.map((entry) => ({ id: entry.port, label: entry.port })));
+  const services = shuffle(chosen.map((entry) => ({ id: entry.port, label: entry.service })));
+  const answerKey = Object.fromEntries(chosen.map((entry) => [entry.port, entry.port]));
+
+  return { ports, services, answerKey, difficulty };
 }

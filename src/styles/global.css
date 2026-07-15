@@ -162,6 +162,25 @@ button:not(:disabled) {
   animation: pop 0.25s ease-out;
 }
 
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  60% {
+    transform: translateX(-4px);
+  }
+  40%,
+  80% {
+    transform: translateX(4px);
+  }
+}
+
+.animate-shake {
+  animation: shake 0.4s ease-in-out;
+}
+
 /* Printable reference sheets (Resources): flatten to black-on-white and
    drop chrome that makes no sense on paper, regardless of light/dark theme. */
 @media print {

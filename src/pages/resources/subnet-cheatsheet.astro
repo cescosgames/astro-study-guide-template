@@ -110,6 +110,128 @@ const mentalSteps = [
 ];
 
 const bitValues = [128, 64, 32, 16, 8, 4, 2, 1];
+
+const blockSizeRef = [
+  { mask: 128, block: 128 },
+  { mask: 192, block: 64 },
+  { mask: 224, block: 32 },
+  { mask: 240, block: 16 },
+  { mask: 248, block: 8 },
+  { mask: 252, block: 4 },
+  { mask: 254, block: 2 },
+  { mask: 255, block: 1 },
+];
+
+const octetFromPrefix = [
+  { range: '/1 – /8', octet: '1st octet' },
+  { range: '/9 – /16', octet: '2nd octet' },
+  { range: '/17 – /24', octet: '3rd octet' },
+  { range: '/25 – /31', octet: '4th octet' },
+];
+
+// rungs: array of numbers to display. `lower`/`upper` mark the bracketing rungs.
+// leadingEllipsis/trailingEllipsis show "…" where the full ladder was trimmed for space.
+// upperOverflow means the "next rung" rolls past 255 into the next octet (256 isn't a real octet value).
+const ladderExamples = [
+  {
+    cidr: '/26',
+    addr: '192.168.1.77',
+    mask: '255.255.255.192',
+    splitOctet: '4th octet',
+    maskValue: 192,
+    block: 64,
+    rungs: [0, 64, 128, 192],
+    lower: 64,
+    upper: 128,
+    network: '192.168.1.64',
+    broadcast: '192.168.1.127',
+  },
+  {
+    cidr: '/25',
+    addr: '10.0.0.130',
+    mask: '255.255.255.128',
+    splitOctet: '4th octet',
+    maskValue: 128,
+    block: 128,
+    rungs: [0, 128],
+    lower: 128,
+    upper: 256,
+    upperOverflow: true,
+    network: '10.0.0.128',
+    broadcast: '10.0.0.255',
+  },
+  {
+    cidr: '/27',
+    addr: '172.16.45.200',
+    mask: '255.255.255.224',
+    splitOctet: '4th octet',
+    maskValue: 224,
+    block: 32,
+    rungs: [0, 32, 64, 96, 128, 160, 192, 224],
+    lower: 192,
+    upper: 224,
+    network: '172.16.45.192',
+    broadcast: '172.16.45.223',
+  },
+  {
+    cidr: '/28',
+    addr: '172.30.9.240',
+    mask: '255.255.255.240',
+    splitOctet: '4th octet',
+    maskValue: 240,
+    block: 16,
+    rungs: [0, 16, 32, 48, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208, 224, 240],
+    lower: 240,
+    upper: 256,
+    upperOverflow: true,
+    network: '172.30.9.240',
+    broadcast: '172.30.9.255',
+  },
+  {
+    cidr: '/29',
+    addr: '192.168.200.14',
+    mask: '255.255.255.248',
+    splitOctet: '4th octet',
+    maskValue: 248,
+    block: 8,
+    rungs: [0, 8, 16],
+    lower: 8,
+    upper: 16,
+    trailingEllipsis: true,
+    network: '192.168.200.8',
+    broadcast: '192.168.200.15',
+  },
+  {
+    cidr: '/30',
+    addr: '192.168.5.201',
+    mask: '255.255.255.252',
+    splitOctet: '4th octet',
+    maskValue: 252,
+    block: 4,
+    rungs: [196, 200, 204, 208],
+    lower: 200,
+    upper: 204,
+    leadingEllipsis: true,
+    trailingEllipsis: true,
+    network: '192.168.5.200',
+    broadcast: '192.168.5.203',
+  },
+  {
+    cidr: '/23',
+    addr: '10.20.131.55',
+    mask: '255.255.254.0',
+    splitOctet: '3rd octet',
+    maskValue: 254,
+    block: 2,
+    rungs: [128, 130, 132, 134],
+    lower: 130,
+    upper: 132,
+    leadingEllipsis: true,
+    trailingEllipsis: true,
+    network: '10.20.130.0',
+    broadcast: '10.20.131.255',
+  },
+];
 ---
 
 <Layout title="Subnet Cheat Sheet — CompTIA A+ Study Guide">
@@ -273,13 +395,28 @@ const bitValues = [128, 64, 32, 16, 8, 4, 2, 1];
 						<span class="flex h-6 min-w-6 items-center justify-center rounded-full bg-accent/15 text-xs font-bold text-accent">
 							{i + 1}
 						</span>
-						<span class="min-w-[7.5rem] shrink-0 font-mono font-bold text-accent">{step.label}</span>
+						<span class="min-w-30 shrink-0 font-mono font-bold text-accent">{step.label}</span>
 						<span class="text-sm text-slate-700 dark:text-slate-200">{step.rule}</span>
 						<span class="text-xs text-slate-500 italic dark:text-slate-400">{step.example}</span>
 					</li>
 				))
 			}
 		</ol>
+
+		<!-- BLOCK SIZE DIVISION TRICK -->
+		<p class="mt-2 border-b-2 border-border pb-1 text-xs font-bold tracking-wide text-accent uppercase">
+			Alternate Trick — Network Address by Division
+		</p>
+		<div class="rounded-2xl border-2 border-accent/30 bg-accent/10 p-4 text-sm text-slate-700 dark:text-slate-200">
+			<p class="font-bold text-accent">Skip the rounding-down guesswork — divide it out instead.</p>
+			<ol class="mt-1 flex flex-col gap-1">
+				<li>1. Block size (B) = 256 − mask value in that octet</li>
+				<li>2. Divide the address octet by B, ignore remainder (just count how many full block sizes fit)</li>
+				<li>3. Multiply that count back by B → network octet</li>
+				<li>4. Zero out everything after it</li>
+			</ol>
+			<p class="mt-1 font-mono text-xs italic">One-liner: (octet ÷ B, round down) × B</p>
+		</div>
 
 		<p class="mt-4 border-b-2 border-border pb-1 text-xs font-bold tracking-wide text-accent uppercase">
 			Split CIDR Quick-Reference
@@ -311,6 +448,151 @@ const bitValues = [128, 64, 32, 16, 8, 4, 2, 1];
 					}
 				</tbody>
 			</table>
+		</div>
+
+		<!-- BLOCK-SIZE LADDER METHOD -->
+		<p class="mt-4 border-b-2 border-border pb-1 text-xs font-bold tracking-wide text-accent uppercase">
+			Alternate Trick — The Block-Size Ladder (Skip-Counting)
+		</p>
+		<div class="rounded-2xl border-2 border-accent/30 bg-accent/10 p-4 text-sm text-slate-700 dark:text-slate-200">
+			<p class="font-bold text-accent">
+				No division at all — list the multiples of the block size and see which two the address falls between.
+			</p>
+			<ol class="mt-1 flex flex-col gap-1">
+				<li>1. Block size (B) = 256 − mask value in the split octet</li>
+				<li>2. List multiples of B: 0, B, 2B, 3B … up through 256</li>
+				<li>3. Find the two consecutive rungs the address octet falls between — the lower rung is the network address in that octet</li>
+				<li>4. Next rung up − 1 = broadcast in that octet. Everything after the split octet: 0 for network, 255 for broadcast</li>
+			</ol>
+		</div>
+
+		<p class="text-sm text-slate-500 dark:text-slate-400">Block size reference — mask value in the split octet → block size:</p>
+		<div class="overflow-x-auto rounded-2xl border-2 border-border bg-surface-raised shadow-sm">
+			<table class="w-full border-collapse text-left text-sm">
+				<thead>
+					<tr class="bg-surface-overlay text-xs text-slate-500 uppercase dark:text-slate-400">
+						{blockSizeRef.map((row) => <th class="px-3 py-2 font-display">{row.mask}</th>)}
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="border-t border-border">
+						{blockSizeRef.map((row) => <td class="px-3 py-2 font-mono font-bold text-accent">{row.block}</td>)}
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<p class="text-xs text-slate-500 dark:text-slate-400">Block size = 256 − mask value. E.g. mask 240 → 256 − 240 = 16.</p>
+
+		<div class="rounded-2xl border-2 border-border bg-surface-raised p-4 text-sm shadow-sm">
+			<p class="font-bold text-slate-700 dark:text-slate-200">
+				Find the split octet from the CIDR prefix — don't guess it from the address:
+			</p>
+			<div class="mt-2 overflow-x-auto">
+				<table class="w-full border-collapse text-left text-sm">
+					<thead>
+						<tr class="text-xs text-slate-500 uppercase dark:text-slate-400">
+							<th class="px-3 py-1 font-display">Prefix range</th>
+							<th class="px-3 py-1 font-display">Split octet</th>
+						</tr>
+					</thead>
+					<tbody>
+						{
+							octetFromPrefix.map((row) => (
+								<tr class="border-t border-border">
+									<td class="px-3 py-1 font-mono font-bold text-accent">{row.range}</td>
+									<td class="px-3 py-1 text-slate-700 dark:text-slate-200">{row.octet}</td>
+								</tr>
+							))
+						}
+					</tbody>
+				</table>
+			</div>
+			<p class="mt-2 text-xs text-slate-500 italic dark:text-slate-400">
+				e.g. /23 → 255.255.254.0 → the mask value isn't 255 until the 3rd octet, so the split octet is the 3rd — read it
+				straight off the prefix, not off which number in the address "looks splittable."
+			</p>
+		</div>
+
+		<p class="mt-2 border-b-2 border-border pb-1 text-xs font-bold tracking-wide text-accent uppercase">
+			Ladder Worked Examples
+		</p>
+		<div class="grid gap-3 sm:grid-cols-2">
+			{
+				ladderExamples.map((ex) => (
+					<div class="rounded-2xl border-2 border-border bg-surface-raised p-4 shadow-sm">
+						<p class="mb-1 flex flex-wrap items-baseline gap-x-2">
+							<span class="font-mono text-base font-bold text-accent">
+								{ex.addr}
+								{ex.cidr}
+							</span>
+							<span class="rounded bg-gold px-1.5 py-0.5 align-middle text-[0.65rem] font-bold tracking-wide text-slate-900 uppercase">
+								{ex.splitOctet}
+							</span>
+						</p>
+						<p class="text-xs text-slate-500 dark:text-slate-400">
+							Mask <span class="font-mono text-slate-700 dark:text-slate-200">{ex.mask}</span> · split-octet value{' '}
+							<span class="font-mono font-bold text-accent">{ex.maskValue}</span> · block ={' '}
+							<span class="font-mono font-bold text-accent">
+								256 − {ex.maskValue} = {ex.block}
+							</span>
+						</p>
+
+						<p class="mt-2 text-xs font-bold tracking-wide text-slate-500 uppercase dark:text-slate-400">Ladder</p>
+						<div class="mt-1 flex flex-wrap items-center gap-1 font-mono text-xs">
+							{ex.leadingEllipsis && <span class="text-slate-400 dark:text-slate-500">…</span>}
+							{
+								ex.rungs.map((v) => (
+									<span
+										class={`rounded px-1.5 py-0.5 ${
+											v === ex.lower
+												? 'bg-accent/20 font-bold text-accent'
+												: v === ex.upper
+													? 'bg-gold/20 font-bold text-gold-shade dark:text-gold'
+													: 'text-slate-500 dark:text-slate-400'
+										}`}
+									>
+										{v}
+									</span>
+								))
+							}
+							{ex.trailingEllipsis && <span class="text-slate-400 dark:text-slate-500">…</span>}
+							{ex.upperOverflow && (
+								<span class="rounded bg-gold/20 px-1.5 py-0.5 font-bold text-gold-shade dark:text-gold">
+									256 (rolls to next octet)
+								</span>
+							)}
+						</div>
+						<p class="mt-1 text-xs text-slate-500 dark:text-slate-400">
+							<span class="font-mono font-bold text-accent">{ex.addr.split('.').at(ex.splitOctet.startsWith('3') ? 2 : 3)}</span>{' '}
+							falls between <span class="font-mono font-bold text-accent">{ex.lower}</span> and{' '}
+							<span class="font-mono font-bold text-gold-shade dark:text-gold">{ex.upper}</span> → round down to{' '}
+							{ex.lower}
+						</p>
+
+						<table class="mt-2 w-full border-collapse text-xs">
+							<tbody>
+								<tr class="border-t border-border">
+									<td class="w-[42%] py-1 pr-2 text-slate-500 uppercase dark:text-slate-400">Network addr</td>
+									<td class="py-1 font-mono font-bold text-accent">{ex.network}</td>
+								</tr>
+								<tr class="border-t border-border">
+									<td class="py-1 pr-2 text-slate-500 uppercase dark:text-slate-400">Broadcast</td>
+									<td class="py-1 font-mono font-bold text-gold-shade dark:text-gold">{ex.broadcast}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				))
+			}
+		</div>
+
+		<div class="rounded-2xl border-2 border-danger/30 bg-danger/10 p-4 text-sm text-slate-700 dark:text-slate-200">
+			<p class="font-bold text-danger">Common mistakes</p>
+			<ul class="mt-1 flex flex-col gap-1 list-disc pl-4">
+				<li>Don't confuse the <strong>mask value</strong> (e.g. 224) with the <strong>computed network/broadcast octet</strong> (e.g. 192) — the mask value is never the answer by itself.</li>
+				<li>Watch for off-by-one errors converting CIDR → mask: <span class="font-mono">/23 = 254</span>, not 248 — count the stolen bits from the prefix, don't eyeball it.</li>
+				<li>Always sanity-check a candidate network address by confirming it's actually divisible by the block size (e.g. 192 ÷ 32 = 6 exactly — no remainder means it's a valid rung on the ladder).</li>
+			</ul>
 		</div>
 
 		<!-- WORKED EXAMPLE -->

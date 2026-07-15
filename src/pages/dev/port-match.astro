@@ -1,0 +1,14 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layout/Layout.astro';
+import PageHeader from '../../layout/PageHeader.astro';
+import PortMatchStudy from '../../components/study-kit/minigames/PortMatchStudy';
+
+const entries = await getCollection('minigames', (entry) => entry.data.type === 'port-match');
+const configs = entries.map((entry) => ({ difficulty: entry.data.difficulty, domain: entry.data.domain }));
+---
+
+<Layout title="Port Match — CompTIA A+ Study Guide">
+	<PageHeader title="Port Match" subtitle="Tap to pair common ports with their services." />
+	<PortMatchStudy client:load configs={configs} />
+</Layout>

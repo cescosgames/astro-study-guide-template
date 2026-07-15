@@ -39,9 +39,16 @@ const ipv6ShrinkConfigSchema = z.object({
   difficulty: z.enum(['easy', 'medium', 'hard']),
 });
 
+const portMatchConfigSchema = z.object({
+  type: z.literal('port-match'),
+  domain: z.string(),
+  difficulty: z.enum(['easy', 'medium', 'hard']),
+});
+
 const minigameConfigSchema = z.discriminatedUnion('type', [
   subnetCalcConfigSchema,
   ipv6ShrinkConfigSchema,
+  portMatchConfigSchema,
 ]);
 
 /**

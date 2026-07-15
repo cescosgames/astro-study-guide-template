@@ -157,3 +157,47 @@ plan / decision log; ARCHITECTURE.md is the reference doc.
 1. **`content.config.ts` hardcodes the `a-plus` folder path** in every collection's glob pattern. The schemas themselves are cert-agnostic, but reusing this engine for Network+/Security+ means editing `content.config.ts` directly (new collections or repointed paths), not just adding a new content folder. Not urgent for the current guide, but worth a decision before this becomes "the reusable engine" in practice rather than just in name.
 2. **Phase 2 itself** — real content extraction from `notes/*.md` still hasn't happened. Everything built so far (Phases 1, 3, 4, 5) has been engine/plumbing work proven out against one placeholder topic. **This is the actual next milestone** — the pipeline end of this project is done; what's left is content.
 3. **Optional: a styled `404.astro`** — cosmetic, whenever it's convenient.
+
+## Phase 7 — Port Match minigame
+
+- **Third minigame added**: `port-match`, a tap-to-pair matching grid (port
+  numbers on one side, service names on the other — tap a port, then tap the
+  service you think it belongs to; correct pairs lock green, wrong pairs
+  shake red). Chosen over a drag-and-drop two-column matcher specifically for
+  mobile: native drag is unreliable on touch (imprecise targets, inconsistent
+  browser support), while tap-to-select is the same interaction Duolingo's
+  own matching exercises use, so it fits this app's visual language for
+  free. Same `*Study.tsx` + `DifficultyPicker` + `minigames` collection
+  pattern as Subnet Calculator / IPv6 Shrinker — difficulty controls pair
+  count (easy 3 / medium 5 / hard 8) rather than a value range, since there's
+  no natural "harder problem" axis for port memorization the way there is
+  for CIDR ranges or IPv6 zero-run lengths.
+- **New shared data module, `src/lib/ports.ts`**: the port/service dataset
+  that used to live inline in `resources/ports-chart.astro` was extracted so
+  both the reference sheet and the new minigame read from one source instead
+  of drifting independently. `ports-chart.astro` now imports `portSections`
+  from it with no visual change; the minigame consumes a flattened
+  `portEntries` export (multi-port cells like "465 / 587" get split into
+  individual port→service pairs for tile generation).
+- **Known content gap, called out explicitly rather than silently padded**:
+  this port dataset (24 ports) was never checked against the actual current
+  CompTIA 220-1201 exam objectives — it's the `notes/*.md` "classic
+  high-yield set" (12 ports, which the notes themselves flagged as possibly
+  incomplete) extended with reasonable real-world additions when the
+  reference sheet was first built. NetBIOS (137–139) is a specific likely
+  gap. Deliberately not guessing further additions — the user will paste in
+  the real objectives list in a future session and that should be the
+  trigger to reconcile `lib/ports.ts` against it, not more AI guessing.
+- **Added `.animate-shake` to `global.css`** (paired with the existing
+  `.animate-pop`) for the wrong-match feedback — small enough to not warrant
+  its own doc entry beyond this note.
+- Verified end-to-end with a throwaway Playwright script (no project
+  dependency added — installed via `npx` into `/tmp`, not `package.json`)
+  since no browser tool was available in-session: difficulty scaling, wrong-
+  match shake + streak reset, correct-match lock-in + accuracy math, round
+  completion/regeneration, and the `ports-chart.astro` visual regression
+  check all passed on a 390px mobile viewport.
+- Bumped `package.json` version to `0.2.0` and the service worker
+  `CACHE_NAME` to `a-plus-study-guide-v2` (`public/sw.js`) so an already-
+  installed PWA actually picks up this change on next launch instead of
+  serving the stale cached shell.
