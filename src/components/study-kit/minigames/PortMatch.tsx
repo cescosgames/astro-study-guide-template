@@ -12,6 +12,7 @@ export default function PortMatch({ difficulty }: PortMatchProps) {
   const [matched, setMatched] = useState<Set<string>>(new Set());
   const [selected, setSelected] = useState<Selection>(null);
   const [wrongPair, setWrongPair] = useState<{ port: string; service: string } | null>(null);
+  const [hint, setHint] = useState<{ port: string; purpose: string } | null>(null);
   const [streak, setStreak] = useState(0);
   const [attempts, setAttempts] = useState(0);
   const [correctAttempts, setCorrectAttempts] = useState(0);
@@ -44,6 +45,8 @@ export default function PortMatch({ difficulty }: PortMatchProps) {
       setStreak((s) => s + 1);
       setMatched((m) => new Set(m).add(portId));
       setSelected(null);
+      setHint({ port: portId, purpose: round.purposes[portId] });
+      setTimeout(() => setHint((h) => (h?.port === portId ? null : h)), 3000);
     } else {
       setStreak(0);
       setWrongPair({ port: portId, service: serviceId });
@@ -57,6 +60,7 @@ export default function PortMatch({ difficulty }: PortMatchProps) {
     setMatched(new Set());
     setSelected(null);
     setWrongPair(null);
+    setHint(null);
   }
 
   function tileClass(side: 'port' | 'service', id: string) {
@@ -117,6 +121,12 @@ export default function PortMatch({ difficulty }: PortMatchProps) {
             })}
           </div>
         </div>
+
+        {hint && !complete && (
+          <p class="animate-pop rounded-xl bg-accent/10 px-4 py-2 text-sm text-slate-700 dark:text-slate-200">
+            💡 <span class="font-display font-bold text-accent">{hint.port}</span> — {hint.purpose}
+          </p>
+        )}
 
         {complete && (
           <>

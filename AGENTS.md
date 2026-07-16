@@ -201,3 +201,23 @@ plan / decision log; ARCHITECTURE.md is the reference doc.
   `CACHE_NAME` to `a-plus-study-guide-v2` (`public/sw.js`) so an already-
   installed PWA actually picks up this change on next launch instead of
   serving the stale cached shell.
+
+**Ports dataset reconciled against real exam objectives.** The user supplied
+the actual CompTIA A+ 220-1201 objectives text (section 2.1). `lib/ports.ts`
+was rewritten to exactly the 14 official line items (16 ports) — no padding.
+This **removed** several ports that were in the placeholder set but aren't
+on the objectives (465/587, 993, 995, 8080, 123, 161/162, 636) and **added**
+137-139 NetBIOS/NetBT, which the Phase 7 note had already flagged as a
+likely gap and turned out to be exactly right. Also added a `purpose` field
+per port (the objectives' own "ports, protocols, and their purposes"
+framing) — shown as a new Purpose column on the reference sheet, and in Port
+Match as a transient 💡 hint that appears for ~3s after a correct match (not
+a new matching mode — port↔service-name pairing stays the game's core loop,
+purpose is a teaching moment layered on top, per user's explicit choice over
+a purpose-matching variant). `portEntries`' split logic changed from
+`/`-delimited (for combined cells like "465 / 587") to `-`-delimited (for
+ranges like "20-21", "67-68", "137-139") since every remaining multi-port
+row is a real range, not a slash-separated pair. Verified with a throwaway
+Playwright script (same install-to-`/tmp` pattern as the original Port
+Match verification) that a correct match on port 23 surfaces the right hint
+text end-to-end. Bumped to `0.3.0` / `a-plus-study-guide-v3`.

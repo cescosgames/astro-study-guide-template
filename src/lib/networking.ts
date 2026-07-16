@@ -177,6 +177,8 @@ export interface PortMatchRound {
   services: PortMatchTile[];
   /** Maps a port tile id to the matching service tile id. */
   answerKey: Record<string, string>;
+  /** Maps a port tile id to its exam-objective purpose text, shown as a hint on a correct match. */
+  purposes: Record<string, string>;
   difficulty: 'easy' | 'medium' | 'hard';
 }
 
@@ -198,6 +200,7 @@ export function generatePortMatchRound(difficulty: 'easy' | 'medium' | 'hard'): 
   const ports = shuffle(chosen.map((entry) => ({ id: entry.port, label: entry.port })));
   const services = shuffle(chosen.map((entry) => ({ id: entry.port, label: entry.service })));
   const answerKey = Object.fromEntries(chosen.map((entry) => [entry.port, entry.port]));
+  const purposes = Object.fromEntries(chosen.map((entry) => [entry.port, entry.purpose]));
 
-  return { ports, services, answerKey, difficulty };
+  return { ports, services, answerKey, purposes, difficulty };
 }
