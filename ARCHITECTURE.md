@@ -79,9 +79,17 @@ src/
         PortMatch.tsx / PortMatchStudy.tsx   tap-to-pair port/service matching grid, same pattern
     layout/
       BottomTabBar.astro         Fixed nav, cert-agnostic
+      XPBadge.tsx                 Always-mounted island (in Layout.astro's header bar): Lv N +
+                                  progress bar, listens for xp-updated/xp-level-up window events
+      LevelRecap.tsx              Bigger homepage card version: level badge, streak, XP progress —
+                                  same useXp()/useStreak() hooks as XPBadge, independent island
+      ChangelogCard.astro         Static <details>/<summary> disclosure reading lib/changelog.ts,
+                                  no hydration — collapsed by default, inner list scrolls past
+                                  max-h-64 so a long history can't push the homepage down
 
   layout/
-    Layout.astro                 Page shell: fonts, safe-area, PWA service worker
+    Layout.astro                 Page shell: fonts, safe-area, PWA service worker, and the fixed
+                                  .app-header bar (XPBadge + version tag) — see safe-area note below
     PageHeader.astro             Badge + title + subtitle, always a bg-surface-raised card
                                   (fixes text sitting directly on the dotted page background)
 
@@ -97,6 +105,15 @@ src/
                                     Port Match minigame and the /resources/ports-chart cheat sheet.
                                     NOT verified complete against current official exam objectives,
                                     see Known Gaps.
+    xp.ts                          One global XP integer in localStorage (not per-domain) —
+                                    addXp()/useXp() (level curve, cross-island xp-updated /
+                                    xp-level-up events) plus bumpStreak()/useStreak() (calendar-day
+                                    streak counter, separate localStorage key + streak-updated event)
+    confetti.ts                    Dependency-free WebAnimations confetti burst, reused by
+                                    MCQDeck/CLIPractice perfect-score screens and XP level-ups
+    changelog.ts                   Hand-maintained array of {date, items[]}, newest first — the
+                                    user prefers editing this by hand over auto-generating from git
+                                    log, so no tooling reads commit history for this
 
   pages/
     index.astro                  Home — mode cards (Flashcards/Quiz/Practice/Resources)

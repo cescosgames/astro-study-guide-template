@@ -19,7 +19,7 @@ export default function XPBadge() {
   }, []);
 
   return (
-    <div ref={badgeRef} class="fixed top-2 left-2 z-30 print:hidden">
+    <div ref={badgeRef} class="relative">
       <div class="flex items-center gap-1.5 rounded-full bg-surface-overlay px-2.5 py-1 select-none">
         <span aria-hidden="true">⭐</span>
         <span class="font-display text-xs font-bold text-slate-600 dark:text-slate-300">

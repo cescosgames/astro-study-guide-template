@@ -77,13 +77,26 @@ h3,
   font-family: var(--font-display);
 }
 
+/* Height of the app header bar's own content (badge/version pills + its
+   vertical padding), NOT including the safe-area inset — kept as one
+   variable so the header and the <main> clearance below it can never
+   drift apart from each other. */
+:root {
+  --app-header-h: 2.75rem;
+}
+
+.app-header {
+  padding-top: env(safe-area-inset-top);
+  min-height: calc(var(--app-header-h) + env(safe-area-inset-top));
+}
+
 @supports (padding: max(0px)) {
   .safe-bottom {
     padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
   }
 
   .safe-top {
-    padding-top: max(1.25rem, env(safe-area-inset-top));
+    padding-top: calc(env(safe-area-inset-top) + var(--app-header-h));
   }
 }
 
@@ -91,6 +104,13 @@ h3,
    gets that for free) — fix it globally instead of per-component. */
 button:not(:disabled) {
   cursor: pointer;
+}
+
+/* Safari/Chrome render <summary>'s disclosure triangle via this pseudo-
+   element regardless of `list-style` — hide it so our own chevron SVG is
+   the only marker shown. */
+summary::-webkit-details-marker {
+  display: none;
 }
 
 /* Duolingo-style "chunky" pressable buttons: a solid shade-colored bottom

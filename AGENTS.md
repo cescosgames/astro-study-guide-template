@@ -267,3 +267,63 @@ behavior is unchanged.
 - Bumped `package.json` version to `0.4.0` and `CACHE_NAME` to
   `a-plus-study-guide-v4` (`public/sw.js`) per the usual "so an installed
   PWA doesn't serve a stale shell" convention.
+
+## Phase 9 — Header safe-area fix, streak system, real changelog
+
+- **Fixed header clipping on notched/Dynamic-Island iPhones (e.g. 17 Pro)**:
+  `XPBadge` and the version tag were each independently `fixed top-2`,
+  which ignores `env(safe-area-inset-top)` entirely — both sat under the
+  status bar/Dynamic Island in standalone PWA mode. Replaced with a single
+  `.app-header` bar (`Layout.astro`) that pads for the safe-area inset and
+  holds both as flex children (`justify-between`); `XPBadge.tsx` dropped
+  its own `fixed`/`top`/`left` positioning in favor of `relative` (still
+  needed as the anchor for its level-up toast). `global.css` gained
+  `--app-header-h` (the bar's own content height, excluding the safe-area
+  inset) so `.safe-top` on `<main>` — previously just `max(1.25rem,
+  env(safe-area-inset-top))` — now clears `env(safe-area-inset-top) +
+  var(--app-header-h)`, keeping the header and the main-content clearance
+  from ever drifting out of sync with each other.
+  **Not independently re-verified on a real device this session** — Chrome
+  DevTools' device toolbar doesn't emulate `env(safe-area-inset-top)` (the
+  notch it draws is cosmetic only), and Safari Responsive Design Mode was
+  attempted but didn't render the cutout either; the user is trusting the
+  CSS math and will confirm on-device next time they're on it.
+- **Homepage `LevelRecap.tsx`** (new island, `components/layout/`): a
+  bigger version of the header's `XPBadge` for the homepage, above the
+  mode grid — level badge, XP progress bar, reusing the exact same
+  `useXp()` hook, not a parallel implementation.
+- **Daily streak counter**, `lib/xp.ts`: `bumpStreak()`/`useStreak()`
+  alongside the existing XP functions, same event-driven cross-island
+  pattern (`streak-updated` event). Deliberately **calendar-day based, not
+  a rolling 24h window** — despite the user's initial phrasing ("gaining
+  XP within a 24 hour period"), a rolling window would break a streak for
+  something like "studied at 11pm, then again at 10am the next day," which
+  Duolingo's actual day-based streak doesn't penalize. Stored as
+  `{count, lastActiveDate}` under `study-progress:a-plus:streak`; same
+  local day is a no-op, exactly-yesterday increments, any bigger gap resets
+  to 1. `LevelRecap` always shows the streak (including "🔥 0 day streak"
+  at zero) rather than hiding at zero, per explicit user preference against
+  the initially-more-minimal hide-at-zero version.
+- **Real changelog**, replacing a single hardcoded `<div>` in `index.astro`
+  that only ever showed one manually-typed line. `lib/changelog.ts` is a
+  plain hand-maintained `{date, items[]}[]` array (newest first) — the user
+  explicitly prefers editing this by hand over any git-log-driven
+  auto-generation, so update it the same way as before, just following the
+  new interface shape. `components/layout/ChangelogCard.astro` renders it
+  as a native `<details>/<summary>` disclosure (collapsed by default, no JS
+  hydration needed) with a CSS-only rotating chevron; the inner list is
+  `max-h-64 overflow-y-auto` so the history can grow indefinitely without
+  pushing the homepage layout down. Needed one small global CSS addition —
+  `summary::-webkit-details-marker { display: none }` — since Safari/Chrome
+  render the native disclosure triangle via that pseudo-element regardless
+  of `list-style`, and it would otherwise double up with the custom chevron.
+- **Versioning note worth remembering**: `CACHE_NAME` in `public/sw.js` and
+  `package.json`'s `version` are two independent strings with no code link
+  between them — the service worker only compares `CACHE_NAME` against
+  itself, so a patch-level version bump invalidates the PWA cache exactly
+  as well as a minor/major one would. The user prefers keeping them bumped
+  in lockstep by convention anyway (rather than deriving `CACHE_NAME` from
+  `package.json` at build time, which was floated and declined) — bump
+  both by the same increment each time, whatever the version tier.
+- Bumped `package.json` version to `0.4.1` and `CACHE_NAME` to
+  `a-plus-study-guide-v5` (`public/sw.js`).

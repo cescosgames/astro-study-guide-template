@@ -1,4 +1,4 @@
-const CACHE_NAME = 'a-plus-study-guide-v4';
+const CACHE_NAME = 'a-plus-study-guide-v5';
 const PRECACHE_URLS = ['/', '/manifest.json', '/icon-192.png', '/icon-512.png', '/favicon.svg'];
 
 self.addEventListener('install', (event) => {

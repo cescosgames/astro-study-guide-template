@@ -28,17 +28,19 @@ const { title } = Astro.props;
 		<title>{title}</title>
 	</head>
 	<body class="min-h-screen bg-surface text-slate-900 dark:text-slate-100">
+		<header class="app-header fixed inset-x-0 top-0 z-30 flex items-center justify-between gap-2 px-3 pb-1.5 print:hidden">
+			<XPBadge client:load />
+			<span
+				class="rounded-full bg-surface-overlay px-2 py-0.5 font-mono text-[0.65rem] text-slate-400 select-none dark:text-slate-500"
+				>
+				<a href="https://github.com/cescosgames" target="_blank" class="underline hover:opacity-50 transition">cescosgames</a>
+				|v{pkg.version}
+			</span>
+		</header>
 		<main class="safe-top mx-auto flex max-w-2xl flex-col gap-6 p-5 pb-24 sm:gap-8 sm:p-8 sm:pb-28">
 			<slot />
 		</main>
 		<BottomTabBar />
-		<XPBadge client:load />
-		<span
-			class="fixed top-2 right-2 z-30 rounded-full bg-surface-overlay px-2 py-0.5 font-mono text-[0.65rem] text-slate-400 select-none dark:text-slate-500 print:hidden"
-			> 
-			<a href="https://github.com/cescosgames" target="_blank" class="underline hover:opacity-50 transition">cescosgames</a> 
-			|v{pkg.version}
-		</span>
 		<script>
 			if ('serviceWorker' in navigator) {
 				if (import.meta.env.PROD) {
