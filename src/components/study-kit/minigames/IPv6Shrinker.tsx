@@ -1,5 +1,6 @@
 import { useState } from 'preact/hooks';
 import { generateIPv6Problem } from '../../../lib/networking';
+import { addXp } from '../../../lib/xp';
 
 export interface IPv6ShrinkerProps {
   difficulty: 'easy' | 'medium' | 'hard';
@@ -25,6 +26,7 @@ export default function IPv6Shrinker({ difficulty }: IPv6ShrinkerProps) {
     if (correct) {
       setCorrectAttempts((c) => c + 1);
       setStreak((s) => s + 1);
+      addXp(15);
     } else {
       setStreak(0);
     }

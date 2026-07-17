@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'preact/hooks';
 import { generateSubnetProblem, getSubnetInfo } from '../../../lib/networking';
+import { addXp } from '../../../lib/xp';
 
 export interface SubnetCalculatorProps {
   difficulty: 'easy' | 'medium' | 'hard';
@@ -66,6 +67,7 @@ export default function SubnetCalculator({ difficulty }: SubnetCalculatorProps) 
     if (allCorrect) {
       setCorrectAttempts((c) => c + 1);
       setStreak((s) => s + 1);
+      addXp(15);
     } else {
       setStreak(0);
     }

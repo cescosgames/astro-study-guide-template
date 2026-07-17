@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { shuffle } from '../../lib/shuffle';
 import { isCommandAccepted } from '../../lib/cliValidate';
 import { burstConfetti } from '../../lib/confetti';
+import { addXp } from '../../lib/xp';
 
 export interface CLICommandQuestion {
   os: 'windows' | 'linux';
@@ -50,6 +51,7 @@ export default function CLIPractice({ commands, roundSize = 5 }: CLIPracticeProp
     if (correct) {
       newLines.push({ text: '✓ Correct!', variant: 'ok' });
       setScore((s) => s + 1);
+      addXp(10);
     } else {
       newLines.push({ text: '✕ Not quite.', variant: 'err' });
       newLines.push({ text: `Answer: ${current.hint}`, variant: 'hint' });

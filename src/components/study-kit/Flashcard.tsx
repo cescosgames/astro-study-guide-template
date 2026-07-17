@@ -1,4 +1,5 @@
 import { useState } from 'preact/hooks';
+import { addXp } from '../../lib/xp';
 
 export interface FlashcardProps {
   domain: string;
@@ -46,7 +47,10 @@ export default function Flashcard({ domain, topic, front, back, onKnown }: Flash
           </button>
           <button
             type="button"
-            onClick={() => onKnown(true)}
+            onClick={() => {
+              addXp(5);
+              onKnown(true);
+            }}
             class="btn-duo btn-duo-primary min-h-11 flex-1 rounded-2xl px-4"
           >
             Got it

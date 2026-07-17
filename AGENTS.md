@@ -221,3 +221,49 @@ row is a real range, not a slash-separated pair. Verified with a throwaway
 Playwright script (same install-to-`/tmp` pattern as the original Port
 Match verification) that a correct match on port 23 surfaces the right hint
 text end-to-end. Bumped to `0.3.0` / `a-plus-study-guide-v3`.
+
+**Update:** the Port Match hint is no longer transient — the `setTimeout`
+auto-clear was removed per user feedback (it disappeared before there was
+time to read it). It now stays on screen until the next correct match
+replaces it, or `nextRound()` clears it same as before. End-of-round
+behavior is unchanged.
+
+## Phase 8 — XP / level system
+
+- **Endless, deliberately dumb-simple gamification layer** added on top of
+  the existing correct/incorrect interactions — the user wanted a Duolingo-
+  style "number that goes up" for motivation, explicitly not a second
+  progress-tracking system. `lib/xp.ts` holds one global XP integer in
+  localStorage (`study-progress:a-plus:xp`, not per-domain), plus
+  `levelForXp`/`xpForLevel` (quadratic curve — level N starts at
+  `50*(N-1)^2` XP) so level is always *recomputed* from the one stored
+  number rather than stored separately — nothing to migrate if the curve
+  ever gets retuned, and "endless" is free (no max-level data to author).
+- **Cross-island reactivity via custom `window` events**, not React
+  context/prop drilling — `MCQDeck`, `CLIPractice`, `Flashcard`, and the
+  three minigames are all separate Preact islands with no shared parent, so
+  `addXp()` writes to localStorage and dispatches `xp-updated` /
+  `xp-level-up` `CustomEvent`s that a single always-mounted `XPBadge.tsx`
+  island (in `Layout.astro`, top-left corner mirroring the existing
+  top-right version tag) listens for. This is the same pattern the app
+  already uses implicitly for confetti-on-perfect-score, just formalized
+  into a real pub/sub pair instead of local-only state.
+- **Flat XP awards per action, no combo/decay math**: +10 MCQ correct, +10
+  CLI correct, +5 flashcard "Got it", +15 Subnet Calculator / IPv6 Shrinker
+  correct submit, +8 per correct Port Match pair. Reveal-answer paths never
+  award XP (only genuine correct-on-first-try submits do) — flashcards award
+  on every "Got it" press including repeats of the same card in a later
+  session, intentionally, to keep the system free of dedup bookkeeping.
+- `XPBadge.tsx` shows `Lv N` + a thin progress-to-next-level bar at all
+  times, and a `🎉 Level up!` toast (auto-dismisses after ~2.2s) plus a
+  confetti burst on `xp-level-up`, reusing `lib/confetti.ts`.
+- Verified end-to-end with a throwaway Playwright script (install-to-`/tmp`
+  pattern, no project dependency added): real MCQ correct-answer clicks
+  award exactly the expected XP and the badge updates live across the
+  island boundary; a simulated large XP jump correctly triggers the
+  level-up toast and confetti and it auto-dismisses; flashcard "Got it"
+  awards XP. Also verified against the actual `astro build` output (not
+  just dev server) — badge markup present, service worker cache bumped.
+- Bumped `package.json` version to `0.4.0` and `CACHE_NAME` to
+  `a-plus-study-guide-v4` (`public/sw.js`) per the usual "so an installed
+  PWA doesn't serve a stale shell" convention.

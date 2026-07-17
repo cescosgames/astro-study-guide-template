@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { shuffle } from '../../lib/shuffle';
 import { burstConfetti } from '../../lib/confetti';
+import { addXp } from '../../lib/xp';
 
 export interface MCQQuestion {
   question: string;
@@ -34,7 +35,10 @@ export default function MCQDeck({ questions }: MCQDeckProps) {
   function selectChoice(choiceIndex: number) {
     if (selected !== null) return;
     setSelected(choiceIndex);
-    if (choiceIndex === current.correctIndex) setScore((s) => s + 1);
+    if (choiceIndex === current.correctIndex) {
+      setScore((s) => s + 1);
+      addXp(10);
+    }
   }
 
   function next() {

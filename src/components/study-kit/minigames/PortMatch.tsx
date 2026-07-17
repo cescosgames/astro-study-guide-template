@@ -1,5 +1,6 @@
 import { useState } from 'preact/hooks';
 import { generatePortMatchRound, type PortMatchRound } from '../../../lib/networking';
+import { addXp } from '../../../lib/xp';
 
 export interface PortMatchProps {
   difficulty: 'easy' | 'medium' | 'hard';
@@ -43,10 +44,10 @@ export default function PortMatch({ difficulty }: PortMatchProps) {
     if (isCorrect) {
       setCorrectAttempts((c) => c + 1);
       setStreak((s) => s + 1);
+      addXp(8);
       setMatched((m) => new Set(m).add(portId));
       setSelected(null);
       setHint({ port: portId, purpose: round.purposes[portId] });
-      setTimeout(() => setHint((h) => (h?.port === portId ? null : h)), 3000);
     } else {
       setStreak(0);
       setWrongPair({ port: portId, service: serviceId });
