@@ -11,9 +11,31 @@ interface StreakState {
   lastActiveDate: string | null; // local YYYY-MM-DD
 }
 
-function todayKey(): string {
-  const d = new Date();
+function dateKey(d: Date): string {
   return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+}
+
+function todayKey(): string {
+  return dateKey(new Date());
+}
+
+function yesterdayKey(): string {
+  const d = new Date();
+  d.setDate(d.getDate() - 1);
+  return dateKey(d);
+}
+
+// A stored streak only reflects reality at the moment it was last bumped
+// (i.e. the last time XP was earned) — it doesn't self-invalidate just by
+// time passing, since nothing re-checks it on a plain page view. Without
+// this, a streak of N earned two weeks ago would still *display* as N today
+// even though it's long dead; the display needs to independently verify
+// lastActiveDate is today or yesterday, not trust the stored count as-is.
+function effectiveStreakCount(state: StreakState): number {
+  if (state.lastActiveDate === todayKey() || state.lastActiveDate === yesterdayKey()) {
+    return state.count;
+  }
+  return 0;
 }
 
 function readXp(): number {
@@ -48,9 +70,7 @@ function bumpStreak(): void {
   const prev = readStreak();
   if (prev.lastActiveDate === today) return; // already counted today
 
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-  const wasYesterday = prev.lastActiveDate === `${yesterday.getFullYear()}-${yesterday.getMonth()}-${yesterday.getDate()}`;
+  const wasYesterday = prev.lastActiveDate === yesterdayKey();
 
   const next: StreakState = {
     count: wasYesterday ? prev.count + 1 : 1,
@@ -87,7 +107,14 @@ export function addXp(amount: number): void {
 }
 
 export function useXp() {
-  const [xp, setXp] = useState(() => readXp());
+  // Start at the SSR default (0) rather than eagerly reading localStorage —
+  // if the initial client render already has the real value, it matches
+  // hydration exactly and Preact never re-patches the DOM (it trusts SSR
+  // markup on the first pass), leaving server-baked styles like the
+  // progress bar's width stuck. Reading the real value in the effect below
+  // instead forces a genuine post-mount state change, which triggers a real
+  // re-render/patch.
+  const [xp, setXp] = useState(0);
 
   useEffect(() => {
     setXp(readXp());
@@ -107,10 +134,11 @@ export function useXp() {
 }
 
 export function useStreak() {
-  const [streak, setStreak] = useState(() => readStreak().count);
+  // Same SSR-safe-default pattern as useXp() above.
+  const [streak, setStreak] = useState(0);
 
   useEffect(() => {
-    setStreak(readStreak().count);
+    setStreak(effectiveStreakCount(readStreak()));
     function onUpdate(e: Event) {
       setStreak((e as CustomEvent<number>).detail);
     }

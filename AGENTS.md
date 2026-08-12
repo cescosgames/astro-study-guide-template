@@ -327,3 +327,41 @@ behavior is unchanged.
   both by the same increment each time, whatever the version tier.
 - Bumped `package.json` version to `0.4.1` and `CACHE_NAME` to
   `a-plus-study-guide-v5` (`public/sw.js`).
+
+## Phase 10 — XP/streak display bugs
+
+- **XP progress bars (top-left badge + homepage) were frozen at their
+  SSR-baked width**, not reflecting real progress. Root cause: `useXp()`
+  initialized state via `useState(() => readXp())`, which reads
+  `localStorage` synchronously — returning `0` during SSR (no
+  `localStorage` on the server) but the real value immediately on the
+  client's very first render. Since hydration's first client render already
+  matched the "final" state, there was never a subsequent state *change* to
+  force Preact to repatch the DOM, and Preact's `hydrate()` trusts
+  SSR-rendered markup on that first pass rather than diffing it — so the
+  server's stale `width:4%` stuck around indefinitely (confirmed the text
+  content updated correctly while the style attribute didn't, since Preact
+  handles text-node reconciliation differently from attribute patching
+  during hydration). Fixed by seeding state at the SSR-matching default
+  (`0`) and only setting the real value inside the existing `useEffect` —
+  turning that into a genuine post-mount state transition, which does
+  trigger a real patch. Same latent bug existed in `useStreak()`; fixed
+  identically. Verified with a throwaway Playwright script (install-to-
+  `/tmp` pattern) confirming bar widths now match displayed XP text across
+  several values on a fresh page load.
+- **Daily streak displayed as stuck at its last-known count** (typically
+  `1`) even after missing a day or more with no activity. Root cause: the
+  gap/reset check (`wasYesterday` in `bumpStreak()`) only ever ran when XP
+  was actually earned — `useStreak()`/`readStreak()` just returned the
+  raw stored count with no staleness check, so a streak didn't "know" it
+  was dead until the next study session retroactively reset it. Fixed by
+  adding `effectiveStreakCount()`, which independently verifies
+  `lastActiveDate` is today or yesterday before trusting the stored count,
+  used by `useStreak()`'s display path; `bumpStreak()`'s own reset logic is
+  unchanged (still the source of truth for *writing* a new streak value).
+  Verified via Playwright: stale streaks (3+ days old) now show `0`
+  immediately on load regardless of stored count, active/yesterday streaks
+  stay intact, and a real `addXp()` call after a gap still correctly
+  restarts the count at `1`.
+- Bumped `package.json` version to `0.4.2` and `CACHE_NAME` to
+  `a-plus-study-guide-v6` (`public/sw.js`).

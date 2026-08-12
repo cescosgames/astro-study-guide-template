@@ -6,6 +6,13 @@ export interface ChangelogEntry {
 // Newest first. User-facing wording, not raw commit messages.
 export const changelog: ChangelogEntry[] = [
   {
+    date: '2026-08-12',
+    items: [
+      'Fixed the XP progress bars (top-left badge and homepage) not reflecting your actual progress on page load',
+      'Fixed the daily streak showing as active even after missing more than a day',
+    ],
+  },
+  {
     date: '2026-07-17',
     items: [
       'Added a daily streak tracker next to your level',
