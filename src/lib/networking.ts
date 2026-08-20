@@ -193,9 +193,21 @@ function shuffle<T>(items: T[]): T[] {
 
 export function generatePortMatchRound(difficulty: 'easy' | 'medium' | 'hard'): PortMatchRound {
   const pairCounts: Record<string, number> = { easy: 3, medium: 5, hard: 8 };
-  const pairCount = Math.min(pairCounts[difficulty], portEntries.length);
 
-  const chosen = shuffle(portEntries).slice(0, pairCount);
+  // Some objective lines (e.g. FTP's 20/21, DHCP's 67/68, NetBIOS's 137-139)
+  // share one service label across multiple ports. Picking more than one
+  // port for the same service in a round would make the service tiles
+  // visually identical with no way to tell which port they pair with, so
+  // cap selection to at most one port per unique service.
+  const seenServices = new Set<string>();
+  const uniqueServiceEntries = shuffle(portEntries).filter((entry) => {
+    if (seenServices.has(entry.service)) return false;
+    seenServices.add(entry.service);
+    return true;
+  });
+
+  const pairCount = Math.min(pairCounts[difficulty], uniqueServiceEntries.length);
+  const chosen = uniqueServiceEntries.slice(0, pairCount);
 
   const ports = shuffle(chosen.map((entry) => ({ id: entry.port, label: entry.port })));
   const services = shuffle(chosen.map((entry) => ({ id: entry.port, label: entry.service })));

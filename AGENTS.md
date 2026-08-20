@@ -365,3 +365,54 @@ behavior is unchanged.
   restarts the count at `1`.
 - Bumped `package.json` version to `0.4.2` and `CACHE_NAME` to
   `a-plus-study-guide-v6` (`public/sw.js`).
+
+## Phase 11 — Port Match ambiguous-service fix, Daily 5
+
+- **Port Match bug fix**: `generatePortMatchRound()` split objective lines
+  like FTP's `20-21`, DHCP's `67-68`, and NetBIOS's `137-139` into separate
+  matchable ports that all share one service label. If two of those landed
+  in the same round (e.g. both 20 and 21), the service column showed two
+  identical "FTP" tiles with no way to tell which port each belonged to,
+  even though the underlying `answerKey` was correct. Fixed in
+  `lib/networking.ts` by deduping the candidate pool to at most one port per
+  unique service before sampling a round — the 14 unique services in the
+  objectives set comfortably cover hard mode's 8-pair rounds.
+- **Daily 5**, a bite-sized homepage checklist (`lib/dailyFive.ts` +
+  `components/layout/DailyFiveCard.tsx`): a fixed daily bundle of 2
+  flashcards, 2 MCQs, and 1 CLI drill, calendar-day-keyed the same way as
+  the streak system (`localStorage` under
+  `study-progress:a-plus:daily-five`, `{date, done}`; a stored date that
+  isn't today is treated as a fresh, unstarted checklist on read — no
+  explicit midnight timer needed).
+  **Deliberately built as the lighter of two designs that were discussed** —
+  the more "correct" version would've been a single unified island stepping
+  through mixed item types on one page, which required extracting
+  `MCQDeck`/`CLIPractice`'s single-question rendering out of their
+  deck-owns-everything internals (they each own their own index/score/
+  finish-screen, unlike `Flashcard`, which was already single-item). That
+  was reasonable but riskier to ship without a real testing pass, so the
+  shipped version instead reuses the existing `/dev/flashcards`, `/dev/mcq`,
+  `/dev/cli-practice` pages unmodified in spirit: a `?daily=1` query param
+  read client-side by each `*Study.tsx` wrapper slices its shuffled pool
+  down to the fixed daily count and hides the domain/topic pickers (zero
+  decisions, per the whole point of "bite-sized"), while `MCQDeck` and
+  `CLIPractice` each gained one small additive `onFinish?: () => void`
+  prop — called from the same `useEffect` that already fires the existing
+  perfect-score confetti, so it's `undefined`/no-op for every existing
+  caller and doesn't touch any tested logic path. `FlashcardStudy` didn't
+  need that prop at all since it already owns its own index directly (no
+  deck wrapper to extend) — it just calls `markDailyFiveItemDone` from
+  inside its existing `markKnown` handler when the last card in view is
+  answered.
+  No changes were made to the streak-bump trigger — `addXp()` already bumps
+  the daily streak on every correct action, so completing Daily 5 items
+  naturally keeps the streak alive for free without any new wiring.
+  Verified end-to-end with a throwaway Playwright script (install-to-`/tmp`
+  pattern): all three item types slice to the right count, hide their
+  pickers, and mark their homepage chip done on completion (including the
+  CLI item, which marks done even on a wrong-then-revealed answer, matching
+  existing round-finish semantics); the all-three-done celebration state
+  renders; and a simulated previous-day timestamp correctly resets the
+  checklist to unstarted on the next load rather than staying stuck "done."
+- Bumped `package.json` version to `0.4.3` and `CACHE_NAME` to
+  `a-plus-study-guide-v7` (`public/sw.js`).

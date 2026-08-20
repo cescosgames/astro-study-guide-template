@@ -1,9 +1,12 @@
-import { useMemo, useState } from 'preact/hooks';
+import { useEffect, useMemo, useState } from 'preact/hooks';
 import Flashcard from './Flashcard';
 import TopicPicker from './TopicPicker';
 import { useContentFilter, ALL_TOPICS } from '../../lib/useContentFilter';
 import { useProgress } from '../../lib/progress';
 import { shuffle } from '../../lib/shuffle';
+import { DAILY_FIVE_ITEMS, isDailyModeActive, markDailyFiveItemDone } from '../../lib/dailyFive';
+
+const DAILY_COUNT = DAILY_FIVE_ITEMS.find((item) => item.type === 'flashcards')!.count;
 
 export interface FlashcardStudyCard {
   id: string;
@@ -40,8 +43,13 @@ export default function FlashcardStudy({ cert, cards }: FlashcardStudyProps) {
   } = useContentFilter(cards);
 
   const [index, setIndex] = useState(0);
+  const [isDaily, setIsDaily] = useState(false);
+  useEffect(() => setIsDaily(isDailyModeActive()), []);
 
-  const topicCards = useMemo(() => shuffle(filteredItems), [filteredItems, shuffleSeed]);
+  const topicCards = useMemo(() => {
+    const shuffled = shuffle(filteredItems);
+    return isDaily ? shuffled.slice(0, DAILY_COUNT) : shuffled;
+  }, [filteredItems, shuffleSeed, isDaily]);
   const current = topicCards[index];
 
   // Always keyed by domain (never by topic) so "All Topics" and any single
@@ -76,6 +84,7 @@ export default function FlashcardStudy({ cert, cards }: FlashcardStudyProps) {
 
   function markKnown(known: boolean) {
     if (current) setItemComplete(current.id, known);
+    if (isDaily && index === topicCards.length - 1) markDailyFiveItemDone('flashcards');
     if (index < topicCards.length - 1) setIndex((i) => i + 1);
   }
 
@@ -87,20 +96,27 @@ export default function FlashcardStudy({ cert, cards }: FlashcardStudyProps) {
 
   return (
     <div class="flex flex-col gap-3">
-      {domains.length > 1 && (
+      {isDaily && (
+        <p class="rounded-2xl bg-accent/10 px-4 py-2 text-center text-sm font-bold text-accent">
+          Daily 5 · {DAILY_COUNT} cards
+        </p>
+      )}
+      {!isDaily && domains.length > 1 && (
         <TopicPicker
           topics={domains.map((d) => ({ topic: d.domain, count: d.count }))}
           selectedTopic={selectedDomain}
           onSelect={selectDomain}
         />
       )}
-      <TopicPicker
-        topics={topics}
-        selectedTopic={selectedTopic}
-        onSelect={selectTopic}
-        onShuffle={reshuffleAndReset}
-        allOption={{ value: ALL_TOPICS, label: 'All Topics', count: domainItems.length }}
-      />
+      {!isDaily && (
+        <TopicPicker
+          topics={topics}
+          selectedTopic={selectedTopic}
+          onSelect={selectTopic}
+          onShuffle={reshuffleAndReset}
+          allOption={{ value: ALL_TOPICS, label: 'All Topics', count: domainItems.length }}
+        />
+      )}
 
       {current ? (
         <>

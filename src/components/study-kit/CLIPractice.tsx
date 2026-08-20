@@ -14,6 +14,7 @@ export interface CLICommandQuestion {
 export interface CLIPracticeProps {
   commands: CLICommandQuestion[];
   roundSize?: number;
+  onFinish?: () => void;
 }
 
 interface OutputLine {
@@ -21,7 +22,7 @@ interface OutputLine {
   variant: 'cmd' | 'ok' | 'err' | 'hint';
 }
 
-export default function CLIPractice({ commands, roundSize = 5 }: CLIPracticeProps) {
+export default function CLIPractice({ commands, roundSize = 5, onFinish }: CLIPracticeProps) {
   const [shuffleSeed, setShuffleSeed] = useState(0);
   const round = useMemo(
     () => shuffle(commands).slice(0, Math.min(roundSize, commands.length)),
@@ -43,6 +44,10 @@ export default function CLIPractice({ commands, roundSize = 5 }: CLIPracticeProp
   useEffect(() => {
     if (perfect) burstConfetti(finishCardRef.current);
   }, [perfect]);
+
+  useEffect(() => {
+    if (done) onFinish?.();
+  }, [done]);
 
   function judge() {
     if (judged || !current || input.trim() === '') return;

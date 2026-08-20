@@ -12,9 +12,10 @@ export interface MCQQuestion {
 
 export interface MCQDeckProps {
   questions: MCQQuestion[];
+  onFinish?: () => void;
 }
 
-export default function MCQDeck({ questions }: MCQDeckProps) {
+export default function MCQDeck({ questions, onFinish }: MCQDeckProps) {
   const [shuffleSeed, setShuffleSeed] = useState(0);
   const shuffled = useMemo(() => shuffle(questions), [questions, shuffleSeed]);
   const [index, setIndex] = useState(0);
@@ -31,6 +32,10 @@ export default function MCQDeck({ questions }: MCQDeckProps) {
   useEffect(() => {
     if (perfect) burstConfetti(finishCardRef.current);
   }, [perfect]);
+
+  useEffect(() => {
+    if (finished) onFinish?.();
+  }, [finished]);
 
   function selectChoice(choiceIndex: number) {
     if (selected !== null) return;

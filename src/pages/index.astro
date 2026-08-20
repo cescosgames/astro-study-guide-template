@@ -3,6 +3,7 @@ import Layout from "../layout/Layout.astro";
 import PageHeader from "../layout/PageHeader.astro";
 import ProgressTracker from "../components/study-kit/ProgressTracker";
 import LevelRecap from "../components/layout/LevelRecap";
+import DailyFiveCard from "../components/layout/DailyFiveCard";
 import ChangelogCard from "../components/layout/ChangelogCard.astro";
 
 const modes = [
@@ -56,6 +57,8 @@ const modes = [
 	</div> -->
 
 	<LevelRecap client:load />
+
+	<DailyFiveCard client:load />
 
 	<div class="grid gap-4 sm:grid-cols-2">
 		{
